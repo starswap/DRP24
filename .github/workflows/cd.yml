@@ -1,0 +1,17 @@
+name: Continuous Deployment
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  ci-check: 
+    uses: starswap/DRP24/.github/workflows/ci.yml@main
+  cd:
+    name: Deploy to Heroku
+    runs-on: ubuntu-latest
+    steps:
+    - name: "Print Hello World"
+      run: "echo \"Hello World\""
+      
