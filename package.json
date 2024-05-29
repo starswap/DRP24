@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "install": "cd frontend && npm install && cd ../backend && npm install",
+    "install": "cd frontend && npm install && npm run build && cd ../backend && npm install && npm run build && tsc",
     "lint": "echo \"FRONTEND\" && cd frontend && npm run lint && echo \"BACKEND\" && cd ../backend && npm run lint",
     "lint:fix": " echo \"FRONTEND\" && cd frontend && npm run lint:fix && echo \"BACKEND\" && cd ../backend && npm run lint:fix",
     "test": "echo \"No tests\"",
-    "start": 
+    "start": "cd backend && npm run start"
   }
 }

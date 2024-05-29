@@ -14,6 +14,9 @@
     "typescript": "^5.4.5"
   },
   "scripts": {
+    "build": "npx tsc",
+    "clean": "rm -rf build",
+    "start": "cd build && node index.js",
     "lint": "eslint --ext .tsx --ext .ts .",
     "lint:fix": "eslint --ext .tsx --ext .ts . --fix"
   }
