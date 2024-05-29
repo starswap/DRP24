@@ -1,29 +1,16 @@
 {
     "env": {
-      "browser": true,
-      "es2021": true,
-      "jest": true
+      "browser": true
     },
-    "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:react-hooks/recommended", "plugin:@typescript-eslint/eslint-recommended", "plugin:@typescript-eslint/recommended"],
+    "extends": ["../.eslintrc.base.json", "plugin:react/recommended", "plugin:react-hooks/recommended"],
     "parserOptions": {
-      "ecmaVersion": 14,
-      "sourceType": "module",
       "ecmaFeatures": {
         "jsx": true
       }
     },
-    "plugins": ["react", "react-hooks", "prettier", "@typescript-eslint"],
+    "plugins": ["react", "react-hooks"],
     "rules": {
-        "object-curly-newline": "off",
-        "prettier/prettier": ["error",{ "singleQuote": true}],
-        "linebreak-style": ["error", "unix"],
-        "quotes": ["error", "single", "avoid-escape"],
-        "semi": ["error", "always"],
-        "implicit-arrow-linebreak": "off",
-        "react/self-closing-comp": ["error"],
-        "arrow-body-style": ["error", "as-needed"],
-        "no-duplicate-imports": "error",
-        "eqeqeq": "error"
+        "react/self-closing-comp": ["error"]
       },
     "settings": {
         "react": {
