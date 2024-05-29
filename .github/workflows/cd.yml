@@ -13,7 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     container: starswap/dpl:v1
     needs: ci-check
-    environment: Heroku Production
+    environment: 
+      name: Heroku Production
+      url: https://drp24-43a0dc947937.herokuapp.com/
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
