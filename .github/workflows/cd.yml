@@ -11,8 +11,9 @@ jobs:
   cd:
     name: Deploy to Heroku
     runs-on: ubuntu-latest
+    container: starswap/dpl:v1
     needs: ci-check
     steps:
-    - name: "Print Hello World"
-      run: "echo \"Hello World\""
+    - name: Deploy to Heroku
+      run: "dpl --provider=heroku --app=drp24 --api-key=${{ secrets.HEROKU_API_KEY }}"
       
