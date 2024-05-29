@@ -13,3 +13,4 @@ cd ../backend && npm install
     "files.eol": "\n"
 }
 ```
+3. Install ESLint VSCode extension and go to settings (UI). Turn on "ESLint:Format Enable"
