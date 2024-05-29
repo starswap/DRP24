@@ -1,3 +1,4 @@
 {
-    "reporters": [ "default", ["jest-junit", { "outputDirectory": "reports" } ] ]
+    "reporters": [ "default", ["jest-junit", { "outputDirectory": "reports" } ] ],
+    "roots": ["src/"]
 }
