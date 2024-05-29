@@ -1,7 +1,7 @@
 # Elderly Loneliness DRP Project
 
 ## Setup
-1. 
+1. Run the following setup commands:
 ```
 git config --local core.autocrlf input
 cd frontend && npm install
