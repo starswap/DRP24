@@ -14,6 +14,8 @@ jobs:
     container: starswap/dpl:v1
     needs: ci-check
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
     - name: Deploy to Heroku
       run: "dpl --provider=heroku --app=drp24 --api-key=${{ secrets.HEROKU_API_KEY }}"
       
