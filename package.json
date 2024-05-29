@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "install": "cd frontend && npm install && cd ../backend && npm install",
+    "build": "cd frontend && npm run build && cd ../backend && npm run build",
     "lint": "echo \"FRONTEND\" && cd frontend && npm run lint && echo \"BACKEND\" && cd ../backend && npm run lint",
     "lint:fix": " echo \"FRONTEND\" && cd frontend && npm run lint:fix && echo \"BACKEND\" && cd ../backend && npm run lint:fix",
     "test": "echo \"No tests\"",
