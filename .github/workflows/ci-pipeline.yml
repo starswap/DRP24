@@ -23,6 +23,6 @@ jobs:
     - name: Build
       run: npm install
     - name: Check compilation
-      run: npx tsc
+      run: cd frontend && npx tsc && cd ../backend && npx tsc
     - name: Test
       run: npm run test
