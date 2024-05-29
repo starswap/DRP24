@@ -1,0 +1,28 @@
+name: Continuous Integration
+on:
+  pull_request
+  workflow_dispatch
+
+jobs:
+  lint: 
+    name: Build and Lint
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Build
+      run: npm install
+    - name: Lint
+      run: npm run lint
+  test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Build
+      run: npm install
+    - name: Check compilation
+      run: npx tsc
+    - name: Test
+      run: npm run test
