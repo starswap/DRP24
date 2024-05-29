@@ -15,3 +15,9 @@ cd ../backend && npm install
 ```
 3. Install ESLint VSCode extension and go to settings (UI). Turn on "ESLint:Format Enable"
 4. Go to a typescript file in the project and press Ctrl-Shift-P. Select "Format document with" and then "Configure Default Formatter". Choose ESLint.
+
+## Frontend Development
+You can run the frontend with `npm run frontend` from the project root. This will hot-reload.
+
+## Backend Development
+You can run the backend with `npm run backend` from the project root. This will hot-reload.

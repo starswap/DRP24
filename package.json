@@ -9,6 +9,8 @@
     "lint": "echo \"FRONTEND\" && cd frontend && npm run lint && echo \"BACKEND\" && cd ../backend && npm run lint",
     "lint:fix": " echo \"FRONTEND\" && cd frontend && npm run lint:fix && echo \"BACKEND\" && cd ../backend && npm run lint:fix",
     "test": "echo \"No tests\"",
-    "start": "cd backend && npm run start"
+    "start": "cd backend && npm run start",
+    "frontend": "cd frontend && npm run dev",
+    "backend": "cd backend && npm run dev"
   }
 }
