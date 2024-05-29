@@ -2,7 +2,7 @@ import express from 'express';
 
 const app = express();
 
-const PORT = process.env.port;
+const PORT = process.env.port || 8080;
 
 //Express Middleware
 app.use(express.json());
