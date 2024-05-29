@@ -21,3 +21,6 @@ You can run the frontend with `npm run frontend` from the project root. This wil
 
 ## Backend Development
 You can run the backend with `npm run backend` from the project root. This will hot-reload.
+
+## Tests
+We are using Jest for the tests. You can run them with `npm run test`. The CI pipeline runs them automatically and will upload a report which you can find among the jobs of the latest run in the actions tab.
