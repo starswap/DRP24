@@ -1,28 +1,21 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import GeneralCreateEvent from './CreateEvent';
 
 function App() {
   return (
-    <div className="App">
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload. test
-        </p>
-        <button>Button</button>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <GeneralCreateEvent />
+      <h1> Hello</h1>
+    </>
   );
 }
+
+// const link = (props) => (
+//   <a href="url">
+//     {props.url} {props.text}
+//   </a>
+// );
 
 export default App;
