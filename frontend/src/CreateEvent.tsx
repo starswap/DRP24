@@ -37,7 +37,25 @@ function GeneralCreateEvent() {
 }
 
 function What() {
-  return <h1>What</h1>;
+  const handleClick = () => {}
+  return (
+    <>
+      <h1>What will you be doing</h1>
+      <div className='flex-auto'>
+        <div className='flex flex-row flex-wrap w-full'>
+          <div className='flex flex-col basis-full flex-1'>
+            <ButtonComponent onClick={handleClick} label={'Walk'} />
+            <ButtonComponent onClick={handleClick} label={'Walk'} />
+            <ButtonComponent onClick={handleClick} label={'Walk'} />
+          </div>
+          <div className="flex flex-col basis-full flex-1">
+            <ButtonComponent onClick={handleClick} label={'Walk'} />
+            <ButtonComponent onClick={handleClick} label={'Walk'} />
+            <ButtonComponent onClick={handleClick} label={'Walk'} />
+          </div>
+        </div>
+      </div>
+    </>);
 }
 function Who() {
   return <h1>Who</h1>;
