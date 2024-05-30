@@ -10,7 +10,7 @@ function GeneralCreateEvent() {
   // }
   const PAGES = [What, Who, When, Where];
   const [pageNum, setPageNum] = useState(1);
-  const textBoxValue = '';
+  const [textBoxValue, setTextBoxValue] = useState('');
   const [currentActivity, setCurrentActivity] = useState<Array<string>>([]);
 
   function handleNext() {
@@ -47,7 +47,7 @@ function GeneralCreateEvent() {
         <input
           type="text"
           value={textBoxValue}
-          onChange={changeEvent}
+          onChange={(event) => setTextBoxValue(event.target.value)}
         />
       </div>
       <div>
@@ -59,13 +59,15 @@ function GeneralCreateEvent() {
 }
 
 function What() {
-  const handleClick = () => {}
+  const handleClick = () => {
+    console.log('Clicked!');
+  };
   return (
     <>
       <h1>What will you be doing</h1>
-      <div className='flex-auto'>
-        <div className='flex flex-row flex-wrap w-full'>
-          <div className='flex flex-col basis-full flex-1'>
+      <div className="flex-auto">
+        <div className="flex flex-row flex-wrap w-full">
+          <div className="flex flex-col basis-full flex-1">
             <ButtonComponent onClick={handleClick} label={'Walk'} />
             <ButtonComponent onClick={handleClick} label={'Walk'} />
             <ButtonComponent onClick={handleClick} label={'Walk'} />
@@ -77,7 +79,8 @@ function What() {
           </div>
         </div>
       </div>
-    </>);
+    </>
+  );
 }
 function Who() {
   return <h2>Who would you like to do it with?</h2>;
