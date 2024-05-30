@@ -17,7 +17,11 @@ export function ValueButton(props: {
   value: string;
 }) {
   return (
-    <button className="m-1" onClick={props.onClick} value={props.value}>
+    <button
+      className="m-1 border border-gray-500 rounded-md bg-gray-400 p-1 w-auto"
+      onClick={props.onClick}
+      value={props.value}
+    >
       {props.label}
     </button>
   );
