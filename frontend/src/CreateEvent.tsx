@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ButtonComponent, ValueButton } from './ButtonComponent';
+import { CalendarEvent } from '../types/CalendarEvent';
 
 function GeneralCreateEvent() {
   const PAGE_ACTIVITY_DESC = [
@@ -9,22 +10,24 @@ function GeneralCreateEvent() {
     'at place: '
   ];
   const [pageNum, setPageNum] = useState(0);
-  const [textBoxValue, setTextBoxValue] = useState('');
-  const [currentActivity, setCurrentActivity] = useState<Array<string>>([]);
+  const [currentEvent, setCurrentEvent] = useState<CalendarEvent>({
+    activity: '',
+    participants: [],
+    time: new Date(Date.now()),
+    location: ''
+  });
+  const eventAndEventSetter = {
+    calevent: currentEvent,
+    activitySetter: setCurrentEvent
+  };
   const PAGES = [
-    () =>
-      What({
-        arr: currentActivity,
-        ind: 0,
-        activitySetter: setCurrentActivity
-      }),
-    Who,
-    When,
-    Where
+    () => What(eventAndEventSetter),
+    () => Who(eventAndEventSetter),
+    () => When(eventAndEventSetter),
+    () => Where(eventAndEventSetter)
   ];
 
   function handleNext() {
-    setTextBoxValue('');
     if (pageNum === PAGES.length - 1) {
       // Exit or something
       console.log('Finished activity');
@@ -34,7 +37,6 @@ function GeneralCreateEvent() {
   }
 
   function handleBack() {
-    setTextBoxValue('');
     if (pageNum === 0) {
       console.log('Leaving activity page 0');
       // Exit or something
@@ -42,22 +44,21 @@ function GeneralCreateEvent() {
       setPageNum(pageNum - 1);
     }
   }
-  const isLastPage = pageNum === PAGES.length;
+
+  function convertEvent(e: CalendarEvent) {
+    const r: Array<JSX.Element> = [];
+    const fieldArr = [e.activity, e.participants, e.time, e.location];
+    for (let i = 0; i < fieldArr.length; i++) {
+      console.log(PAGE_ACTIVITY_DESC[i] + fieldArr[i] + '\n');
+      r.push(<p key={i}>{PAGE_ACTIVITY_DESC[i] + fieldArr[i]}</p>);
+    }
+    return r;
+  }
+
+  const isLastPage = pageNum === PAGES.length - 1;
   return (
     <>
       <div>{PAGES[pageNum]()}</div>
-      <div>
-        <input
-          type="text"
-          value={textBoxValue}
-          onChange={(event) => {
-            setTextBoxValue(event.target.value);
-            const new_arr = [...currentActivity];
-            new_arr[pageNum] = event.target.value;
-            setCurrentActivity(new_arr);
-          }}
-        />
-      </div>
       <div>
         <ButtonComponent onClick={handleBack} label={'Back'} />
         <ButtonComponent
@@ -66,30 +67,22 @@ function GeneralCreateEvent() {
         />
       </div>
       <h2> Current activity</h2>
-      {PAGE_ACTIVITY_DESC.map((a, i) => (
-        <p key={i}>
-          {a + (i < currentActivity.length ? currentActivity[i] : '')}
-        </p>
-      ))}
+      {convertEvent(currentEvent)}
       <div />
     </>
   );
 }
 
 function What({
-  arr,
-  ind,
+  calevent,
   activitySetter
 }: {
-  arr: Array<string>;
-  ind: number;
-  activitySetter: (arr: Array<string>) => void;
+  calevent: CalendarEvent;
+  activitySetter: (a: CalendarEvent) => void;
 }) {
   const handleClick = (event: any) => {
-    console.log('HERE!');
-    const new_arr = [...arr];
-    new_arr[ind] = event.target.value;
-    activitySetter(new_arr);
+    const new_acc = { ...calevent, activity: event.target.value };
+    activitySetter(new_acc);
   };
   return (
     <>
@@ -98,27 +91,142 @@ function What({
         <div className="flex flex-row flex-wrap w-full">
           <div className="flex flex-col basis-full flex-1">
             <ValueButton onClick={handleClick} label={'Walk'} value="Walk" />
-            <ValueButton onClick={handleClick} label={'Walk'} value="walk" />
-            <ValueButton onClick={handleClick} label={'Walk'} value="walk" />
+            <ValueButton
+              onClick={handleClick}
+              label={'Cricket'}
+              value="Cricket"
+            />
+            <ValueButton onClick={handleClick} label={'Bingo'} value="Bingo" />
           </div>
           <div className="flex flex-col basis-full flex-1">
-            <ValueButton onClick={handleClick} label={'Walk'} value="walk" />
-            <ValueButton onClick={handleClick} label={'Walk'} value="walk" />
-            <ValueButton onClick={handleClick} label={'Walk'} value="walk" />
+            <ValueButton onClick={handleClick} label={'Poker'} value="Poker" />
+            <ValueButton
+              onClick={handleClick}
+              label={'Cooking'}
+              value="Cooking"
+            />
+            <ValueButton
+              onClick={handleClick}
+              label={'Coffee'}
+              value="Coffee"
+            />
           </div>
         </div>
+      </div>
+      <div>
+        <input type="text" value={calevent.activity} onChange={handleClick} />
       </div>
     </>
   );
 }
-function Who() {
-  return <h2>Who would you like to do it with?</h2>;
+function Where({
+  calevent,
+  activitySetter
+}: {
+  calevent: CalendarEvent;
+  activitySetter: (a: CalendarEvent) => void;
+}) {
+  const handleClick = (event: any) => {
+    const new_acc = { ...calevent, location: event.target.value };
+    activitySetter(new_acc);
+  };
+  return (
+    <>
+      <h1>Where will you be doing it?</h1>
+      <div className="flex-auto">
+        <div className="flex flex-row flex-wrap w-full">
+          <div className="flex flex-col basis-full flex-1">
+            <ValueButton onClick={handleClick} label={'Park'} value="Park" />
+            <ValueButton
+              onClick={handleClick}
+              label={'Common Room'}
+              value="Common Room"
+            />
+          </div>
+        </div>
+      </div>
+      <div>
+        <input type="text" value={calevent.location} onChange={handleClick} />
+      </div>
+    </>
+  );
 }
-function Where() {
-  return <h2>Where would you like to do it?</h2>;
+function Who({
+  calevent,
+  activitySetter
+}: {
+  calevent: CalendarEvent;
+  activitySetter: (a: CalendarEvent) => void;
+}) {
+  const handleClick = (event: any) => {
+    const new_acc = { ...calevent, participants: [event.target.value] };
+    activitySetter(new_acc);
+  };
+  return (
+    <>
+      <h1>Who will you be doing it with</h1>
+      <div className="flex-auto">
+        <div className="flex flex-row flex-wrap w-full">
+          <div className="flex flex-col basis-full flex-1">
+            <ValueButton onClick={handleClick} label={'Alice'} value="Alice" />
+            <ValueButton onClick={handleClick} label={'Bob'} value="Bob" />
+          </div>
+        </div>
+      </div>
+      <div>
+        <input
+          type="text"
+          value={calevent.participants.join(' ')}
+          onChange={handleClick}
+        />
+      </div>
+    </>
+  );
 }
-function When() {
-  return <h2>When would you like to do it?</h2>;
+function When({
+  calevent,
+  activitySetter
+}: {
+  calevent: CalendarEvent;
+  activitySetter: (a: CalendarEvent) => void;
+}) {
+  const handleClick = (event: any) => {
+    console.log(event.target.value);
+    const new_acc = {
+      ...calevent,
+      time: new Date(event.target.value)
+    };
+    activitySetter(new_acc);
+  };
+  return (
+    <>
+      <h1>When will you be doing it?</h1>
+      <div className="flex-auto">
+        <div className="flex flex-row flex-wrap w-full">
+          <div className="flex flex-col basis-full flex-1">
+            <ValueButton
+              onClick={handleClick}
+              label={'Tomorrow 2pm'}
+              value={new Date(2024, 4, 31, 2).toString()}
+            />
+            <ValueButton
+              onClick={handleClick}
+              label={'Tomorrow 8pm'}
+              value={new Date(2024, 4, 31, 8).toString()}
+            />
+          </div>
+        </div>
+      </div>
+      <div>
+        <input
+          type="text"
+          className="w-60"
+          value={calevent.time.toString()}
+          onChange={handleClick}
+        />
+      </div>
+    </>
+  );
 }
 
 export default GeneralCreateEvent;
