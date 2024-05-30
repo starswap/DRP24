@@ -5,9 +5,9 @@ import { CalendarEvent } from '../types/CalendarEvent';
 function GeneralCreateEvent() {
   const PAGE_ACTIVITY_DESC = [
     'You are doing: ',
-    'with: ',
-    'at time: ',
-    'at place: '
+    ', with: ',
+    ', at time: ',
+    ', at place: '
   ];
   const [pageNum, setPageNum] = useState(0);
   const [currentEvent, setCurrentEvent] = useState<CalendarEvent>({
@@ -57,7 +57,7 @@ function GeneralCreateEvent() {
 
   const isLastPage = pageNum === PAGES.length - 1;
   return (
-    <>
+    <div className="flex flex-col items-center mx-auto p-4r p-2 w-full">
       <div>{PAGES[pageNum]()}</div>
       <div>
         <ButtonComponent onClick={handleBack} label={'Back'} />
@@ -69,7 +69,7 @@ function GeneralCreateEvent() {
       <h2> Current activity</h2>
       {convertEvent(currentEvent)}
       <div />
-    </>
+    </div>
   );
 }
 
