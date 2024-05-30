@@ -1,7 +1,17 @@
 import React from 'react';
 
-function ButtonComponent(props: { onClick: any; label: string }) {
+export function ButtonComponent(props: { onClick: any; label: string }) {
   return <button onClick={props.onClick}>{props.label}</button>;
 }
 
-export default ButtonComponent;
+export function ValueButton(props: {
+  onClick: any;
+  label: string;
+  value: string;
+}) {
+  return (
+    <button onClick={props.onClick} value={props.value}>
+      {props.label}
+    </button>
+  );
+}

@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import ButtonComponent from './ButtonComponent';
-// import ButtonComponent from './ButtonComponent';
+import { ButtonComponent, ValueButton } from './ButtonComponent';
 
 function GeneralCreateEvent() {
-  const PAGES = [What, Who, When, Where];
   const PAGE_ACTIVITY_DESC = [
     'You are doing: ',
     'with: ',
@@ -13,6 +11,17 @@ function GeneralCreateEvent() {
   const [pageNum, setPageNum] = useState(0);
   const [textBoxValue, setTextBoxValue] = useState('');
   const [currentActivity, setCurrentActivity] = useState<Array<string>>([]);
+  const PAGES = [
+    () =>
+      What({
+        arr: currentActivity,
+        ind: 0,
+        activitySetter: setCurrentActivity
+      }),
+    Who,
+    When,
+    Where
+  ];
 
   function handleNext() {
     setTextBoxValue('');
@@ -33,7 +42,7 @@ function GeneralCreateEvent() {
       setPageNum(pageNum - 1);
     }
   }
-
+  const isLastPage = pageNum === PAGES.length;
   return (
     <>
       <div>{PAGES[pageNum]()}</div>
@@ -53,7 +62,7 @@ function GeneralCreateEvent() {
         <ButtonComponent onClick={handleBack} label={'Back'} />
         <ButtonComponent
           onClick={handleNext}
-          label={pageNum === PAGES.length - 1 ? 'Confirm' : 'Next'}
+          label={isLastPage ? 'Confirm' : 'Next'}
         />
       </div>
       <h2> Current activity</h2>
@@ -67,9 +76,20 @@ function GeneralCreateEvent() {
   );
 }
 
-function What() {
-  const handleClick = () => {
-    console.log('Clicked!');
+function What({
+  arr,
+  ind,
+  activitySetter
+}: {
+  arr: Array<string>;
+  ind: number;
+  activitySetter: (arr: Array<string>) => void;
+}) {
+  const handleClick = (event: any) => {
+    console.log('HERE!');
+    const new_arr = [...arr];
+    new_arr[ind] = event.target.value;
+    activitySetter(new_arr);
   };
   return (
     <>
@@ -77,14 +97,14 @@ function What() {
       <div className="flex-auto">
         <div className="flex flex-row flex-wrap w-full">
           <div className="flex flex-col basis-full flex-1">
-            <ButtonComponent onClick={handleClick} label={'Walk'} />
-            <ButtonComponent onClick={handleClick} label={'Walk'} />
-            <ButtonComponent onClick={handleClick} label={'Walk'} />
+            <ValueButton onClick={handleClick} label={'Walk'} value="Walk" />
+            <ValueButton onClick={handleClick} label={'Walk'} value="walk" />
+            <ValueButton onClick={handleClick} label={'Walk'} value="walk" />
           </div>
           <div className="flex flex-col basis-full flex-1">
-            <ButtonComponent onClick={handleClick} label={'Walk'} />
-            <ButtonComponent onClick={handleClick} label={'Walk'} />
-            <ButtonComponent onClick={handleClick} label={'Walk'} />
+            <ValueButton onClick={handleClick} label={'Walk'} value="walk" />
+            <ValueButton onClick={handleClick} label={'Walk'} value="walk" />
+            <ValueButton onClick={handleClick} label={'Walk'} value="walk" />
           </div>
         </div>
       </div>
@@ -100,19 +120,6 @@ function Where() {
 function When() {
   return <h2>When would you like to do it?</h2>;
 }
-// function Confirmation() {
-//   return (
-//     <div>
-//       <h2>This is your current event, is this correct?</h2>
-//       <displayEvent />
-//     </div>
-//   );
-// }
-
-// const Where = (props) => {
-//   <h1></h1>
-//   <CreateEvent Activity
-// }
 
 export default GeneralCreateEvent;
 // export default ChooseActivity;
