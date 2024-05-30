@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { ButtonComponent, ValueButton } from './ButtonComponent';
 import { CalendarEvent } from '../types/CalendarEvent';
-
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from './firebase';
 function GeneralCreateEvent() {
   const PAGE_ACTIVITY_DESC = [
     'You are doing: ',
-    ', with: ',
-    ', at time: ',
-    ', at place: '
+    'With: ',
+    'At time: ',
+    'At place: '
   ];
   const [pageNum, setPageNum] = useState(0);
   const [currentEvent, setCurrentEvent] = useState<CalendarEvent>({
@@ -30,7 +31,8 @@ function GeneralCreateEvent() {
   function handleNext() {
     if (pageNum === PAGES.length - 1) {
       // Exit or something
-      console.log('Finished activity');
+      setDoc(doc(db, 'Events', 'myEvents'), currentEvent);
+      console.log('Saved to DB');
     } else {
       setPageNum(pageNum + 1);
     }
@@ -87,34 +89,34 @@ function What({
   return (
     <>
       <h1>What will you be doing</h1>
-      <div className="flex-auto">
-        <div className="flex flex-row flex-wrap w-full">
-          <div className="flex flex-col basis-full flex-1">
-            <ValueButton onClick={handleClick} label={'Walk'} value="Walk" />
-            <ValueButton
-              onClick={handleClick}
-              label={'Cricket'}
-              value="Cricket"
-            />
-            <ValueButton onClick={handleClick} label={'Bingo'} value="Bingo" />
-          </div>
-          <div className="flex flex-col basis-full flex-1">
-            <ValueButton onClick={handleClick} label={'Poker'} value="Poker" />
-            <ValueButton
-              onClick={handleClick}
-              label={'Cooking'}
-              value="Cooking"
-            />
-            <ValueButton
-              onClick={handleClick}
-              label={'Coffee'}
-              value="Coffee"
-            />
-          </div>
+      <div className="grid grid-rows-2">
+        <div>
+          <ValueButton onClick={handleClick} label={'Walk'} value="Walk" />
+          <ValueButton
+            onClick={handleClick}
+            label={'Cricket'}
+            value="Cricket"
+          />
+          <ValueButton onClick={handleClick} label={'Bingo'} value="Bingo" />
+        </div>
+        <div>
+          <ValueButton onClick={handleClick} label={'Poker'} value="Poker" />
+          <ValueButton
+            onClick={handleClick}
+            label={'Cooking'}
+            value="Cooking"
+          />
+          <ValueButton onClick={handleClick} label={'Coffee'} value="Coffee" />
         </div>
       </div>
       <div>
-        <input type="text" value={calevent.activity} onChange={handleClick} />
+        <input
+          placeholder="Or enter custom:"
+          className="bg-gray-500 placeholder-black m-1 px-1"
+          type="text"
+          value={calevent.activity}
+          onChange={handleClick}
+        />
       </div>
     </>
   );
@@ -146,7 +148,13 @@ function Where({
         </div>
       </div>
       <div>
-        <input type="text" value={calevent.location} onChange={handleClick} />
+        <input
+          placeholder="Or enter custom:"
+          type="text"
+          className="bg-gray-500 placeholder-black m-1 px-1"
+          value={calevent.location}
+          onChange={handleClick}
+        />
       </div>
     </>
   );
@@ -176,6 +184,8 @@ function Who({
       <div>
         <input
           type="text"
+          className="bg-gray-500 placeholder-black m-1 px-1"
+          placeholder="Or enter custom:"
           value={calevent.participants.join(' ')}
           onChange={handleClick}
         />
@@ -217,14 +227,14 @@ function When({
           </div>
         </div>
       </div>
-      <div>
+      {/* <div>
         <input
           type="text"
           className="w-60"
           value={calevent.time.toString()}
           onChange={handleClick}
         />
-      </div>
+      </div> */}
     </>
   );
 }
