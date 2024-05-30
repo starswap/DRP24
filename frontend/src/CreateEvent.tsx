@@ -3,17 +3,27 @@ import ButtonComponent from './ButtonComponent';
 // import ButtonComponent from './ButtonComponent';
 
 function GeneralCreateEvent() {
-  // constructor(props) {
-  //   super(props)
-  //   this.state = {value: 'Please enter text.'}
-
-  // }
   const PAGES = [What, Who, When, Where];
-  const [pageNum, setPageNum] = useState(1);
+  const PAGE_ACTIVITY_DESC = [
+    'You are doing: ',
+    'with: ',
+    'at time: ',
+    'at place: '
+  ];
+  const [pageNum, setPageNum] = useState(0);
   const [textBoxValue, setTextBoxValue] = useState('');
   const [currentActivity, setCurrentActivity] = useState<Array<string>>([]);
 
+  function tagifyActivity(arr: Array<string>): string {
+    let res = '';
+    for (let i = 0; i < arr.length; i++) {
+      res += PAGE_ACTIVITY_DESC[i] + ' ' + arr[i] + '\n';
+    }
+    return res;
+  }
+
   function handleNext() {
+    setTextBoxValue('');
     if (pageNum === PAGES.length - 1) {
       // Exit or something
       console.log('Finished activity');
@@ -23,6 +33,7 @@ function GeneralCreateEvent() {
   }
 
   function handleBack() {
+    setTextBoxValue('');
     if (pageNum === 0) {
       console.log('Leaving activity page 0');
       // Exit or something
@@ -47,13 +58,24 @@ function GeneralCreateEvent() {
         <input
           type="text"
           value={textBoxValue}
-          onChange={(event) => setTextBoxValue(event.target.value)}
+          onChange={(event) => {
+            setTextBoxValue(event.target.value);
+            const new_arr = [...currentActivity];
+            new_arr[pageNum] = event.target.value;
+            setCurrentActivity(new_arr);
+          }}
         />
       </div>
       <div>
         <ButtonComponent onClick={handleBack} label={'Back'} />
-        <ButtonComponent onClick={handleNext} label={'Next'} />
+        <ButtonComponent
+          onClick={handleNext}
+          label={pageNum === PAGES.length - 1 ? 'Confirm' : 'Next'}
+        />
       </div>
+      <h2> Current activity</h2>
+      <p>{tagifyActivity(currentActivity)}</p>
+      <div />
     </>
   );
 }
