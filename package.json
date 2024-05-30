@@ -12,5 +12,8 @@
     "start": "cd backend && npm run start",
     "frontend": "cd frontend && npm run dev",
     "backend": "cd backend && npm run dev"
+  },
+  "dependencies": {
+    "eslint-plugin-import": "^2.29.1"
   }
 }
