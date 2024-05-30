@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { ButtonComponent, ValueButton } from './ButtonComponent';
+import './index.css';
 
 function GeneralCreateEvent() {
   const PAGE_ACTIVITY_DESC = [
     'You are doing: ',
-    'with: ',
-    'at time: ',
-    'at place: '
+    ', with: ',
+    ', at time: ',
+    ', at place: '
   ];
   const [pageNum, setPageNum] = useState(0);
   const [textBoxValue, setTextBoxValue] = useState('');
@@ -44,7 +45,7 @@ function GeneralCreateEvent() {
   }
   const isLastPage = pageNum === PAGES.length;
   return (
-    <>
+    <div className="flex flex-col items-center mx-auto p-4r p-2 w-full">
       <div>{PAGES[pageNum]()}</div>
       <div>
         <input
@@ -56,23 +57,32 @@ function GeneralCreateEvent() {
             new_arr[pageNum] = event.target.value;
             setCurrentActivity(new_arr);
           }}
+          className="m-10 rounded-md border border-black bg-gray-50 p-1"
         />
       </div>
-      <div>
+      <div className="flex">
         <ButtonComponent onClick={handleBack} label={'Back'} />
         <ButtonComponent
           onClick={handleNext}
           label={isLastPage ? 'Confirm' : 'Next'}
         />
       </div>
-      <h2> Current activity</h2>
-      {PAGE_ACTIVITY_DESC.map((a, i) => (
-        <p key={i}>
-          {a + (i < currentActivity.length ? currentActivity[i] : '')}
-        </p>
-      ))}
+      <div className="flex flex-col items-center justify-center border border-gray-500 rounded-md bg-gray-400 w-1/2 m-10">
+        <div className="flex">
+          <h2 className="font-"> Current activity</h2>
+        </div>
+        <div className="flex">
+          {PAGE_ACTIVITY_DESC.map((a, i) => (
+            <p key={i}>
+              {i - 1 < currentActivity.length
+                ? a + (i < currentActivity.length ? currentActivity[i] : '')
+                : ''}
+            </p>
+          ))}
+        </div>
+      </div>
       <div />
-    </>
+    </div>
   );
 }
 
