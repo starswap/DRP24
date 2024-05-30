@@ -3,8 +3,14 @@ import ButtonComponent from './ButtonComponent';
 // import ButtonComponent from './ButtonComponent';
 
 function GeneralCreateEvent() {
+  // constructor(props) {
+  //   super(props)
+  //   this.state = {value: 'Please enter text.'}
+
+  // }
   const PAGES = [What, Who, When, Where];
   const [pageNum, setPageNum] = useState(1);
+  const textBoxValue = '';
   const [currentActivity, setCurrentActivity] = useState<Array<string>>([]);
 
   function handleNext() {
@@ -25,9 +31,25 @@ function GeneralCreateEvent() {
     }
   }
 
+  function changeEvent() {
+    currentActivity[pageNum] = textBoxValue;
+    setCurrentActivity(currentActivity);
+  }
+
+  function displayEvent() {
+    return <p>{currentActivity}</p>;
+  }
+
   return (
     <>
       <div>{PAGES[pageNum]()}</div>
+      <div>
+        <input
+          type="text"
+          value={textBoxValue}
+          onChange={changeEvent}
+        />
+      </div>
       <div>
         <ButtonComponent onClick={handleBack} label={'Back'} />
         <ButtonComponent onClick={handleNext} label={'Next'} />
@@ -58,14 +80,22 @@ function What() {
     </>);
 }
 function Who() {
-  return <h1>Who</h1>;
+  return <h2>Who would you like to do it with?</h2>;
 }
 function Where() {
-  return <h1>Where</h1>;
+  return <h2>Where would you like to do it?</h2>;
 }
 function When() {
-  return <h1>When</h1>;
+  return <h2>When would you like to do it?</h2>;
 }
+// function Confirmation() {
+//   return (
+//     <div>
+//       <h2>This is your current event, is this correct?</h2>
+//       <displayEvent />
+//     </div>
+//   );
+// }
 
 // const Where = (props) => {
 //   <h1></h1>
