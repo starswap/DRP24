@@ -14,14 +14,6 @@ function GeneralCreateEvent() {
   const [textBoxValue, setTextBoxValue] = useState('');
   const [currentActivity, setCurrentActivity] = useState<Array<string>>([]);
 
-  function tagifyActivity(arr: Array<string>): string {
-    let res = '';
-    for (let i = 0; i < arr.length; i++) {
-      res += PAGE_ACTIVITY_DESC[i] + ' ' + arr[i] + '\n';
-    }
-    return res;
-  }
-
   function handleNext() {
     setTextBoxValue('');
     if (pageNum === PAGES.length - 1) {
@@ -40,15 +32,6 @@ function GeneralCreateEvent() {
     } else {
       setPageNum(pageNum - 1);
     }
-  }
-
-  function changeEvent() {
-    currentActivity[pageNum] = textBoxValue;
-    setCurrentActivity(currentActivity);
-  }
-
-  function displayEvent() {
-    return <p>{currentActivity}</p>;
   }
 
   return (
@@ -74,7 +57,11 @@ function GeneralCreateEvent() {
         />
       </div>
       <h2> Current activity</h2>
-      <p>{tagifyActivity(currentActivity)}</p>
+      {PAGE_ACTIVITY_DESC.map((a, i) => (
+        <p key={i}>
+          {a + (i < currentActivity.length ? currentActivity[i] : '')}
+        </p>
+      ))}
       <div />
     </>
   );
