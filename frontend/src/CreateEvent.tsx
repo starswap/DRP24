@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ButtonComponent, ValueButton } from './ButtonComponent';
 import { CalendarEvent } from '../types/CalendarEvent';
 import { doc, setDoc } from 'firebase/firestore';
+import CustomTextbox from './CustomTextbox';
 import { db } from './firebase';
 function GeneralCreateEvent() {
   const PAGE_ACTIVITY_DESC = [
@@ -109,15 +110,10 @@ function What({
           <ValueButton onClick={handleClick} label={'Coffee'} value="Coffee" />
         </div>
       </div>
-      <div>
-        <input
-          placeholder="Or enter custom:"
-          className="bg-gray-500 placeholder-black m-1 px-1"
-          type="text"
-          value={calevent.activity}
-          onChange={handleClick}
-        />
-      </div>
+      <CustomTextbox
+        displayValue={calevent.activity}
+        handleInput={handleClick}
+      />
     </>
   );
 }
@@ -147,15 +143,10 @@ function Where({
           </div>
         </div>
       </div>
-      <div>
-        <input
-          placeholder="Or enter custom:"
-          type="text"
-          className="bg-gray-500 placeholder-black m-1 px-1"
-          value={calevent.location}
-          onChange={handleClick}
-        />
-      </div>
+      <CustomTextbox
+        displayValue={calevent.location}
+        handleInput={handleClick}
+      />
     </>
   );
 }
@@ -181,18 +172,15 @@ function Who({
           </div>
         </div>
       </div>
-      <div>
-        <input
-          type="text"
-          className="bg-gray-500 placeholder-black m-1 px-1"
-          placeholder="Or enter custom:"
-          value={calevent.participants.join(' ')}
-          onChange={handleClick}
-        />
-      </div>
+
+      <CustomTextbox
+        displayValue={calevent.participants.join(' ')}
+        handleInput={handleClick}
+      />
     </>
   );
 }
+
 function When({
   calevent,
   activitySetter
@@ -227,14 +215,6 @@ function When({
           </div>
         </div>
       </div>
-      {/* <div>
-        <input
-          type="text"
-          className="w-60"
-          value={calevent.time.toString()}
-          onChange={handleClick}
-        />
-      </div> */}
     </>
   );
 }
