@@ -1,16 +1,27 @@
-import { CalendarEvent } from '../types/CalendarEvent';
+import { CalendarEvent } from '../../types/CalendarEvent';
 
-export const EventDescription = (e: CalendarEvent) => {
+type EventDescriptionProps = { event: CalendarEvent };
+
+export const EventDescription = ({ event }: EventDescriptionProps) => {
   const PAGE_ACTIVITY_DESC = [
-    'You are doing: ',
-    'With: ',
-    'At time: ',
-    'At place: '
+    'You are doing:',
+    'With:',
+    'At time:',
+    'At place:'
   ];
-  const r: Array<JSX.Element> = [];
-  const fieldArr = [e.activity, e.participants, e.time, e.location];
-  for (let i = 0; i < fieldArr.length; i++) {
-    r.push(<p key={i}>{PAGE_ACTIVITY_DESC[i] + fieldArr[i]}</p>);
-  }
-  return r;
+  const fieldArr = [
+    event.activity,
+    event.participants,
+    event.time,
+    event.location
+  ];
+  console.log(fieldArr);
+
+  return (
+    <>
+      {fieldArr.map((fieldValue, i) => (
+        <p key={i}>{PAGE_ACTIVITY_DESC[i] + ' ' + fieldValue}</p>
+      ))}
+    </>
+  );
 };

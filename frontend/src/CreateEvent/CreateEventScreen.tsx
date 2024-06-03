@@ -4,6 +4,8 @@ import { CalendarEvent } from '../../types/CalendarEvent';
 import { doc, setDoc } from 'firebase/firestore';
 import CustomTextbox from '../CustomTextbox';
 import { db } from '../firebase';
+import { EventDescription } from './EventDescription';
+import { useNavigate } from 'react-router-dom';
 
 const EMPTY_EVENT = {
   activity: '',
@@ -12,22 +14,38 @@ const EMPTY_EVENT = {
   location: ''
 };
 
-type EventProps = {
-  event: CalendarEvent;
-  updateEvent: React.Dispatch<React.SetStateAction<CalendarEvent>>;
+type MultiPageFormStateProps<T> = {
+  state: T;
+  updateState: React.Dispatch<React.SetStateAction<T>>;
 };
 
+//
 
-function CreateEvent() {
+type MultiPageFormProps<T> = {
+  confirm: (state: T) => void;
+  cancel: () => void;
+  defaultValue: T;
+  pages: Array<(s: MultiPageFormStateProps<T>) => JSX.Element>;
+  displayOnEveryPage: (s: MultiPageFormStateProps<T>) => JSX.Element;
+};
+
+function MultiPageForm<T>({
+  confirm,
+  cancel,
+  defaultValue,
+  pages,
+  displayOnEveryPage
+}: MultiPageFormProps<T>) {
   const [pageNum, setPageNum] = useState(0);
-  const [currentEvent, setCurrentEvent] = useState<CalendarEvent>(EMPTY_EVENT);
-  const PAGES = [What, Who, When, Where];
+  const [state, setState] = useState<T>(defaultValue);
+  const stateAndSetter = {
+    state: state,
+    updateState: setState
+  };
 
   const handleNext = () => {
-    if (pageNum === PAGES.length - 1) {
-      // Exit or something
-      setDoc(doc(db, 'Events', 'myEvents'), currentEvent);
-      console.log('Saved to DB');
+    if (pageNum === pages.length - 1) {
+      confirm(state);
     } else {
       setPageNum((pageNum) => pageNum + 1);
     }
@@ -35,8 +53,7 @@ function CreateEvent() {
 
   const handleBack = () => {
     if (pageNum === 0) {
-      console.log('Leaving activity page 0');
-      // Exit or something
+      cancel();
     } else {
       setPageNum((pageNum) => pageNum - 1);
     }
@@ -44,27 +61,58 @@ function CreateEvent() {
 
   return (
     <div className="flex flex-col items-center mx-auto p-4r p-2 w-full">
-      <div>
-        {PAGES[pageNum]({
-          event: currentEvent,
-          updateEvent: setCurrentEvent
-        })}
-      </div>
+      <div>{pages[pageNum](stateAndSetter)}</div>
       <div>
         <ButtonComponent onClick={handleBack} label={'Back'} />
         <ButtonComponent
           onClick={handleNext}
-          label={pageNum === PAGES.length - 1 ? 'Confirm' : 'Next'}
+          label={pageNum === pages.length - 1 ? 'Confirm' : 'Next'}
         />
       </div>
-      <h2>Current activity</h2>
-      {convertEvent(currentEvent)}
-      <div />
+      {displayOnEveryPage(stateAndSetter)}
     </div>
   );
 }
 
-function What({ event: calevent, updateEvent: updateActivity }: EventProps) {
+function CreateEventScreen() {
+  const navigate = useNavigate();
+
+  const confirm = (currentEvent: CalendarEvent) => {
+    setDoc(doc(db, 'Events', 'myEvents'), currentEvent);
+    navigate("/")
+  };
+
+  const cancel = () => {
+    console.log('Leaving activity page 0');
+    navigate("/")
+  };
+
+  const pages = [What, Who, When, Where];
+
+  const displayOnEveryPage = ({
+    state: event
+  }: MultiPageFormStateProps<CalendarEvent>) => (
+    <>
+      {' '}
+      <h2>Current activity</h2> <EventDescription event={event} />{' '}
+    </>
+  );
+
+  return (
+    <MultiPageForm<CalendarEvent>
+      confirm={confirm}
+      cancel={cancel}
+      pages={pages}
+      displayOnEveryPage={displayOnEveryPage}
+      defaultValue={EMPTY_EVENT}
+    />
+  );
+}
+
+function What({
+  state: calevent,
+  updateState: updateActivity
+}: MultiPageFormStateProps<CalendarEvent>) {
   const handleClick = (event: any) => {
     const new_acc = { ...calevent, activity: event.target.value };
     updateActivity(new_acc);
@@ -93,7 +141,10 @@ function What({ event: calevent, updateEvent: updateActivity }: EventProps) {
     </>
   );
 }
-function Where({ event: calevent, updateEvent: updateActivity }: EventProps) {
+function Where({
+  state: calevent,
+  updateState: updateActivity
+}: MultiPageFormStateProps<CalendarEvent>) {
   const handleClick = (event: any) => {
     const new_acc = { ...calevent, location: event.target.value };
     updateActivity(new_acc);
@@ -117,7 +168,10 @@ function Where({ event: calevent, updateEvent: updateActivity }: EventProps) {
   );
 }
 
-function Who({ event: calevent, updateEvent: updateActivity }: EventProps) {
+function Who({
+  state: calevent,
+  updateState: updateActivity
+}: MultiPageFormStateProps<CalendarEvent>) {
   const handleClick = (event: any) => {
     const new_acc = { ...calevent, participants: [event.target.value] };
     updateActivity(new_acc);
@@ -138,7 +192,10 @@ function Who({ event: calevent, updateEvent: updateActivity }: EventProps) {
   );
 }
 
-function When({ event: calevent, updateEvent: updateActivity }: EventProps) {
+function When({
+  state: calevent,
+  updateState: updateActivity
+}: MultiPageFormStateProps<CalendarEvent>) {
   const handleClick = (event: any) => {
     console.log(event.target.value);
     const new_acc = {
@@ -170,4 +227,4 @@ function When({ event: calevent, updateEvent: updateActivity }: EventProps) {
   );
 }
 
-export default CreateEvent;
+export default CreateEventScreen;
