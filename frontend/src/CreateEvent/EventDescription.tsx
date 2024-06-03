@@ -1,4 +1,4 @@
-import { CalendarEvent } from '../../types/CalendarEvent';
+import { CalendarEvent } from '../types/CalendarEvent';
 
 type EventDescriptionProps = { event: CalendarEvent };
 

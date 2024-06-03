@@ -4,7 +4,7 @@ import './index.css';
 import Home from './Home';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import CreateEventScreen from './CreateEvent/CreateEventScreen';
+import { CreateEventScreen } from './CreateEvent/CreateEventScreen';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
