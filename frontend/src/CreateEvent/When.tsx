@@ -1,12 +1,13 @@
 import { CalendarEvent } from '../types/CalendarEvent';
-import { ValueButton } from '../theme/ButtonComponent';
+import { ValueButton } from '../theme/ThemeButton';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
+import { ChangeEvent } from 'react';
 
 export function When({
   state: calevent,
   updateState: updateActivity
 }: MultiPageFormStateProps<CalendarEvent>) {
-  const handleClick = (event: any) => {
+  const handleClick = (event: ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.value);
     const new_acc = {
       ...calevent,

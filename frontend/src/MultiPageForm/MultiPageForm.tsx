@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ButtonComponent } from '../theme/ButtonComponent';
+import { ButtonComponent } from '../theme/ThemeButton';
 
 export type MultiPageFormStateProps<T> = {
   state: T;

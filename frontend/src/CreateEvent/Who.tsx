@@ -1,14 +1,18 @@
 import { CalendarEvent } from '../types/CalendarEvent';
-import { ValueButton } from '../theme/ButtonComponent';
+import { ValueButton } from '../theme/ThemeButton';
 import ThemeTextbox from '../theme/ThemeTextbox';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
+import { ChangeEvent } from 'react';
 
 export function Who({
   state: calevent,
   updateState: updateActivity
 }: MultiPageFormStateProps<CalendarEvent>) {
-  const handleClick = (event: any) => {
-    const new_acc = { ...calevent, participants: [event.target.value] };
+  const handleClick = (event: ChangeEvent<HTMLInputElement>) => {
+    const new_acc = {
+      ...calevent,
+      participants: [{ name: event.target.value }]
+    };
     updateActivity(new_acc);
   };
   return (
@@ -21,7 +25,7 @@ export function Who({
 
       <ThemeTextbox
         placeholder="Or enter custom:"
-        value={calevent.participants.join(' ')}
+        value={calevent.participants.map((person) => person.name).join(' ')}
         onChange={handleClick}
       />
     </>
