@@ -16,7 +16,7 @@ cd frontend && npm install
 4. Go to a Typescript file in the project and press Ctrl-Shift-P. Select "Format document with" and then "Configure Default Formatter". Choose ESLint.
 
 ## Backend
-Firebase database means that many endpoints are unnecessary. For the AI stuff use Python on Heroku. To run this locally install the dependencies with pip (e.g. venv if you want) then `python backend/app.py` from the root of the repo. Or use Docker.
+Firebase database means that many endpoints are unnecessary. For the AI stuff use Python on Heroku. To run this locally install the dependencies with pip (e.g. venv if you want) then `python app.py` from the backend of the repo. Or use Docker.
 
 ## Tests
 We are using Jest for the tests. You can run them with `npm run test`. The CI pipeline runs them automatically and will upload a report which you can find among the jobs of the latest run in the actions tab.
