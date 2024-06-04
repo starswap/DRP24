@@ -15,7 +15,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
     - name: Build
-      run: npm install
+      run: cd frontend && npm install
     - name: Lint
       run: npm run lint
   test:
