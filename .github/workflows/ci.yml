@@ -17,7 +17,7 @@ jobs:
     - name: Build
       run: cd frontend && npm install
     - name: Lint
-      run: npm run lint
+      run: cd frontend && npm run lint
   test:
     name: Build and Test
     runs-on: ubuntu-latest
@@ -29,7 +29,7 @@ jobs:
     - name: Check compilation
       run: cd frontend && npx tsc
     - name: Test
-      run: npm run test
+      run: cd frontend && npm run test
     - name: Frontend Test Report
       uses: dorny/test-reporter@v1
       if: success() || failure()    # run this step even if previous step failed
