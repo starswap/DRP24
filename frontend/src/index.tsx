@@ -4,7 +4,7 @@ import './index.css';
 import Home from './Home';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import GeneralCreateEvent from './CreateEvent';
+import { CreateEventScreen } from './CreateEvent/CreateEventScreen';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,7 +12,7 @@ const root = ReactDOM.createRoot(
 
 const router = createBrowserRouter([
   { path: '/', element: <Home /> },
-  { path: '/create', element: <GeneralCreateEvent /> }
+  { path: '/create', element: <CreateEventScreen /> }
 ]);
 
 root.render(

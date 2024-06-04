@@ -1,6 +1,0 @@
-{
-    "env": {
-      "browser": false
-    },
-    "extends": ["../.eslintrc.base.json"]
-}  
