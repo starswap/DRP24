@@ -3,16 +3,16 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import Home from './Home';
 import reportWebVitals from './reportWebVitals';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, createHashRouter } from 'react-router-dom';
 import { CreateEventScreen } from './CreateEvent/CreateEventScreen';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const router = createBrowserRouter([
-  { path: '/', element: <Home /> },
-  { path: '/create', element: <CreateEventScreen /> }
+const router = createHashRouter([
+  { path: '', element: <Home /> },
+  { path: 'create', element: <CreateEventScreen /> }
 ]);
 
 root.render(
