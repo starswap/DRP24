@@ -11,7 +11,7 @@ export const EventDescription = ({ event }: EventDescriptionProps) => {
   ];
   const fieldArr = [
     event.activity,
-    event.participants,
+    event.participants.map((e) => e.name).join(', '),
     event.time,
     event.location
   ];

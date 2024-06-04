@@ -1,14 +1,14 @@
 import { CalendarEvent } from '../types/CalendarEvent';
-import { ValueButton } from '../theme/ThemeButton';
 import ThemeTextbox from '../theme/ThemeTextbox';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
-import { ChangeEvent } from 'react';
+import { ThemeButton } from '../theme/ThemeButton';
 
 export function Who({
   state: calevent,
   updateState: updateActivity
 }: MultiPageFormStateProps<CalendarEvent>) {
-  const handleClick = (event: ChangeEvent<HTMLInputElement>) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleClick = (event: any) => {
     const new_acc = {
       ...calevent,
       participants: [{ name: event.target.value }]
@@ -19,8 +19,12 @@ export function Who({
     <>
       <h1>Who will you be doing it with?</h1>
       <div className="grid grid-rows-2">
-        <ValueButton onClick={handleClick} label={'Alice'} value="Alice" />
-        <ValueButton onClick={handleClick} label={'Bob'} value="Bob" />
+        <ThemeButton onClick={handleClick} value="Alice">
+          Alice
+        </ThemeButton>
+        <ThemeButton onClick={handleClick} value="Bob">
+          Bob
+        </ThemeButton>
       </div>
 
       <ThemeTextbox

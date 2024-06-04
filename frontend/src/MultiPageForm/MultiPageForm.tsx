@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ButtonComponent } from '../theme/ThemeButton';
+import { ThemeButton } from '../theme/ThemeButton';
 
 export type MultiPageFormStateProps<T> = {
   state: T;
@@ -48,11 +48,10 @@ export function MultiPageForm<T>({
     <div className="flex flex-col items-center mx-auto p-4r p-2 w-full">
       <div>{pages[pageNum](stateAndSetter)}</div>
       <div>
-        <ButtonComponent onClick={handleBack} label={'Back'} />
-        <ButtonComponent
-          onClick={handleNext}
-          label={pageNum === pages.length - 1 ? 'Confirm' : 'Next'}
-        />
+        <ThemeButton onClick={handleBack}>Back</ThemeButton>
+        <ThemeButton onClick={handleNext}>
+          {pageNum === pages.length - 1 ? 'Confirm' : 'Next'}
+        </ThemeButton>
       </div>
       {displayOnEveryPage(stateAndSetter)}
     </div>

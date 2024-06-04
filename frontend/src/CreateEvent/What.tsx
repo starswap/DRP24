@@ -1,8 +1,7 @@
 import { CalendarEvent } from '../types/CalendarEvent';
-import { ThemeButton, ValueButton } from '../theme/ThemeButton';
+import { ThemeButton } from '../theme/ThemeButton';
 import ThemeTextbox from '../theme/ThemeTextbox';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
-import { ChangeEvent, MouseEventHandler, MouseEvent } from 'react';
 
 export function What({
   state: calevent,
@@ -10,25 +9,30 @@ export function What({
 }: MultiPageFormStateProps<CalendarEvent>) {
   const ROW1 = ['Walk', 'Cricket', 'Bingo'];
   const ROW2 = ['Poker', 'Cooking', 'Coffee'];
-  const saveActivity = (event:MouseEvent<HTMLButtonElement>) => {
-    updateActivity((calevent) => ({ ...calevent, activity: event.target.value }));
-  }
-  const saveActivity2 = (event) => {
-    updateActivity((calevent) => ({ ...calevent, activity: event.target.value }));
-  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const saveActivity = (event: any) => {
+    updateActivity((calevent) => ({
+      ...calevent,
+      activity: event.target.value
+    }));
+  };
 
   return (
     <>
-      <h1>What will you be doing mark?</h1>
+      <h1>What will you be doing?</h1>
       <div className="grid grid-rows-2">
         <div className="flex">
           {ROW1.map((v) => (
-            <ThemeButton key={v} onClick={saveActivity2} value={v} />
+            <ThemeButton key={v} onClick={saveActivity} value={v}>
+              {v}
+            </ThemeButton>
           ))}
         </div>
         <div className="flex">
           {ROW2.map((v) => (
-            <ThemeButton key={v} onClick={saveActivity2} value={v} />
+            <ThemeButton key={v} onClick={saveActivity} value={v}>
+              {v}
+            </ThemeButton>
           ))}
         </div>
       </div>
