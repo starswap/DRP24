@@ -2,4 +2,4 @@ build:
   docker:
     web: Dockerfile
 run:
-  web: python app/backend/app.py
+  web: cd app && python backend/app.py
