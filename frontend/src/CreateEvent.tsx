@@ -57,7 +57,16 @@ function GeneralCreateEvent() {
     const fieldArr = [e.activity, e.participants, e.time, e.location];
     for (let i = 0; i < fieldArr.length; i++) {
       console.log(PAGE_ACTIVITY_DESC[i] + fieldArr[i] + '\n');
-      r.push(<p key={i}>{PAGE_ACTIVITY_DESC[i] + fieldArr[i]}</p>);
+      if (i === 2) {
+        r.push(
+          <p key={i}>
+            {PAGE_ACTIVITY_DESC[i]}{' '}
+            {dayjs(currentEvent.time).format('YYYY-MM-DD HH:mm')}
+          </p>
+        );
+      } else {
+        r.push(<p key={i}>{PAGE_ACTIVITY_DESC[i] + fieldArr[i]}</p>);
+      }
     }
     return r;
   }
@@ -195,18 +204,18 @@ function When({
       <div className="datetime-picker-container">
         <DateTimePicker value={calevent.time} onChange={onSetDate} />
       </div>
-      <div>{DisplayTime(calevent.time)}</div>
+      {/* <div>{DisplayTime(calevent.time)}</div> */}
     </div>
   );
 }
 
-function DisplayTime(dateTime: Date) {
-  return (
-    <input
-      type="text"
-      value={dateTime ? dayjs(dateTime).format('YYYY-MM-DD HH:mm') : ''}
-      readOnly
-    />
-  );
-}
+// function DisplayTime(dateTime: Date) {
+//   return (
+//     <input
+//       type="text"
+//       value={dateTime ? dayjs(dateTime).format('YYYY-MM-DD HH:mm') : ''}
+//       readOnly
+//     />
+//   );
+// }
 export default GeneralCreateEvent;
