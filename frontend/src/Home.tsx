@@ -1,5 +1,4 @@
 import React from 'react';
-import { CURRENT_USER } from './util/data';
 
 export default function Home() {
   return (
