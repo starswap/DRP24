@@ -2,7 +2,7 @@ import { Person, UID } from './Person';
 
 export type CalendarEvent = {
   activity: string;
-  participants: UID[];
+  participants: Set<UID>;
   statuses: { [k: UID]: Status };
   time: Date;
   location: string;

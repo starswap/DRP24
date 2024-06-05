@@ -11,13 +11,13 @@ import { Where } from './Where';
 import { When } from './When';
 import { createEvent } from '../util/data';
 
-const EMPTY_EVENT = {
+const EMPTY_EVENT = () => ({
   activity: '',
-  participants: [],
+  participants: new Set([]),
   time: new Date(Date.now()),
   location: '',
   statuses: {}
-};
+});
 
 export function CreateEventScreen() {
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ export function CreateEventScreen() {
       cancel={cancel}
       pages={pages}
       displayOnEveryPage={displayOnEveryPage}
-      defaultValue={EMPTY_EVENT}
+      defaultValue={EMPTY_EVENT()}
     />
   );
 }

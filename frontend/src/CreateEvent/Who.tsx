@@ -18,15 +18,20 @@ export function Who({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleClick = (event: any) => {
     const uid = event.target.value;
-    const new_acc = {
-      ...calevent,
-      participants: [...calevent.participants, uid],
-      statuses: {
-        ...calevent.statuses,
-        [uid]: { person: people[uid], response: EventResponse.UNKNOWN }
-      }
-    };
-    updateActivity(new_acc);
+    if (uid in calevent.statuses) {
+      delete calevent.statuses[uid];
+      calevent.participants.delete(uid);
+      updateActivity({ ...calevent });
+    } else {
+      updateActivity({
+        ...calevent,
+        participants: calevent.participants.add(uid),
+        statuses: {
+          ...calevent.statuses,
+          [uid]: { person: people[uid], response: EventResponse.UNKNOWN }
+        }
+      });
+    }
   };
 
   return (
@@ -36,7 +41,12 @@ export function Who({
         {Object.keys(people)
           .filter((u) => u !== CURRENT_USER)
           .map((uid) => (
-            <ThemeButton onClick={handleClick} value={uid} key={uid}>
+            <ThemeButton
+              onClick={handleClick}
+              value={uid}
+              key={uid}
+              className={uid in calevent.statuses ? 'bg-green-400' : ''}
+            >
               {people[uid].name.firstname + ' ' + people[uid].name.surname}
             </ThemeButton>
           ))}
