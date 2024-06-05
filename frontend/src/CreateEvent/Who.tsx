@@ -1,10 +1,10 @@
 import { CalendarEvent, EventResponse } from '../types/CalendarEvent';
 import ThemeTextbox from '../theme/ThemeTextbox';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
-import { ThemeButton } from '../theme/ThemeButton';
 import { useEffect, useState } from 'react';
 import { PersonMap } from '../types/Person';
 import { CURRENT_USER, fetchUsers } from '../util/data';
+import { ThemeGrid } from '../theme/ThemeGrid';
 
 export function Who({
   state: calevent,
@@ -15,9 +15,7 @@ export function Who({
     fetchUsers().then(setPeople);
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleClick = (event: any) => {
-    const uid = event.target.value;
+  const saveActivity = (uid: string) => {
     if (uid in calevent.statuses) {
       delete calevent.statuses[uid];
       calevent.participants.delete(uid);
@@ -37,27 +35,22 @@ export function Who({
   return (
     <>
       <h1>Who will you be doing it with?</h1>
-      <div className="grid grid-rows-2">
-        {Object.keys(people)
-          .filter((u) => u !== CURRENT_USER)
-          .map((uid) => (
-            <ThemeButton
-              onClick={handleClick}
-              value={uid}
-              key={uid}
-              className={uid in calevent.statuses ? 'bg-green-400' : ''}
-            >
-              {people[uid].name.firstname + ' ' + people[uid].name.surname}
-            </ThemeButton>
-          ))}
-      </div>
+      <ThemeGrid
+        options={Object.keys(people).filter((u) => u !== CURRENT_USER)}
+        save={saveActivity}
+        selected={(uid) => uid in calevent.statuses}
+        display={(uid: string) =>
+          people[uid].name.firstname + ' ' + people[uid].name.surname
+        }
+        width={1}
+      />
 
       <ThemeTextbox
         placeholder="Or enter custom:"
         value={Object.keys(calevent.statuses)
           .map((uid) => calevent.statuses[uid].person.name.firstname)
           .join(', ')}
-        onChange={handleClick}
+        onChange={(event) => saveActivity(event.target.value)}
       />
     </>
   );
