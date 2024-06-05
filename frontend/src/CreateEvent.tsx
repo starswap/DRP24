@@ -190,8 +190,36 @@ const Component = (): JSX.Element => {
     </>
   );
 };
-
 function When({
+  calevent,
+  activitySetter
+}: {
+  calevent: CalendarEvent;
+  activitySetter: (a: CalendarEvent) => void;
+}) {
+  const onSetDate = (date: Date | null) => {
+    if (date) {
+      const new_acc = {
+        ...calevent,
+        time: date
+      };
+      activitySetter(new_acc);
+    }
+  };
+  return (
+    <div>
+      <h1>When will you be doing it?</h1>
+      <div>
+        <DateTimePicker
+          value={calevent.time}
+          onChange={onSetDate} // Pass the date directly to the handler
+        />
+      </div>
+    </div>
+  );
+}
+
+function When2({
   calevent,
   activitySetter
 }: {
