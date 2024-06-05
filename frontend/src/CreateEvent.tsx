@@ -6,6 +6,7 @@ import CustomTextbox from './CustomTextbox';
 import { db } from './firebase';
 import DateTimePicker from 'react-datetime-picker';
 import dayjs, { Dayjs } from 'dayjs';
+import './CreateEvent.css';
 
 function GeneralCreateEvent() {
   const PAGE_ACTIVITY_DESC = [
@@ -63,9 +64,9 @@ function GeneralCreateEvent() {
 
   const isLastPage = pageNum === PAGES.length - 1;
   return (
-    <div className="flex flex-col items-center mx-auto p-4r p-2 w-full">
+    <div className="container">
       <div>{PAGES[pageNum]()}</div>
-      <div>
+      <div className="flex">
         <ButtonComponent onClick={handleBack} label={'Back'} />
         <ButtonComponent
           onClick={handleNext}
@@ -189,9 +190,9 @@ function When({
     }
   };
   return (
-    <div>
+    <div className="when-container">
       <h1>When will you be doing it?</h1>
-      <div>
+      <div className="datetime-picker-container">
         <DateTimePicker value={calevent.time} onChange={onSetDate} />
       </div>
       <div>{DisplayTime(calevent.time)}</div>
