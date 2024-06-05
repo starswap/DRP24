@@ -1,5 +1,5 @@
 import { CalendarEvent } from '../types/CalendarEvent';
-import { doc, setDoc } from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../util/firebase';
 import { EventDescription } from './EventDescription';
 import { useNavigate } from 'react-router-dom';
@@ -23,7 +23,7 @@ export function CreateEventScreen() {
   const navigate = useNavigate();
 
   const confirm = (currentEvent: CalendarEvent) => {
-    setDoc(doc(db, 'Events', 'myEvents'), currentEvent);
+    addDoc(collection(db, 'events'), currentEvent);
     navigate('/');
   };
 
