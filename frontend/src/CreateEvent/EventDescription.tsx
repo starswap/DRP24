@@ -1,3 +1,4 @@
+import React from 'react';
 import { CalendarEvent } from '../types/CalendarEvent';
 
 type EventDescriptionProps = { event: CalendarEvent };

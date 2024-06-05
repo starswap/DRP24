@@ -1,7 +1,7 @@
 import { CalendarEvent, EventResponse } from '../types/CalendarEvent';
 import ThemeTextbox from '../theme/ThemeTextbox';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PersonMap } from '../types/Person';
 import { CURRENT_USER, fetchUsers } from '../util/data';
 import { ThemeGrid } from '../theme/ThemeGrid';
