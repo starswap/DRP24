@@ -194,8 +194,18 @@ function When({
       <div>
         <DateTimePicker value={calevent.time} onChange={onSetDate} />
       </div>
+      <div>{DisplayTime(calevent.time)}</div>
     </div>
   );
 }
 
+function DisplayTime(dateTime: Date) {
+  return (
+    <input
+      type="text"
+      value={dateTime ? dayjs(dateTime).format('YYYY-MM-DD HH:mm') : ''}
+      readOnly
+    />
+  );
+}
 export default GeneralCreateEvent;
