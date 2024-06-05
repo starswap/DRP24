@@ -120,5 +120,5 @@ export function AudioRecordButton({
       setRecording(true);
     }
   };
-  return <ThemeButton value="Record" onClick={handleClick} />;
+  return <ThemeButton onClick={handleClick}> Record </ThemeButton>;
 }
