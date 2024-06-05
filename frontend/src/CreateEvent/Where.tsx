@@ -1,32 +1,32 @@
 import { CalendarEvent } from '../types/CalendarEvent';
 import ThemeTextbox from '../theme/ThemeTextbox';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
-import { ThemeButton } from '../theme/ThemeButton';
+import { ThemeGrid } from '../theme/ThemeGrid';
 
 export function Where({
   state: calevent,
   updateState: updateActivity
 }: MultiPageFormStateProps<CalendarEvent>) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleClick = (event: any) => {
-    const new_acc = { ...calevent, location: event.target.value };
+  const handleClick = (location: string) => {
+    const new_acc = { ...calevent, location: location };
     updateActivity(new_acc);
   };
+  const LOCATIONS = ['Park', 'Common Room'];
+
   return (
     <>
       <h1>Where will you be doing it?</h1>
-      <div className="grid grid-rows-1">
-        <ThemeButton onClick={handleClick} value="Park">
-          Park
-        </ThemeButton>
-        <ThemeButton onClick={handleClick} value="Common Room">
-          Common Room
-        </ThemeButton>
-      </div>
+      <ThemeGrid
+        options={LOCATIONS}
+        save={handleClick}
+        selected={(e) => calevent.location === e}
+        width={1}
+      />
+
       <ThemeTextbox
         placeholder="Or enter custom:"
         value={calevent.location}
-        onChange={handleClick}
+        onChange={(e) => handleClick(e.target.value)}
       />
     </>
   );

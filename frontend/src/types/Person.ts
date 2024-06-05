@@ -1,3 +1,10 @@
+export type UID = string;
+
 export type Person = {
-  name: string;
+  name: {
+    firstname: string;
+    surname: string;
+  };
 };
+
+export type PersonMap = { [k: string]: Person };

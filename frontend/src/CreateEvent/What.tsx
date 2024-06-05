@@ -1,45 +1,35 @@
 import { CalendarEvent } from '../types/CalendarEvent';
-import { ThemeButton } from '../theme/ThemeButton';
 import ThemeTextbox from '../theme/ThemeTextbox';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
+import { ThemeGrid } from '../theme/ThemeGrid';
 
 export function What({
   state: calevent,
   updateState: updateActivity
 }: MultiPageFormStateProps<CalendarEvent>) {
-  const ROW1 = ['Walk', 'Cricket', 'Bingo'];
-  const ROW2 = ['Poker', 'Cooking', 'Coffee'];
+  const ACTIVITIES = ['Walk', 'Cricket', 'Bingo', 'Poker', 'Cooking', 'Coffee'];
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const saveActivity = (event: any) => {
+  const saveActivity = (activity: string) => {
     updateActivity((calevent) => ({
       ...calevent,
-      activity: event.target.value
+      activity: activity
     }));
   };
 
   return (
     <>
       <h1>What will you be doing?</h1>
-      <div className="grid grid-rows-2">
-        <div className="flex">
-          {ROW1.map((v) => (
-            <ThemeButton key={v} onClick={saveActivity} value={v}>
-              {v}
-            </ThemeButton>
-          ))}
-        </div>
-        <div className="flex">
-          {ROW2.map((v) => (
-            <ThemeButton key={v} onClick={saveActivity} value={v}>
-              {v}
-            </ThemeButton>
-          ))}
-        </div>
-      </div>
+      <ThemeGrid
+        options={ACTIVITIES}
+        save={saveActivity}
+        selected={(v) => v === calevent.activity}
+        width={3}
+      />
       <ThemeTextbox
         placeholder={'Or enter custom:'}
         value={calevent.activity}
-        onChange={saveActivity}
+        onChange={(event) => saveActivity(event.target.value)}
       />
     </>
   );

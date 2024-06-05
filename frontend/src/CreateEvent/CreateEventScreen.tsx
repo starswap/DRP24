@@ -1,6 +1,4 @@
 import { CalendarEvent } from '../types/CalendarEvent';
-import { doc, setDoc } from 'firebase/firestore';
-import { db } from '../util/firebase';
 import { EventDescription } from './EventDescription';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -11,19 +9,21 @@ import { What } from './What';
 import { Who } from './Who';
 import { Where } from './Where';
 import { When } from './When';
+import { createEvent } from '../util/data';
 
-const EMPTY_EVENT = {
+const EMPTY_EVENT = () => ({
   activity: '',
-  participants: [],
+  participants: new Set([]),
   time: new Date(Date.now()),
-  location: ''
-};
+  location: '',
+  statuses: {}
+});
 
 export function CreateEventScreen() {
   const navigate = useNavigate();
 
   const confirm = (currentEvent: CalendarEvent) => {
-    setDoc(doc(db, 'Events', 'myEvents'), currentEvent);
+    createEvent(currentEvent);
     navigate('/');
   };
 
@@ -49,7 +49,7 @@ export function CreateEventScreen() {
       cancel={cancel}
       pages={pages}
       displayOnEveryPage={displayOnEveryPage}
-      defaultValue={EMPTY_EVENT}
+      defaultValue={EMPTY_EVENT()}
     />
   );
 }
