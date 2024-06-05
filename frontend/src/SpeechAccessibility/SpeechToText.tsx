@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useReactMediaRecorder } from 'react-media-recorder';
 import axios from 'axios';
-import { ThemeButton } from './theme/ThemeButton';
-import { CalendarEvent } from './types/CalendarEvent';
+import { ThemeButton } from '../theme/ThemeButton';
+import { CalendarEvent } from '../types/CalendarEvent';
 
 const URL = 'http://127.0.0.1:5000/';
 
