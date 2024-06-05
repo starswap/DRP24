@@ -1,4 +1,5 @@
-import { Person, UID } from './Person';
+import { Person } from './Person';
+import { UID } from './UID';
 
 export type CalendarEvent = {
   activity: string;
