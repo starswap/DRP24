@@ -5,6 +5,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import CustomTextbox from './CustomTextbox';
 import { db } from './firebase';
 import DateTimePicker from 'react-datetime-picker';
+import dayjs, { Dayjs } from 'dayjs';
 
 function GeneralCreateEvent() {
   const PAGE_ACTIVITY_DESC = [
@@ -113,6 +114,7 @@ function What({
     </>
   );
 }
+
 function Where({
   calevent,
   activitySetter
@@ -142,6 +144,7 @@ function Where({
     </>
   );
 }
+
 function Who({
   calevent,
   activitySetter
@@ -168,28 +171,7 @@ function Who({
     </>
   );
 }
-const Component = (): JSX.Element => {
-  const defaultDate = new Date();
-  defaultDate.setDate(defaultDate.getDate() + 3);
 
-  const [date, setDate] = useState<Date>(defaultDate);
-
-  const onSetDate = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setDate(new Date(event.target.value));
-  };
-
-  return (
-    <>
-      <p>date: {date.toString()}</p>
-      <p>date: {date.toLocaleDateString('en-CA')}</p>
-      <input
-        type="date"
-        value={date.toLocaleDateString('en-CA')}
-        onChange={onSetDate}
-      />
-    </>
-  );
-};
 function When({
   calevent,
   activitySetter
@@ -210,72 +192,10 @@ function When({
     <div>
       <h1>When will you be doing it?</h1>
       <div>
-        <DateTimePicker
-          value={calevent.time}
-          onChange={onSetDate} // Pass the date directly to the handler
-        />
+        <DateTimePicker value={calevent.time} onChange={onSetDate} />
       </div>
     </div>
   );
 }
 
-function When2({
-  calevent,
-  activitySetter
-}: {
-  calevent: CalendarEvent;
-  activitySetter: (a: CalendarEvent) => void;
-}) {
-  // return Component();
-  const handleClick = (event: any) => {
-    console.log(event.target.value);
-    const new_acc = {
-      ...calevent,
-      time: new Date(event.target.value)
-    };
-    activitySetter(new_acc);
-  };
-  // function changeTime = (value: React.SetStateAction<Date | null>) => {
-
-  //   setTime(timeToSet);
-
-  //   const new_acc = {
-  //     ...calevent,
-  //     time: timeToSet
-  //   };
-  //   activitySetter(new_acc);
-  // };
-  // const [timeValue, setTime] = useState<Date | null>(new Date(Date.now()));
-  return (
-    <>
-      <h1>When will you be doing it?</h1>
-      <div>
-        <DateTimePicker
-          value={calevent.time}
-          onChange={(value: React.SetStateAction<Date | null>) =>
-            handleClick(value)
-          }
-        />
-      </div>
-      {/* <div className="grid grid-rows-2">
-        <div className="flex">
-          <ValueButton
-            onClick={handleClick}
-            label={'Tomorrow 2pm'}
-            value={new Date(2024, 4, 31, 2).toString()}
-          />
-        </div>
-        <div className="flex">
-          <ValueButton
-            onClick={handleClick}
-            label={'Tomorrow 8pm'}
-            value={new Date(2024, 4, 31, 8).toString()}
-          />
-        </div>
-      </div> */}
-    </>
-  );
-}
-
 export default GeneralCreateEvent;
-// export default ChooseActivity;
