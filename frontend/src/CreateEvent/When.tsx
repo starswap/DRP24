@@ -15,6 +15,8 @@ export function When({
   };
   return (
     <div>
+      <style>{'body { background-color: #d4fcdb; }'}</style>
+
       <h1>When will you be doing it?</h1>
       <div>
         <input

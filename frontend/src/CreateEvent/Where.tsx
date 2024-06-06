@@ -15,6 +15,8 @@ export function Where({
 
   return (
     <>
+      <style>{'body { background-color: #befac8; }'}</style>
+
       <h1>Where will you be doing it?</h1>
       <ThemeGrid
         options={LOCATIONS}

@@ -19,6 +19,8 @@ export function What({
 
   return (
     <>
+      <style>{'body { background-color: #ebffee; }'}</style>
+
       <h1>What will you be doing?</h1>
       <ThemeGrid
         options={ACTIVITIES}

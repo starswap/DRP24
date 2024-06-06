@@ -45,6 +45,8 @@ export function Who({
 
   return (
     <>
+      <style>{'body { background-color: #defce3; }'}</style>
+
       <h1>Who will you be doing it with?</h1>
       <ThemeGrid
         options={Object.keys(people).filter((u) => u !== CURRENT_USER)}
