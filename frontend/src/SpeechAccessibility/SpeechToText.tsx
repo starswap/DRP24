@@ -4,7 +4,8 @@ import axios from 'axios';
 import { ThemeButton } from '../theme/ThemeButton';
 import { CalendarEvent } from '../types/CalendarEvent';
 
-const URL = 'http://127.0.0.1:5000/';
+// If developing locally use 'http://127.0.0.1:5000/' else 'https://drp24-43a0dc947937.herokuapp.com'
+const URL = 'https://drp24-43a0dc947937.herokuapp.com';
 
 // Function packages audio blob and sends it to globally defined URL
 async function uploadAudio(blobUrl: string) {
