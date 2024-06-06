@@ -53,7 +53,7 @@ export default function Home() {
                 </span>
               ))}
             {/* display time in good format */}
-            at {dayjs(new Date(event.time)).format('YYYY-MM-DDThh:mm')}
+            at {dayjs(new Date(event.time)).format('DD/MM/YYYY, HH:mm')}
           </p>
         ))
     );

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { PersonMap } from '../types/Person';
 import { CURRENT_USER, fetchUsers } from '../util/data';
 import { ThemeGrid } from '../theme/ThemeGrid';
+import { ThemeHeading } from '../theme/ThemeHeading';
 
 export function Who({
   state: calevent,
@@ -45,7 +46,7 @@ export function Who({
 
   return (
     <>
-      <h1>Choose friends</h1>
+      <ThemeHeading>Choose friends</ThemeHeading>
       <ThemeGrid
         options={Object.keys(people).filter((u) => u !== CURRENT_USER)}
         save={saveActivity}
@@ -55,17 +56,6 @@ export function Who({
         }
         width={1}
       />
-      {/* 
-      <ThemeTextbox
-        placeholder="Or enter custom:"
-        onChange={(event) => {
-          const people = event.target.value.split(", ");
-          people.forEach((person) => {
-
-          })
-          eventsaveActivity(event.target.value)
-        }}
-      /> */}
     </>
   );
 }

@@ -38,10 +38,7 @@ export function CreateEventScreen() {
   const displayOnEveryPage = ({
     state: event
   }: MultiPageFormStateProps<CalendarEvent>) => (
-    <>
-      {' '}
-      <h2>Current activity</h2> <EventDescription event={event} />{' '}
-    </>
+    <EventDescription event={event} />
   );
 
   return (

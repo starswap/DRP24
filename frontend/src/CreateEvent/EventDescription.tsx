@@ -23,10 +23,15 @@ export const EventDescription = ({ event }: EventDescriptionProps) => {
   console.log(fieldArr);
 
   return (
-    <>
+    <div className="border border-black border-2 rounded-[4px] m-2 p-3 w-80">
       {fieldArr.map((fieldValue, i) => (
-        <p key={i}>{PAGE_ACTIVITY_DESC[i] + ' ' + fieldValue}</p>
+        <div key={i}>
+          {PAGE_ACTIVITY_DESC[i] + ' '}
+          <span className="underline">
+            {fieldValue === '' ? '_'.repeat(20) : fieldValue}
+          </span>
+        </div>
       ))}
-    </>
+    </div>
   );
 };
