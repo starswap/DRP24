@@ -89,11 +89,7 @@ export default function Home() {
 
   console.log(events);
   return (
-    <div
-      className="flex flex-col items-center scrollbar-gutter:stable both-edges"
-      // style={{scrollbar-gutter: "stable"}}
-    >
-      <style>{'body { background-color: #f2fcf4; }'}</style>
+    <div className="flex flex-col items-center scrollbar-gutter:stable both-edges">
       <div className="flex flex-col items-center w-[calc(100vw-25px)] overflow-y: overlay">
         <h1 className="text-2xl">You are: Matilda Johnson</h1>
 
