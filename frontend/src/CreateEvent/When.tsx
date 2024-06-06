@@ -2,6 +2,7 @@ import { CalendarEvent } from '../types/CalendarEvent';
 import DateTimePicker from 'react-datetime-picker';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
 import './When.css';
+import dayjs from 'dayjs';
 
 export function When({
   state: calevent,
@@ -20,7 +21,11 @@ export function When({
     <div className="when-container">
       <h1>When will you be doing it?</h1>
       <div className="datetime-picker-container">
-        <DateTimePicker value={calevent.time} onChange={onSetDate} />
+        <input
+          type="datetime-local"
+          value={dayjs(calevent.time).format('YYYY-MM-DDThh:mm')}
+          onChange={(e) => onSetDate(new Date(e.target.value))}
+        />
       </div>
     </div>
   );
