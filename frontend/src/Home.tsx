@@ -24,33 +24,39 @@ export default function Home() {
   }
 
   function GetEvents(our_response: EventResponse) {
-    return events
-      .filter(
-        ([event]) => event.statuses[CURRENT_USER].response === our_response
-      )
-      .map(([event, event_uid]) => (
-        <p key={event_uid}>
-          {event.activity} at {event.location} with{' '}
-          {Object.entries(event.statuses)
-            // dont display self
-            .filter(([uid, status]) => uid !== CURRENT_USER)
-            // only display people who accepted
-            // .filter(
-            //   ([uid, status]) => status.response === EventResponse.ACCEPTED
-            // )
-            .map(([uid, status], i) => (
-              <span
-                key={uid}
-                style={{ color: GetResponseColour(status.response) }}
-              >
-                {status.person.name.firstname} {status.person.name.surname}
-                {/* length -2 because not writing out ourselves */}
-                {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
-              </span>
-            ))}
-          at {dayjs(event.time).format('YYYY-MM-DD HH:mm')}
-        </p>
-      ));
+    return (
+      events
+        // filter events based on if should be in invites, events, or declined
+        .filter(
+          ([event]) => event.statuses[CURRENT_USER].response === our_response
+        )
+        .map(([event, event_uid]) => (
+          <p key={event_uid}>
+            {event.activity} at {event.location} with{' '}
+            {/* <!-- get people: --> */}
+            {Object.entries(event.statuses)
+              // dont display self
+              .filter(([uid, status]) => uid !== CURRENT_USER)
+              // only display people who accepted
+              // .filter(
+              //   ([uid, status]) => status.response === EventResponse.ACCEPTED
+              // )
+              // display peoples names in different colours
+              .map(([uid, status], i) => (
+                <span
+                  key={uid}
+                  style={{ color: GetResponseColour(status.response) }}
+                >
+                  {status.person.name.firstname} {status.person.name.surname}
+                  {/* length -2 because not writing out ourselves */}
+                  {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
+                </span>
+              ))}
+            {/* display time in good format */}
+            at {dayjs(event.time).format('YYYY-MM-DD HH:mm')}
+          </p>
+        ))
+    );
   }
 
   console.log(events);
