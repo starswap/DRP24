@@ -62,6 +62,8 @@ export default function Home() {
   console.log(events);
   return (
     <div className="flex flex-col items-center">
+      <style>{'body { background-color: #f2fcf4; }'}</style>
+
       <h1 className="text-xl">You are: Matilda Johnson</h1>
 
       <ThemeSubheading>Invites</ThemeSubheading>

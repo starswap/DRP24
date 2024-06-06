@@ -21,6 +21,8 @@ export function What({
 
   return (
     <>
+      <style>{'body { background-color: #ebffee; }'}</style>
+
       <ThemeHeading>Choose Activity</ThemeHeading>
       <ThemeGrid
         options={ACTIVITIES}
