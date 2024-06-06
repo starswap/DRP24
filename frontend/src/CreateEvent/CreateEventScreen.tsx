@@ -50,6 +50,7 @@ export function CreateEventScreen() {
       pages={pages}
       displayOnEveryPage={displayOnEveryPage}
       defaultValue={EMPTY_EVENT()}
+      sets={['Set Activity', 'Set People', 'Set Time', 'Set Location']}
     />
   );
 }
