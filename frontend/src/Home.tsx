@@ -53,7 +53,7 @@ export default function Home() {
                 </span>
               ))}
             {/* display time in good format */}
-            at {dayjs(event.time).format('YYYY-MM-DD HH:mm')}
+            at {dayjs(new Date(event.time)).format('YYYY-MM-DDThh:mm')}
           </p>
         ))
     );
@@ -71,7 +71,7 @@ export default function Home() {
       {GetEvents(EventResponse.ACCEPTED)}
 
       <a
-        className="m-1 border border-gray-500 rounded-md bg-gray-400 p-1"
+        className="m-1 border border-gray-500 rounded-md bg-pink-400 p-1"
         href="#create"
       >
         Create event
