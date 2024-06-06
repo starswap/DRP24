@@ -1,6 +1,7 @@
 import { CalendarEvent } from '../types/CalendarEvent';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
 import dayjs from 'dayjs';
+import { useEffect } from 'react';
 
 export function When({
   state: calevent,
@@ -13,9 +14,10 @@ export function When({
     };
     updateActivity(new_acc);
   };
+
   return (
-    <div>
-      <h1>When will you be doing it?</h1>
+    <>
+      <h1>Choose time</h1>
       <div>
         <input
           type="datetime-local"
@@ -23,6 +25,6 @@ export function When({
           onChange={(e) => onSetDate(new Date(e.target.value))}
         />
       </div>
-    </div>
+    </>
   );
 }

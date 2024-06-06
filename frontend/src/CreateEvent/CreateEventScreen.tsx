@@ -15,7 +15,7 @@ const EMPTY_EVENT: () => CalendarEvent = () => ({
   activity: '',
   creator: CURRENT_USER,
   participants: [],
-  time: new Date(Date.now()),
+  time: new Date(new Date().getTime() - 1000),
   location: '',
   statuses: {}
 });
@@ -51,6 +51,7 @@ export function CreateEventScreen() {
       pages={pages}
       displayOnEveryPage={displayOnEveryPage}
       defaultValue={EMPTY_EVENT()}
+      sets={['Set Activity', 'Set People', 'Set Time', 'Set Location']}
     />
   );
 }

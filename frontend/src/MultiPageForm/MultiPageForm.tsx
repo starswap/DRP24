@@ -12,6 +12,7 @@ export type MultiPageFormProps<T> = {
   defaultValue: T;
   pages: Array<(s: MultiPageFormStateProps<T>) => JSX.Element>;
   displayOnEveryPage: (s: MultiPageFormStateProps<T>) => JSX.Element;
+  sets: string[];
 };
 
 export function MultiPageForm<T>({
@@ -19,7 +20,8 @@ export function MultiPageForm<T>({
   cancel,
   defaultValue,
   pages,
-  displayOnEveryPage
+  displayOnEveryPage,
+  sets
 }: MultiPageFormProps<T>) {
   const [pageNum, setPageNum] = useState(0);
   const [state, setState] = useState<T>(defaultValue);
@@ -52,7 +54,7 @@ export function MultiPageForm<T>({
       <div>
         <ThemeButton onClick={handleBack}>Back</ThemeButton>
         <ThemeButton onClick={handleNext}>
-          {pageNum === pages.length - 1 ? 'Confirm' : 'Next'}
+          {pageNum === pages.length - 1 ? 'Confirm' : sets[pageNum]}
         </ThemeButton>
       </div>
       {displayOnEveryPage(stateAndSetter)}
