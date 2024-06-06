@@ -1,5 +1,3 @@
-export type UID = string;
-
 export type Person = {
   name: {
     firstname: string;
