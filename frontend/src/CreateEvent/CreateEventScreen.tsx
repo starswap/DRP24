@@ -14,7 +14,7 @@ import { createEvent } from '../util/data';
 const EMPTY_EVENT = () => ({
   activity: '',
   participants: new Set([]),
-  time: new Date(Date.now()),
+  time: new Date(new Date().getTime() - 1000),
   location: '',
   statuses: {}
 });

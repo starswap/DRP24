@@ -15,7 +15,9 @@ export const EventDescription = ({ event }: EventDescriptionProps) => {
     Array.from(event.participants.values())
       .map((e) => event.statuses[e].person.name.firstname)
       .join(', '),
-    dayjs(event.time).format('YYYY-MM-DD HH:mm'),
+    event.time.getTime() < new Date().getTime()
+      ? ''
+      : dayjs(event.time).format('YYYY-MM-DD HH:mm'),
     event.location
   ];
   console.log(fieldArr);

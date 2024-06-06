@@ -1,6 +1,7 @@
 import { CalendarEvent } from '../types/CalendarEvent';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
 import dayjs from 'dayjs';
+import { useEffect } from 'react';
 
 export function When({
   state: calevent,
@@ -13,6 +14,7 @@ export function When({
     };
     updateActivity(new_acc);
   };
+
   return (
     <div>
       <h1>When will you be doing it?</h1>
