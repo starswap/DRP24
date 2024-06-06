@@ -12,10 +12,6 @@ export default function Home() {
     fetchEvents(CURRENT_USER).then(setEvents);
   }, []);
 
-  // function getPeople (statuses: {
-  //   [k: string]: Status}) {
-  //     return ()
-  //   }
   function GetResponseColour(response: EventResponse) {
     switch (response) {
       case EventResponse.ACCEPTED:
@@ -26,47 +22,48 @@ export default function Home() {
         return 'grey';
     }
   }
+
+  function GetEvents(our_response: EventResponse) {
+    return events
+      .filter(
+        ([event]) => event.statuses[CURRENT_USER].response === our_response
+      )
+      .map(([event, event_uid]) => (
+        <p key={event_uid}>
+          {event.activity} at {event.location} with{' '}
+          {Object.entries(event.statuses)
+            // dont display self
+            .filter(([uid, status]) => uid !== CURRENT_USER)
+            // only display people who accepted
+            // .filter(
+            //   ([uid, status]) => status.response === EventResponse.ACCEPTED
+            // )
+            .map(([uid, status], i) => (
+              <span
+                key={uid}
+                style={{ color: GetResponseColour(status.response) }}
+              >
+                {status.person.name.firstname} {status.person.name.surname}
+                {/* length -2 because not writing out ourselves */}
+                {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
+              </span>
+            ))}
+          at {dayjs(event.time).format('YYYY-MM-DD HH:mm')}
+        </p>
+      ));
+  }
+
   console.log(events);
   return (
     <div className="flex flex-col items-center">
       <h1 className="text-xl">You are: Matilda Johnson</h1>
 
       <ThemeSubheading>Invites</ThemeSubheading>
-      {events
-        // .filter(
-        //   ([event]) =>
-        //     event.statuses[CURRENT_USER].response === EventResponse.UNKNOWN
-        // )
-        .map(([event, event_uid]) => (
-          <p key={event_uid}>
-            {event.activity} at {event.location} with{' '}
-            {Object.entries(event.statuses)
-              // dont display self
-              // .filter(([uid, status]) => uid !== CURRENT_USER)
-              // only display people who accepted
-              // .filter(
-              //   ([uid, status]) => status.response === EventResponse.ACCEPTED
-              // )
-              .map(
-                ([uid, status]) => (
-                  <span
-                    key={uid}
-                    style={{ color: GetResponseColour(status.response) }}
-                  >
-                    {status.person.name.firstname}{' '}
-                  </span>
-                )
-                // status.person.name.firstname +
-                // ' ' +
-                // status.person.name.surname
-              )}
-            {/* .join({', '})} */}
-            {/* // .join(', ')}{' '} */}
-            at {dayjs(event.time).format('YYYY-MM-DD HH:mm')}
-          </p>
-        ))}
+      {GetEvents(EventResponse.UNKNOWN)}
 
       <ThemeSubheading>Events</ThemeSubheading>
+      {GetEvents(EventResponse.ACCEPTED)}
+
       <a
         className="m-1 border border-gray-500 rounded-md bg-gray-400 p-1"
         href="#create"
@@ -75,6 +72,7 @@ export default function Home() {
       </a>
 
       <ThemeSubheading>Declined</ThemeSubheading>
+      {GetEvents(EventResponse.REJECTED)}
     </div>
   );
 }
