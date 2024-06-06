@@ -1,5 +1,4 @@
 import { CalendarEvent, EventResponse } from '../types/CalendarEvent';
-import ThemeTextbox from '../theme/ThemeTextbox';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
 import React, { useEffect, useState } from 'react';
 import { PersonMap } from '../types/Person';
@@ -42,6 +41,7 @@ export function Who({
     if (CURRENT_USER in people) {
       saveActivity(CURRENT_USER);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [people]);
 
   return (

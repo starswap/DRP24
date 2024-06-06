@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useReactMediaRecorder } from 'react-media-recorder';
 import axios from 'axios';
 import { ThemeButton } from '../theme/ThemeButton';
-import { CalendarEvent } from '../types/CalendarEvent';
 
 // If developing locally use 'http://127.0.0.1:5000/' else 'https://drp24-43a0dc947937.herokuapp.com'
 const URL = 'https://drp24-43a0dc947937.herokuapp.com';
@@ -61,6 +60,7 @@ export function AudioRecordButton({
       };
       upload();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mediaBlobUrl]);
 
   const handleClick = () => {
