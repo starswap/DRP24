@@ -43,7 +43,7 @@ export default function Home() {
               {/* <!-- get people: --> */}
               {Object.entries(event.statuses)
                 // dont display self
-                .filter(([uid, status]) => uid !== CURRENT_USER)
+                .filter(([uid]) => uid !== CURRENT_USER)
                 // only display people who accepted
                 // .filter(
                 //   ([uid, status]) => status.response === EventResponse.ACCEPTED
