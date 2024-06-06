@@ -8,7 +8,7 @@ const EVENTS_COLLECITON = collection(db, 'events');
 const USERS_COLLECTION = collection(db, 'users');
 export const CURRENT_USER = 't8M8LxWOTKwBAkKHgEfo'; // TODO: Fetch from cookies for example
 
-export function createEvent(currentEvent: CalendarEvent) {;
+export function createEvent(currentEvent: CalendarEvent) {
   addDoc(EVENTS_COLLECITON, currentEvent);
 }
 

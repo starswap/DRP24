@@ -55,14 +55,17 @@ export function Who({
         }
         width={1}
       />
-
+      {/* 
       <ThemeTextbox
         placeholder="Or enter custom:"
-        value={Object.keys(calevent.statuses)
-          .map((uid) => calevent.statuses[uid].person.name.firstname)
-          .join(', ')}
-        onChange={(event) => saveActivity(event.target.value)}
-      />
+        onChange={(event) => {
+          const people = event.target.value.split(", ");
+          people.forEach((person) => {
+
+          })
+          eventsaveActivity(event.target.value)
+        }}
+      /> */}
     </>
   );
 }
