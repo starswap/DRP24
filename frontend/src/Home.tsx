@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ThemeSubheading } from './theme/ThemeSubheading';
 import { CURRENT_USER, fetchEvents } from './util/data';
 import { CalendarEvent, EventResponse } from './types/CalendarEvent';
 import { UID } from './types/UID';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { ThemeButton } from './theme/ThemeButton';
 
 export default function Home() {
@@ -60,7 +60,7 @@ export default function Home() {
                   </span>
                 ))}
               {/* display time in good format */}
-              at {dayjs(event.time).format('YYYY-MM-DD HH:mm')}
+              at {dayjs(new Date(event.time)).format('DD/MM/YYYY, HH:mm')}
             </p>
             {Object.is(our_response, EventResponse.UNKNOWN) && (
               <div>
@@ -93,7 +93,7 @@ export default function Home() {
       {GetEvents(EventResponse.ACCEPTED)}
 
       <a
-        className="m-1 border border-gray-500 rounded-md bg-gray-400 p-1"
+        className="m-1 border border-gray-500 rounded-md bg-yellow-100 p-1"
         href="#create"
       >
         Create event

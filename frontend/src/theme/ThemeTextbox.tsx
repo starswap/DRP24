@@ -5,7 +5,7 @@ export default function ThemeTextbox(
 ) {
   return (
     <input
-      className="bg-gray-500 placeholder-black m-1 px-1"
+      className="bg-white border-black border border-2 rounded-[4px] placeholder-black m-1 px-1"
       type="text"
       {...props}
     />

@@ -1,3 +1,4 @@
+import React from 'react';
 import { CalendarEvent } from '../types/CalendarEvent';
 import { EventDescription } from './EventDescription';
 import { useNavigate } from 'react-router-dom';
@@ -9,12 +10,13 @@ import { What } from './What';
 import { Who } from './Who';
 import { Where } from './Where';
 import { When } from './When';
-import { createEvent } from '../util/data';
+import { createEvent, CURRENT_USER } from '../util/data';
 
-const EMPTY_EVENT = () => ({
+const EMPTY_EVENT: () => CalendarEvent = () => ({
   activity: '',
-  participants: new Set([]),
-  time: new Date(Date.now()),
+  creator: CURRENT_USER,
+  participants: [],
+  time: new Date(new Date().getTime() - 1000),
   location: '',
   statuses: {}
 });
@@ -37,10 +39,7 @@ export function CreateEventScreen() {
   const displayOnEveryPage = ({
     state: event
   }: MultiPageFormStateProps<CalendarEvent>) => (
-    <>
-      {' '}
-      <h2>Current activity</h2> <EventDescription event={event} />{' '}
-    </>
+    <EventDescription event={event} />
   );
 
   return (
@@ -50,6 +49,7 @@ export function CreateEventScreen() {
       pages={pages}
       displayOnEveryPage={displayOnEveryPage}
       defaultValue={EMPTY_EVENT()}
+      sets={['Set Activity', 'Set People', 'Set Time', 'Set Location']}
     />
   );
 }
