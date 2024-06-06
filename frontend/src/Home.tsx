@@ -31,8 +31,11 @@ export default function Home() {
           ([event]) => event.statuses[CURRENT_USER].response === our_response
         )
         .map(([event, event_uid]) => (
-          <p key={event_uid}>
-            {event.activity} at {event.location} with{' '}
+          <p
+            key={event_uid}
+            className="leading-loose p-2 hover:bg-gray-200 rounded-md"
+          >
+            <b>{event.activity}</b> at <b>{event.location}</b> with{' '}
             {/* <!-- get people: --> */}
             {Object.entries(event.statuses)
               // dont display self
@@ -47,7 +50,9 @@ export default function Home() {
                   key={uid}
                   style={{ color: GetResponseColour(status.response) }}
                 >
-                  {status.person.name.firstname} {status.person.name.surname}
+                  <b>
+                    {status.person.name.firstname} {status.person.name.surname}{' '}
+                  </b>
                   {/* length -2 because not writing out ourselves */}
                   {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
                 </span>
@@ -61,24 +66,29 @@ export default function Home() {
 
   console.log(events);
   return (
-    <div className="flex flex-col items-center">
-      <h1 className="text-xl">You are: Matilda Johnson</h1>
+    <div
+      className="flex flex-col items-center scrollbar-gutter:stable both-edges"
+      // style={{scrollbar-gutter: "stable"}}
+    >
+      <div className="flex flex-col items-center w-[calc(100vw-25px)] overflow-y: overlay">
+        <h1 className="text-2xl">You are: Matilda Johnson</h1>
 
-      <ThemeSubheading>Invites</ThemeSubheading>
-      {GetEvents(EventResponse.UNKNOWN)}
+        <ThemeSubheading>Invites</ThemeSubheading>
+        {GetEvents(EventResponse.UNKNOWN)}
 
-      <ThemeSubheading>Events</ThemeSubheading>
-      {GetEvents(EventResponse.ACCEPTED)}
+        <ThemeSubheading>Events</ThemeSubheading>
+        {GetEvents(EventResponse.ACCEPTED)}
 
-      <a
-        className="m-1 border border-gray-500 rounded-md bg-yellow-100 p-1"
-        href="#create"
-      >
-        Create event
-      </a>
+        <a
+          className="m-1 border border-gray-500 rounded-md bg-yellow-100 p-1 m-8"
+          href="#create"
+        >
+          Create event
+        </a>
 
-      <ThemeSubheading>Declined</ThemeSubheading>
-      {GetEvents(EventResponse.REJECTED)}
+        <ThemeSubheading className="flex-1 w-full">Declined</ThemeSubheading>
+        {GetEvents(EventResponse.REJECTED)}
+      </div>
     </div>
   );
 }
