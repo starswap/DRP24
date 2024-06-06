@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ThemeSubheading } from './theme/ThemeSubheading';
 import { CURRENT_USER, fetchEvents } from './util/data';
 import { CalendarEvent, EventResponse } from './types/CalendarEvent';
@@ -36,7 +36,7 @@ export default function Home() {
             {/* <!-- get people: --> */}
             {Object.entries(event.statuses)
               // dont display self
-              .filter(([uid, status]) => uid !== CURRENT_USER)
+              .filter(([uid]) => uid !== CURRENT_USER)
               // only display people who accepted
               // .filter(
               //   ([uid, status]) => status.response === EventResponse.ACCEPTED
@@ -53,7 +53,7 @@ export default function Home() {
                 </span>
               ))}
             {/* display time in good format */}
-            at {dayjs(new Date(event.time)).format('YYYY-MM-DDThh:mm')}
+            at {dayjs(new Date(event.time)).format('DD/MM/YYYY, HH:mm')}
           </p>
         ))
     );

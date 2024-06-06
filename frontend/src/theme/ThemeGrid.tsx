@@ -1,3 +1,4 @@
+import React from 'react';
 import { ThemeButton } from '../theme/ThemeButton';
 
 export type ThemeGridProps = {
