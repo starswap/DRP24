@@ -3,6 +3,7 @@ import { CalendarEvent } from '../types/CalendarEvent';
 import ThemeTextbox from '../theme/ThemeTextbox';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
 import { ThemeGrid } from '../theme/ThemeGrid';
+import { AudioRecordButton } from '../SpeechAccessibility/SpeechToText';
 
 export function Where({
   state: calevent,
@@ -29,6 +30,7 @@ export function Where({
         value={calevent.location}
         onChange={(e) => handleClick(e.target.value)}
       />
+      <AudioRecordButton saveActivity={handleClick} />
     </>
   );
 }

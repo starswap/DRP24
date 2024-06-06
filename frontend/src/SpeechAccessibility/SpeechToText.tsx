@@ -36,9 +36,9 @@ async function uploadAudio(blobUrl: string) {
 }
 
 export function AudioRecordButton({
-  activitySetter
+  saveActivity
 }: {
-  activitySetter: (a: CalendarEvent) => void;
+  saveActivity: (activity: string) => void;
 }) {
   const [recording, setRecording] = useState(false);
   const [mediaBlobUrl, setMediaBlobUrl] = useState('');
@@ -56,6 +56,7 @@ export function AudioRecordButton({
         console.log(`Uploading audio to server: ${mediaBlobUrl}`);
         const response = await uploadAudio(mediaBlobUrl);
         console.log(`Server Response: ${response}`);
+        saveActivity(response);
       };
       upload();
     }
