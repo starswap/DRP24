@@ -2,6 +2,7 @@ import { CalendarEvent } from '../types/CalendarEvent';
 import ThemeTextbox from '../theme/ThemeTextbox';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
 import { ThemeGrid } from '../theme/ThemeGrid';
+import { AudioRecordButton } from '../SpeechAccessibility/SpeechToText';
 import { ThemeHeading } from '../theme/ThemeHeading';
 
 export function What({
@@ -32,6 +33,7 @@ export function What({
         value={calevent.activity}
         onChange={(event) => saveActivity(event.target.value)}
       />
+      <AudioRecordButton saveActivity={saveActivity} />
     </>
   );
 }

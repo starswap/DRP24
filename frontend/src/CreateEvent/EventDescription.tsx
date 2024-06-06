@@ -1,3 +1,4 @@
+import React from 'react';
 import { CalendarEvent } from '../types/CalendarEvent';
 import dayjs from 'dayjs';
 
