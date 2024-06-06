@@ -3,7 +3,8 @@ import { UID } from './UID';
 
 export type CalendarEvent = {
   activity: string;
-  participants: Set<UID>;
+  creator: UID;
+  participants: UID[];
   statuses: { [k: UID]: Status };
   time: Date;
   location: string;
