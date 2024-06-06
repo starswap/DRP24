@@ -19,6 +19,7 @@
         "arrow-body-style": ["error", "as-needed"],
         "no-duplicate-imports": "error",
         "eqeqeq": "error",
-        "import/first": "error"
+        "import/first": "error",
+        "@typescript-eslint/no-explicit-any": "error"
       }
 }  

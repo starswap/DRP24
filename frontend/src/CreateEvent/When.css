@@ -16,7 +16,8 @@
 .when-container {
   display: flex;
   flex-direction: column;
-  align-items: center
+  align-items: center;
+  width: 100%;
 }
 
 .datetime-picker-container {

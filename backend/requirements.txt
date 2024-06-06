@@ -1,0 +1,4 @@
+flask
+whisper
+whitenoise
+gunicorn

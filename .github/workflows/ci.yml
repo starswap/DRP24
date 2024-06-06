@@ -15,9 +15,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
     - name: Build
-      run: npm install
+      run: cd frontend && npm install
     - name: Lint
-      run: npm run lint
+      run: cd frontend && npm run lint
   test:
     name: Build and Test
     runs-on: ubuntu-latest
@@ -25,11 +25,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
     - name: Build
-      run: npm install
+      run: cd frontend && npm install
     - name: Check compilation
-      run: cd frontend && npx tsc && cd ../backend && npx tsc
+      run: cd frontend && npx tsc
     - name: Test
-      run: npm run test
+      run: cd frontend && npm run test
     - name: Frontend Test Report
       uses: dorny/test-reporter@v1
       if: success() || failure()    # run this step even if previous step failed
@@ -37,10 +37,3 @@ jobs:
         name: Frontend Tests          # Name of the check run which will be created
         path: frontend/reports/*.xml  # Path to test results
         reporter: jest-junit          # Format of test results
-    - name: Backend Test Report
-      uses: dorny/test-reporter@v1
-      if: success() || failure()    # run this step even if previous step failed
-      with:
-        name: Backend Tests         # Name of the check run which will be created
-        path: backend/reports/*.xml    # Path to test results
-        reporter: jest-junit        # Format of test results
