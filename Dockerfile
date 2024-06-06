@@ -3,4 +3,4 @@ RUN apk --update --no-cache add python3~3.10.14   --repository=http://dl-cdn.alp
 RUN apk add ffmpeg
 COPY . /app/
 RUN cd /app/frontend && npm install && npm run build
-RUN cd /app/backend && python3 -m "pip install --break-system-packages -r requirements.txt"
+RUN cd /app/backend && python3 -m pip install --break-system-packages -r requirements.txt
