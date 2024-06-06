@@ -4,6 +4,7 @@ import { CURRENT_USER, fetchEvents } from './util/data';
 import { CalendarEvent, EventResponse } from './types/CalendarEvent';
 import { UID } from './types/UID';
 import dayjs, { Dayjs } from 'dayjs';
+import { ThemeButton } from './theme/ThemeButton';
 
 export default function Home() {
   const [events, setEvents] = useState<[CalendarEvent, UID][]>([]);
@@ -23,6 +24,11 @@ export default function Home() {
     }
   }
 
+  function updateResponse(response: EventResponse) {
+    // TODO: update response
+    console.log('update response');
+  }
+
   function GetEvents(our_response: EventResponse) {
     return (
       events
@@ -31,30 +37,46 @@ export default function Home() {
           ([event]) => event.statuses[CURRENT_USER].response === our_response
         )
         .map(([event, event_uid]) => (
-          <p key={event_uid}>
-            {event.activity} at {event.location} with{' '}
-            {/* <!-- get people: --> */}
-            {Object.entries(event.statuses)
-              // dont display self
-              .filter(([uid, status]) => uid !== CURRENT_USER)
-              // only display people who accepted
-              // .filter(
-              //   ([uid, status]) => status.response === EventResponse.ACCEPTED
-              // )
-              // display peoples names in different colours
-              .map(([uid, status], i) => (
-                <span
-                  key={uid}
-                  style={{ color: GetResponseColour(status.response) }}
+          <>
+            <p key={event_uid}>
+              {event.activity} at {event.location} with{' '}
+              {/* <!-- get people: --> */}
+              {Object.entries(event.statuses)
+                // dont display self
+                .filter(([uid, status]) => uid !== CURRENT_USER)
+                // only display people who accepted
+                // .filter(
+                //   ([uid, status]) => status.response === EventResponse.ACCEPTED
+                // )
+                // display peoples names in different colours
+                .map(([uid, status], i) => (
+                  <span
+                    key={uid}
+                    style={{ color: GetResponseColour(status.response) }}
+                  >
+                    {status.person.name.firstname} {status.person.name.surname}
+                    {/* length -2 because not writing out ourselves */}
+                    {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
+                  </span>
+                ))}
+              {/* display time in good format */}
+              at {dayjs(event.time).format('YYYY-MM-DD HH:mm')}
+            </p>
+            {Object.is(our_response, EventResponse.UNKNOWN) && (
+              <div>
+                <ThemeButton
+                  onClick={() => updateResponse(EventResponse.ACCEPTED)}
                 >
-                  {status.person.name.firstname} {status.person.name.surname}
-                  {/* length -2 because not writing out ourselves */}
-                  {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
-                </span>
-              ))}
-            {/* display time in good format */}
-            at {dayjs(event.time).format('YYYY-MM-DD HH:mm')}
-          </p>
+                  Accept
+                </ThemeButton>
+                <ThemeButton
+                  onClick={() => updateResponse(EventResponse.REJECTED)}
+                >
+                  Decline
+                </ThemeButton>
+              </div>
+            )}
+          </>
         ))
     );
   }
