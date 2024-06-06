@@ -80,7 +80,7 @@ export default function Home() {
         {GetEvents(EventResponse.ACCEPTED)}
 
         <a
-          className="m-1 border border-gray-500 rounded-md bg-yellow-100 p-1 m-8"
+          className="m-1 border border-gray-500 rounded-md bg-yellow-100 p-2 m-8 text-2xl"
           href="#create"
         >
           Create event
