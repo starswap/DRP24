@@ -9,10 +9,7 @@ const USERS_COLLECTION = collection(db, 'users');
 export const CURRENT_USER = 't8M8LxWOTKwBAkKHgEfo'; // TODO: Fetch from cookies for example
 
 export function createEvent(currentEvent: CalendarEvent) {
-  addDoc(EVENTS_COLLECITON, {
-    ...currentEvent,
-    participants: Array.from(currentEvent.participants.values()) + CURRENT_USER
-  });
+  addDoc(EVENTS_COLLECITON, currentEvent);
 }
 
 export async function fetchUsers(): Promise<PersonMap> {

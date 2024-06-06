@@ -11,19 +11,20 @@ export function Who({
   updateState: updateActivity
 }: MultiPageFormStateProps<CalendarEvent>) {
   const [people, setPeople] = useState<PersonMap>({});
-  useEffect(() => {
-    fetchUsers().then(setPeople);
-  }, []);
 
   const saveActivity = (uid: string) => {
     if (uid in calevent.statuses) {
       delete calevent.statuses[uid];
-      calevent.participants.delete(uid);
-      updateActivity({ ...calevent });
+      updateActivity({
+        ...calevent,
+        participants: calevent.participants.filter((uid_) => uid_ !== uid)
+      });
     } else {
       updateActivity({
         ...calevent,
-        participants: calevent.participants.add(uid),
+        participants: calevent.participants.includes(uid)
+          ? calevent.participants
+          : calevent.participants.concat([uid]),
         statuses: {
           ...calevent.statuses,
           [uid]: { person: people[uid], response: EventResponse.UNKNOWN }
@@ -31,6 +32,16 @@ export function Who({
       });
     }
   };
+
+  useEffect(() => {
+    fetchUsers().then(setPeople);
+  }, []);
+
+  useEffect(() => {
+    if (CURRENT_USER in people) {
+      saveActivity(CURRENT_USER);
+    }
+  }, [people]);
 
   return (
     <>
@@ -44,14 +55,17 @@ export function Who({
         }
         width={1}
       />
-
+      {/* 
       <ThemeTextbox
         placeholder="Or enter custom:"
-        value={Object.keys(calevent.statuses)
-          .map((uid) => calevent.statuses[uid].person.name.firstname)
-          .join(', ')}
-        onChange={(event) => saveActivity(event.target.value)}
-      />
+        onChange={(event) => {
+          const people = event.target.value.split(", ");
+          people.forEach((person) => {
+
+          })
+          eventsaveActivity(event.target.value)
+        }}
+      /> */}
     </>
   );
 }

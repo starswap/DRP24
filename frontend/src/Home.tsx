@@ -3,7 +3,7 @@ import { ThemeSubheading } from './theme/ThemeSubheading';
 import { CURRENT_USER, fetchEvents } from './util/data';
 import { CalendarEvent, EventResponse } from './types/CalendarEvent';
 import { UID } from './types/UID';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
 export default function Home() {
   const [events, setEvents] = useState<[CalendarEvent, UID][]>([]);
