@@ -19,7 +19,7 @@ export function What({
 
   return (
     <>
-      <h1>What will you be doing?</h1>
+      <h1>Choose Activity</h1>
       <ThemeGrid
         options={ACTIVITIES}
         save={saveActivity}

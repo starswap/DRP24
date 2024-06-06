@@ -34,7 +34,7 @@ export function Who({
 
   return (
     <>
-      <h1>Who will you be doing it with?</h1>
+      <h1>Choose friends</h1>
       <ThemeGrid
         options={Object.keys(people).filter((u) => u !== CURRENT_USER)}
         save={saveActivity}

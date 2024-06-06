@@ -16,8 +16,8 @@ export function When({
   };
 
   return (
-    <div>
-      <h1>When will you be doing it?</h1>
+    <>
+      <h1>Choose time</h1>
       <div>
         <input
           type="datetime-local"
@@ -25,6 +25,6 @@ export function When({
           onChange={(e) => onSetDate(new Date(e.target.value))}
         />
       </div>
-    </div>
+    </>
   );
 }
