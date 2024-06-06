@@ -16,16 +16,23 @@ export const EventDescription = ({ event }: EventDescriptionProps) => {
     Array.from(event.participants.values())
       .map((e) => event.statuses[e].person.name.firstname)
       .join(', '),
-    dayjs(event.time).format('YYYY-MM-DD HH:mm'),
+    event.time.getTime() < new Date().getTime()
+      ? ''
+      : dayjs(event.time).format('YYYY-MM-DD HH:mm'),
     event.location
   ];
   console.log(fieldArr);
 
   return (
-    <>
+    <div className="border border-black border-2 rounded-[4px] m-2 p-3 w-80">
       {fieldArr.map((fieldValue, i) => (
-        <p key={i}>{PAGE_ACTIVITY_DESC[i] + ' ' + fieldValue}</p>
+        <div key={i}>
+          {PAGE_ACTIVITY_DESC[i] + ' '}
+          <span className="underline">
+            {fieldValue === '' ? '_'.repeat(20) : fieldValue}
+          </span>
+        </div>
       ))}
-    </>
+    </div>
   );
 };

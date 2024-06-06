@@ -1,9 +1,9 @@
-import React from 'react';
 import { CalendarEvent } from '../types/CalendarEvent';
 import ThemeTextbox from '../theme/ThemeTextbox';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
 import { ThemeGrid } from '../theme/ThemeGrid';
 import { AudioRecordButton } from '../SpeechAccessibility/SpeechToText';
+import { ThemeHeading } from '../theme/ThemeHeading';
 
 export function What({
   state: calevent,
@@ -21,7 +21,7 @@ export function What({
 
   return (
     <>
-      <h1>What will you be doing?</h1>
+      <ThemeHeading>Choose Activity</ThemeHeading>
       <ThemeGrid
         options={ACTIVITIES}
         save={saveActivity}
@@ -29,7 +29,7 @@ export function What({
         width={3}
       />
       <ThemeTextbox
-        placeholder={'Or enter custom:'}
+        placeholder={'Or type an activity:'}
         value={calevent.activity}
         onChange={(event) => saveActivity(event.target.value)}
       />

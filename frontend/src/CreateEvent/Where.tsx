@@ -1,9 +1,9 @@
-import React from 'react';
 import { CalendarEvent } from '../types/CalendarEvent';
 import ThemeTextbox from '../theme/ThemeTextbox';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
 import { ThemeGrid } from '../theme/ThemeGrid';
 import { AudioRecordButton } from '../SpeechAccessibility/SpeechToText';
+import { ThemeHeading } from '../theme/ThemeHeading';
 
 export function Where({
   state: calevent,
@@ -17,7 +17,7 @@ export function Where({
 
   return (
     <>
-      <h1>Where will you be doing it?</h1>
+      <ThemeHeading>Choose Location</ThemeHeading>
       <ThemeGrid
         options={LOCATIONS}
         save={handleClick}
@@ -26,7 +26,7 @@ export function Where({
       />
 
       <ThemeTextbox
-        placeholder="Or enter custom:"
+        placeholder="Or type a location:"
         value={calevent.location}
         onChange={(e) => handleClick(e.target.value)}
       />

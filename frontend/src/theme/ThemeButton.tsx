@@ -7,9 +7,8 @@ export function ThemeButton(
     <button
       {...props}
       className={
-        'm-1 border border-gray-500 rounded-md bg-gray-400 p-1 ' +
         // eslint-disable-next-line react/prop-types
-        (props.className ?? '')
+        `m-1 border border-gray-500 rounded-md ${props.className === '' || props.className === undefined ? 'bg-yellow-100' : props.className} p-1 `
       }
     />
   );

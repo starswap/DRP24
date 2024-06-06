@@ -16,7 +16,7 @@ const EMPTY_EVENT: () => CalendarEvent = () => ({
   activity: '',
   creator: CURRENT_USER,
   participants: [],
-  time: new Date(Date.now()),
+  time: new Date(new Date().getTime() - 1000),
   location: '',
   statuses: {}
 });
@@ -39,10 +39,7 @@ export function CreateEventScreen() {
   const displayOnEveryPage = ({
     state: event
   }: MultiPageFormStateProps<CalendarEvent>) => (
-    <>
-      {' '}
-      <h2>Current activity</h2> <EventDescription event={event} />{' '}
-    </>
+    <EventDescription event={event} />
   );
 
   return (
@@ -52,6 +49,7 @@ export function CreateEventScreen() {
       pages={pages}
       displayOnEveryPage={displayOnEveryPage}
       defaultValue={EMPTY_EVENT()}
+      sets={['Set Activity', 'Set People', 'Set Time', 'Set Location']}
     />
   );
 }
