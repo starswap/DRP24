@@ -1,12 +1,14 @@
 from flask import Flask, jsonify, request
 import whisper
 import tempfile
+from whitenoise import WhiteNoise
 
-app = Flask(__name__)
+app = Flask(__name__) 
+app.wsgi_app = WhiteNoise(app.wsgi_app, root="../frontend/build", index_file=True)
+
 model = whisper.load_model("base")
 
-
-@app.route('/', methods=['POST'])
+@app.route('/api/post_audio', methods=['POST'])
 def audio_transcribe():
     print(request.files)
     if 'audio' not in request.files:
