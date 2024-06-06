@@ -1,4 +1,5 @@
 import { CalendarEvent } from '../types/CalendarEvent';
+import dayjs from 'dayjs';
 
 type EventDescriptionProps = { event: CalendarEvent };
 
@@ -14,7 +15,7 @@ export const EventDescription = ({ event }: EventDescriptionProps) => {
     Array.from(event.participants.values())
       .map((e) => event.statuses[e].person.name.firstname)
       .join(', '),
-    event.time,
+    dayjs(event.time).format('YYYY-MM-DD HH:mm'),
     event.location
   ];
   console.log(fieldArr);
