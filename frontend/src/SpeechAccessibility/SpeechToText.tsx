@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useReactMediaRecorder } from 'react-media-recorder';
 import axios from 'axios';
 import { ThemeButton } from '../theme/ThemeButton';
@@ -13,31 +13,26 @@ async function uploadAudio(blobUrl: string) {
   // Construct the form data to be sent
   const formData = new FormData();
   if (blobUrl !== null) {
-    console.log(blobUrl);
     const audioBlob = await fetch(blobUrl).then((r) => r.blob());
     formData.append('audio', audioBlob);
   } else {
     console.log('Error: blob url not present');
   }
 
-  console.log(formData);
   // Send the form data
-  axios
-    .post(URL, formData, {
+  try {
+    const response = await axios.post(URL, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
-    })
-    .then(function (response) {
-      console.log(response.data.hello);
-      return response;
-    })
-    .catch(function (error) {
-      console.log(`Error: ${error}`);
-    })
-    .finally(function () {
-      console.log('Cleaning up!');
     });
+    console.log(response.data);
+    return response.data.text.text;
+  } catch (error) {
+    console.log(`Error: ${error}`);
+  } finally {
+    console.log('Cleaning up!');
+  }
 }
 
 export function AudioRecordButton({
@@ -45,16 +40,27 @@ export function AudioRecordButton({
 }: {
   activitySetter: (a: CalendarEvent) => void;
 }) {
+  const [recording, setRecording] = useState(false);
+  const [mediaBlobUrl, setMediaBlobUrl] = useState('');
+
   const { startRecording, stopRecording } = useReactMediaRecorder({
     audio: true,
     onStop: (blobUrl) => {
-      console.log(blobUrl);
-      const response = uploadAudio(blobUrl);
-      console.log(`Server Response: ${response}`);
+      setMediaBlobUrl(blobUrl);
     }
   });
 
-  const [recording, setRecording] = useState(false);
+  useEffect(() => {
+    if (mediaBlobUrl) {
+      const upload = async () => {
+        console.log(`Uploading audio to server: ${mediaBlobUrl}`);
+        const response = await uploadAudio(mediaBlobUrl);
+        console.log(`Server Response: ${response}`);
+      };
+      upload();
+    }
+  }, [mediaBlobUrl]);
+
   const handleClick = () => {
     if (recording) {
       // Stop
@@ -68,5 +74,6 @@ export function AudioRecordButton({
       setRecording(true);
     }
   };
+
   return <ThemeButton onClick={handleClick}> Record </ThemeButton>;
 }
