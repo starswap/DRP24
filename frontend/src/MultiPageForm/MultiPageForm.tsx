@@ -45,13 +45,10 @@ export function MultiPageForm<T>({
   };
 
   const Page = pages[pageNum];
-  console.log(state);
 
   return (
     <div className="flex flex-col items-center mx-auto p-4r p-2 w-full">
-      <div>
-        <Page {...stateAndSetter} />
-      </div>
+      <Page {...stateAndSetter} />
       <div>
         <ThemeButton onClick={handleBack}>Back</ThemeButton>
         <ThemeButton onClick={handleNext}>
