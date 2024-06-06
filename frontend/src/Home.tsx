@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ThemeSubheading } from './theme/ThemeSubheading';
 import { CURRENT_USER, fetchEvents } from './util/data';
 import { CalendarEvent, EventResponse } from './types/CalendarEvent';
@@ -39,7 +39,7 @@ export default function Home() {
             {/* <!-- get people: --> */}
             {Object.entries(event.statuses)
               // dont display self
-              .filter(([uid, status]) => uid !== CURRENT_USER)
+              .filter(([uid]) => uid !== CURRENT_USER)
               // only display people who accepted
               // .filter(
               //   ([uid, status]) => status.response === EventResponse.ACCEPTED
@@ -70,6 +70,7 @@ export default function Home() {
       className="flex flex-col items-center scrollbar-gutter:stable both-edges"
       // style={{scrollbar-gutter: "stable"}}
     >
+      <style>{'body { background-color: #f2fcf4; }'}</style>
       <div className="flex flex-col items-center w-[calc(100vw-25px)] overflow-y: overlay">
         <h1 className="text-2xl">You are: Matilda Johnson</h1>
 

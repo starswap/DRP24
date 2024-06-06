@@ -1,7 +1,6 @@
 import { CalendarEvent, EventResponse } from '../types/CalendarEvent';
-import ThemeTextbox from '../theme/ThemeTextbox';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PersonMap } from '../types/Person';
 import { CURRENT_USER, fetchUsers } from '../util/data';
 import { ThemeGrid } from '../theme/ThemeGrid';
@@ -42,10 +41,13 @@ export function Who({
     if (CURRENT_USER in people) {
       saveActivity(CURRENT_USER);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [people]);
 
   return (
     <>
+      <style>{'body { background-color: #defce3; }'}</style>
+
       <ThemeHeading>Choose friends</ThemeHeading>
       <ThemeGrid
         options={Object.keys(people).filter((u) => u !== CURRENT_USER)}

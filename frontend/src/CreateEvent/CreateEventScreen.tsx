@@ -1,3 +1,4 @@
+import React from 'react';
 import { CalendarEvent } from '../types/CalendarEvent';
 import { EventDescription } from './EventDescription';
 import { useNavigate } from 'react-router-dom';

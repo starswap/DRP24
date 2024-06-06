@@ -1,7 +1,6 @@
 import { CalendarEvent } from '../types/CalendarEvent';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
 import dayjs from 'dayjs';
-import { useEffect } from 'react';
 import { ThemeHeading } from '../theme/ThemeHeading';
 
 export function When({
@@ -18,6 +17,8 @@ export function When({
 
   return (
     <>
+      <style>{'body { background-color: #d4fcdb; }'}</style>
+
       <ThemeHeading>Choose time</ThemeHeading>
       <div>
         <input
