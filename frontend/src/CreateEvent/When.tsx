@@ -17,6 +17,8 @@ export function When({
 
   return (
     <>
+      <style>{'body { background-color: #d4fcdb; }'}</style>
+
       <ThemeHeading>Choose time</ThemeHeading>
       <div>
         <input
