@@ -52,8 +52,10 @@ export function MultiPageForm<T>({
     <div className="flex flex-col items-center mx-auto p-4r p-2 w-full">
       <Page {...stateAndSetter} />
       <div>
-        <ThemeButton onClick={handleBack}>Back</ThemeButton>
-        <ThemeButton onClick={handleNext}>
+        <ThemeButton onClick={handleBack} className="bg-blue-100">
+          Back
+        </ThemeButton>
+        <ThemeButton onClick={handleNext} className="bg-blue-100">
           {pageNum === pages.length - 1 ? 'Confirm' : sets[pageNum]}
         </ThemeButton>
       </div>
