@@ -4,7 +4,7 @@ import axios from 'axios';
 import { ThemeButton } from '../theme/ThemeButton';
 
 // If developing locally use 'http://127.0.0.1:5000/' else 'https://drp24-43a0dc947937.herokuapp.com'
-const URL = 'https://drp24-43a0dc947937.herokuapp.com' + '/api/post_audio';
+const URL = 'http://127.0.0.1:5000' + '/api/post_audio';
 
 // Function packages audio blob and sends it to globally defined URL
 async function uploadAudio(blobUrl: string) {
@@ -27,7 +27,7 @@ async function uploadAudio(blobUrl: string) {
       }
     });
     console.log(response.data);
-    return response.data.text.text;
+    return response.data.text;
   } catch (error) {
     console.log(`Error: ${error}`);
   } finally {
