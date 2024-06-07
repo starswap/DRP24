@@ -1,12 +1,12 @@
 from flask import Flask, jsonify, request
-import whisper
 import tempfile
 from whitenoise import WhiteNoise
+from openai import OpenAI
+client = OpenAI()
+
 
 app = Flask(__name__) 
 app.wsgi_app = WhiteNoise(app.wsgi_app, root="../frontend/build", index_file=True)
-
-model = whisper.load_model("base")
 
 @app.route('/api/post_audio', methods=['POST'])
 def audio_transcribe():
@@ -27,9 +27,13 @@ def audio_transcribe():
     temp_file_path = temp.name
 
     print(temp_file_path)
-    result = model.transcribe(temp_file_path)
-    print(result)
-    return jsonify({'text': result})
+    
+    audio_file= open(temp_file_path, "rb")
+    transcription = client.audio.transcriptions.create(
+        model="whisper-1", 
+        file=audio_file
+    )
+    return jsonify({"text": transcription.text})
 
 
 if __name__ == '__main__':

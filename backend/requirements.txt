@@ -1,4 +1,4 @@
 flask
-openai-whisper
+openai
 whitenoise
 gunicorn
