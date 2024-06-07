@@ -1,6 +1,9 @@
-FROM node:22-alpine3.19
-RUN apk --update --no-cache add python3~3.10.14   --repository=http://dl-cdn.alpinelinux.org/alpine/v3.16/main 
-RUN apk add ffmpeg
+FROM python:3.10-bullseye
+RUN apt-get update
+RUN apt-get install -y ffmpeg
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+RUN apt-get update
+RUN apt-get install -y nodejs
 COPY . /app/
 RUN cd /app/frontend && npm install && npm run build
-RUN cd /app/backend && python3 -m pip install --break-system-packages -r requirements.txt
+RUN cd /app/backend && python3 -m pip install -r requirements.txt
