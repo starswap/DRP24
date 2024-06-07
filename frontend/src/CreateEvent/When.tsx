@@ -1,7 +1,6 @@
 import { CalendarEvent } from '../types/CalendarEvent';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
 import dayjs from 'dayjs';
-import { useEffect } from 'react';
 import { ThemeHeading } from '../theme/ThemeHeading';
 
 export function When({
