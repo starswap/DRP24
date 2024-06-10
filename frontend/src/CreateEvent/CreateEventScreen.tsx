@@ -18,14 +18,21 @@ const EMPTY_EVENT: () => CalendarEvent = () => ({
   participants: [],
   time: new Date(new Date().getTime() - 1000),
   location: '',
-  statuses: {}
+  statuses: {},
+  meta: { creation_time_duration: 0 }
 });
 
 export function CreateEventScreen() {
   const navigate = useNavigate();
-
+  const startTime = Date.now();
   const confirm = (currentEvent: CalendarEvent) => {
-    createEvent(currentEvent);
+    const time_taken = Date.now() - startTime;
+    console.log(`Time taken: ${time_taken}`);
+    const currentEventWithMeta = {
+      ...currentEvent,
+      meta: { creation_time_duration: time_taken }
+    };
+    createEvent(currentEventWithMeta);
     navigate('/');
   };
 
