@@ -42,6 +42,7 @@ export function AudioRecordButton({
 }) {
   const [recording, setRecording] = useState(false);
   const [mediaBlobUrl, setMediaBlobUrl] = useState('');
+  const [buttonText, setButtonText] = useState('Talk');
 
   const { startRecording, stopRecording } = useReactMediaRecorder({
     audio: true,
@@ -69,13 +70,16 @@ export function AudioRecordButton({
       console.log('Stopping Recording');
       stopRecording();
       setRecording(false);
+      setButtonText('Talk');
     } else {
       // Start
       console.log('Starting Recording');
       startRecording();
       setRecording(true);
+      setButtonText('Stop');
     }
   };
 
-  return <ThemeButton onClick={handleClick}> Record </ThemeButton>;
+  // change button text based on recording state
+  return <ThemeButton onClick={handleClick}> {buttonText} </ThemeButton>;
 }
