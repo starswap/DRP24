@@ -98,6 +98,10 @@ function EventsWithResponse({
           {response === EventResponse.UNKNOWN && (
             <div>
               <AcceptDeclineButtons eventUID={eventUID} />
+            </div>
+          )}
+          {event.creator === getCurrentUser() && (
+            <div>
               <DeleteButton eventUID={eventUID} />
             </div>
           )}
