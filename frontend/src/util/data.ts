@@ -51,12 +51,6 @@ export async function updateEventResponse(
     [`statuses.${CURRENT_USER}.response`]: newResponse
   });
 }
-// export async function updateEvent(
-//   uid: UID,
-//   newEvent: CalendarEvent
-// ) {
-//   await updateDoc(doc(db, 'events', uid), {newEvent});
-// }
 
 export async function deleteEvent(uid: UID) {
   await deleteDoc(doc(db, 'events', uid));

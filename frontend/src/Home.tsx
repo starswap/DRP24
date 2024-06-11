@@ -29,20 +29,6 @@ export default function Home() {
     }
   }
 
-  // function updateResponse(
-  //   eventUID: UID,
-  //   oldEvent: CalendarEvent,
-  //   newResponse: EventResponse
-  // ) {
-  //   console.log('update event');
-  //   const newEvent = {
-  //     ...oldEvent,
-  //     response: newResponse
-  //   };
-  //   console.log(newEvent);
-  //   updateEvent(eventUID, newEvent);
-  // }
-
   function GetEvents(our_response: EventResponse) {
     return (
       events
