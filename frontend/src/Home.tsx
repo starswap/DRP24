@@ -59,16 +59,49 @@ function DeleteButton({ eventUID }: { eventUID: UID }) {
   );
 }
 
-function Reschedule() {
+function Reschedule(event: CalendarEvent, eventUID: UID) {
   toast((t) => (
     <span>
-      <b>Reschedule</b> for next week?{' '}
+      <b>Reschedule</b> <DisplayEvent event={event} eventUID={eventUID} /> for
+      next week?{' '}
       <div>
         <ThemeButton onClick={() => toast.dismiss(t.id)}>Yes</ThemeButton>
         <ThemeButton onClick={() => toast.dismiss(t.id)}>No</ThemeButton>
       </div>
     </span>
   ));
+}
+
+function DisplayEvent({
+  event,
+  eventUID
+}: {
+  event: CalendarEvent;
+  eventUID: UID;
+}) {
+  return (
+    <p
+      key={eventUID}
+      className="leading-loose p-2 hover:bg-gray-200 rounded-md"
+    >
+      <b>{event.activity}</b> at <b>{event.location}</b> with{' '}
+      {/* <!-- get people: --> */}
+      {Object.entries(event.statuses)
+        // don't display self
+        .filter(([uid]) => uid !== getCurrentUser())
+        // display people's names in different colours
+        .map(([uid, status], i) => (
+          <span key={uid} style={{ color: responseToColour(status.response) }}>
+            <b>
+              {status.person.name.firstname} {status.person.name.surname}{' '}
+            </b>
+            {/* length - 2 because not writing out ourselves */}
+            {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
+          </span>
+        ))}
+      at {dayjs(new Date(event.time)).format('DD/MM/YYYY, HH:mm')}
+    </p>
+  );
 }
 
 function EventsWithResponse({
@@ -84,30 +117,7 @@ function EventsWithResponse({
     <>
       {chosenEvents.map(([event, eventUID]) => (
         <>
-          <p
-            key={eventUID}
-            className="leading-loose p-2 hover:bg-gray-200 rounded-md"
-          >
-            <b>{event.activity}</b> at <b>{event.location}</b> with{' '}
-            {/* <!-- get people: --> */}
-            {Object.entries(event.statuses)
-              // don't display self
-              .filter(([uid]) => uid !== user)
-              // display people's names in different colours
-              .map(([uid, status], i) => (
-                <span
-                  key={uid}
-                  style={{ color: responseToColour(status.response) }}
-                >
-                  <b>
-                    {status.person.name.firstname} {status.person.name.surname}{' '}
-                  </b>
-                  {/* length - 2 because not writing out ourselves */}
-                  {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
-                </span>
-              ))}
-            at {dayjs(new Date(event.time)).format('DD/MM/YYYY, HH:mm')}
-          </p>
+          <DisplayEvent event={event} eventUID={eventUID} />
           {response === EventResponse.UNKNOWN && (
             <div>
               <AcceptDeclineButtons eventUID={eventUID} />
@@ -119,7 +129,10 @@ function EventsWithResponse({
             </div>
           )}
           <div>
-            <ThemeButton onClick={Reschedule} className="bg-blue-100">
+            <ThemeButton
+              onClick={() => Reschedule(event, eventUID)}
+              className="bg-blue-100"
+            >
               Reschedule
             </ThemeButton>
           </div>
