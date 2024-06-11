@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { ThemeSubheading } from './theme/ThemeSubheading';
 import {
   CURRENT_USER,
-  fetchEvents,
   deleteEvent,
-  updateEventResponse
+  updateEventResponse,
+  subscribeToEvents
 } from './util/data';
 import { CalendarEvent, EventResponse } from './types/CalendarEvent';
 import { UID } from './types/UID';
@@ -64,47 +64,51 @@ function EventsWithResponse({
     ([event]) => event.statuses[user].response === response
   );
 
-  return chosenEvents.map(([event, eventUID]) => (
+  return (
     <>
-      <p
-        key={eventUID}
-        className="leading-loose p-2 hover:bg-gray-200 rounded-md"
-      >
-        <b>{event.activity}</b> at <b>{event.location}</b> with{' '}
-        {/* <!-- get people: --> */}
-        {Object.entries(event.statuses)
-          // don't display self
-          .filter(([uid]) => uid !== user)
-          // display people's names in different colours
-          .map(([uid, status], i) => (
-            <span
-              key={uid}
-              style={{ color: responseToColour(status.response) }}
-            >
-              <b>
-                {status.person.name.firstname} {status.person.name.surname}{' '}
-              </b>
-              {/* length - 2 because not writing out ourselves */}
-              {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
-            </span>
-          ))}
-        at {dayjs(new Date(event.time)).format('DD/MM/YYYY, HH:mm')}
-      </p>
-      {response === EventResponse.UNKNOWN && (
-        <div>
-          <AcceptDeclineButtons eventUID={eventUID} />
-          <DeleteButton eventUID={eventUID} />
-        </div>
-      )}
+      {chosenEvents.map(([event, eventUID]) => (
+        <>
+          <p
+            key={eventUID}
+            className="leading-loose p-2 hover:bg-gray-200 rounded-md"
+          >
+            <b>{event.activity}</b> at <b>{event.location}</b> with{' '}
+            {/* <!-- get people: --> */}
+            {Object.entries(event.statuses)
+              // don't display self
+              .filter(([uid]) => uid !== user)
+              // display people's names in different colours
+              .map(([uid, status], i) => (
+                <span
+                  key={uid}
+                  style={{ color: responseToColour(status.response) }}
+                >
+                  <b>
+                    {status.person.name.firstname} {status.person.name.surname}{' '}
+                  </b>
+                  {/* length - 2 because not writing out ourselves */}
+                  {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
+                </span>
+              ))}
+            at {dayjs(new Date(event.time)).format('DD/MM/YYYY, HH:mm')}
+          </p>
+          {response === EventResponse.UNKNOWN && (
+            <div>
+              <AcceptDeclineButtons eventUID={eventUID} />
+              <DeleteButton eventUID={eventUID} />
+            </div>
+          )}
+        </>
+      ))}
     </>
-  ));
+  );
 }
 
 export default function Home() {
   const [events, setEvents] = useState<[CalendarEvent, UID][]>([]);
 
   useEffect(() => {
-    fetchEvents(CURRENT_USER).then(setEvents);
+    subscribeToEvents(CURRENT_USER, setEvents);
   }, []);
 
   console.log(events);
