@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
 import { ThemeSubheading } from './theme/ThemeSubheading';
 import {
-  CURRENT_USER,
-  deleteEvent,
   updateEventResponse,
-  subscribeToEvents
+  subscribeToEvents,
+  deleteEvent,
+  getCurrentUser,
+  fetchUsers,
+  fetchEvents
 } from './util/data';
 import { CalendarEvent, EventResponse } from './types/CalendarEvent';
 import { UID } from './types/UID';
 import dayjs from 'dayjs';
 import { ThemeButton } from './theme/ThemeButton';
+import { PersonMap } from './types/Person';
 
 type EventsWithResponseProps = {
   events: [CalendarEvent, UID][];
@@ -104,29 +107,76 @@ function EventsWithResponse({
   );
 }
 
+function UsersDropdown({
+  onChange,
+  value,
+  users
+}: {
+  onChange: (u: UID) => void;
+  value: UID;
+  users: PersonMap;
+}) {
+  return (
+    <div>
+      <label htmlFor="users" className="text-4xl">
+        You are:{' '}
+      </label>
+      <select
+        id="users"
+        className="text-4xl"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      >
+        {Object.entries(users).map(([uid, person]) => (
+          <option key={uid} value={uid}>
+            {person.name.firstname}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
 export default function Home() {
   const [events, setEvents] = useState<[CalendarEvent, UID][]>([]);
+  const [users, setUsers] = useState<PersonMap>({});
+  const [currentUser, setCurrentUser] = useState<UID>(getCurrentUser());
 
   useEffect(() => {
-    subscribeToEvents(CURRENT_USER, setEvents);
+    subscribeToEvents(getCurrentUser(), setEvents);
   }, []);
 
-  console.log(events);
+  useEffect(() => {
+    localStorage.setItem('user', currentUser);
+  }, [currentUser]);
+
+  useEffect(() => {
+    fetchEvents(currentUser).then(setEvents);
+  }, [currentUser]);
+
+  useEffect(() => {
+    fetchUsers().then(setUsers);
+  }, []);
+
   return (
     <div className="flex flex-col items-center scrollbar-gutter:stable both-edges">
       <div className="flex flex-col items-center w-[calc(100vw-25px)] overflow-y: overlay">
-        <h1 className="text-2xl">You are: Matilda Johnson</h1>
-
+        <UsersDropdown
+          users={users}
+          value={currentUser}
+          onChange={setCurrentUser}
+        />
+        <br />
         <ThemeSubheading>Invites</ThemeSubheading>
         <EventsWithResponse
-          user={CURRENT_USER}
+          user={getCurrentUser()}
           events={events}
           response={EventResponse.UNKNOWN}
         />
 
         <ThemeSubheading>Events</ThemeSubheading>
         <EventsWithResponse
-          user={CURRENT_USER}
+          user={getCurrentUser()}
           events={events}
           response={EventResponse.ACCEPTED}
         />
@@ -140,7 +190,7 @@ export default function Home() {
 
         <ThemeSubheading className="flex-1 w-full">Declined</ThemeSubheading>
         <EventsWithResponse
-          user={CURRENT_USER}
+          user={getCurrentUser()}
           events={events}
           response={EventResponse.REJECTED}
         />
