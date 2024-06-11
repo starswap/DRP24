@@ -5,6 +5,7 @@ import { PersonMap } from '../types/Person';
 import { CURRENT_USER, fetchUsers } from '../util/data';
 import { ThemeGrid } from '../theme/ThemeGrid';
 import { ThemeHeading } from '../theme/ThemeHeading';
+import { UID } from '../types/UID';
 
 export function Who({
   state: calevent,
@@ -12,24 +13,34 @@ export function Who({
 }: MultiPageFormStateProps<CalendarEvent>) {
   const [people, setPeople] = useState<PersonMap>({});
 
-  const saveActivity = (uid: string) => {
+  const addPerson = (uid: UID) => {
+    updateActivity((oldEvent) => ({
+      ...oldEvent,
+      participants: oldEvent.participants.includes(uid)
+        ? oldEvent.participants
+        : oldEvent.participants.concat([uid]),
+      statuses: {
+        ...oldEvent.statuses,
+        [uid]: { person: people[uid], response: EventResponse.UNKNOWN }
+      }
+    }));
+  };
+
+  const removePerson = (uid: UID) => {
+    updateActivity((oldEvent) => {
+      delete oldEvent.statuses[uid];
+      return {
+        ...oldEvent,
+        participants: oldEvent.participants.filter((uid_) => uid_ !== uid)
+      };
+    });
+  };
+
+  const saveActivity = (uid: UID) => {
     if (uid in calevent.statuses) {
-      delete calevent.statuses[uid];
-      updateActivity({
-        ...calevent,
-        participants: calevent.participants.filter((uid_) => uid_ !== uid)
-      });
+      removePerson(uid);
     } else {
-      updateActivity({
-        ...calevent,
-        participants: calevent.participants.includes(uid)
-          ? calevent.participants
-          : calevent.participants.concat([uid]),
-        statuses: {
-          ...calevent.statuses,
-          [uid]: { person: people[uid], response: EventResponse.UNKNOWN }
-        }
-      });
+      addPerson(uid);
     }
   };
 
@@ -39,7 +50,7 @@ export function Who({
 
   useEffect(() => {
     if (CURRENT_USER in people) {
-      saveActivity(CURRENT_USER);
+      addPerson(CURRENT_USER);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [people]);
