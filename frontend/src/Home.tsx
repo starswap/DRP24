@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { ThemeSubheading } from './theme/ThemeSubheading';
 import {
-  fetchEvents,
+  updateEventResponse,
+  subscribeToEvents,
   deleteEvent,
-  fetchUsers,
   getCurrentUser,
-  updateEventResponse
+  fetchUsers,
+  fetchEvents
 } from './util/data';
 import { CalendarEvent, EventResponse } from './types/CalendarEvent';
 import { UID } from './types/UID';
@@ -13,10 +14,137 @@ import dayjs from 'dayjs';
 import { ThemeButton } from './theme/ThemeButton';
 import { PersonMap } from './types/Person';
 
+type EventsWithResponseProps = {
+  events: [CalendarEvent, UID][];
+  response: EventResponse;
+  user: UID;
+};
+
+function responseToColour(response: EventResponse) {
+  switch (response) {
+    case EventResponse.ACCEPTED:
+      return 'green';
+    case EventResponse.REJECTED:
+      return 'red';
+    case EventResponse.UNKNOWN:
+      return 'grey';
+  }
+}
+
+function AcceptDeclineButtons({ eventUID }: { eventUID: UID }) {
+  return (
+    <>
+      <ThemeButton
+        onClick={() => updateEventResponse(eventUID, EventResponse.ACCEPTED)}
+      >
+        Accept
+      </ThemeButton>
+      <ThemeButton
+        onClick={() => updateEventResponse(eventUID, EventResponse.REJECTED)}
+      >
+        Decline
+      </ThemeButton>
+    </>
+  );
+}
+
+function DeleteButton({ eventUID }: { eventUID: UID }) {
+  return (
+    <>
+      <ThemeButton onClick={() => deleteEvent(eventUID)} className="bg-red-100">
+        Delete
+      </ThemeButton>
+    </>
+  );
+}
+
+function EventsWithResponse({
+  events,
+  response,
+  user
+}: EventsWithResponseProps) {
+  const chosenEvents = events.filter(
+    ([event]) => event.statuses[user].response === response
+  );
+
+  return (
+    <>
+      {chosenEvents.map(([event, eventUID]) => (
+        <>
+          <p
+            key={eventUID}
+            className="leading-loose p-2 hover:bg-gray-200 rounded-md"
+          >
+            <b>{event.activity}</b> at <b>{event.location}</b> with{' '}
+            {/* <!-- get people: --> */}
+            {Object.entries(event.statuses)
+              // don't display self
+              .filter(([uid]) => uid !== user)
+              // display people's names in different colours
+              .map(([uid, status], i) => (
+                <span
+                  key={uid}
+                  style={{ color: responseToColour(status.response) }}
+                >
+                  <b>
+                    {status.person.name.firstname} {status.person.name.surname}{' '}
+                  </b>
+                  {/* length - 2 because not writing out ourselves */}
+                  {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
+                </span>
+              ))}
+            at {dayjs(new Date(event.time)).format('DD/MM/YYYY, HH:mm')}
+          </p>
+          {response === EventResponse.UNKNOWN && (
+            <div>
+              <AcceptDeclineButtons eventUID={eventUID} />
+              <DeleteButton eventUID={eventUID} />
+            </div>
+          )}
+        </>
+      ))}
+    </>
+  );
+}
+
+function UsersDropdown({
+  onChange,
+  value,
+  users
+}: {
+  onChange: (u: UID) => void;
+  value: UID;
+  users: PersonMap;
+}) {
+  return (
+    <div>
+      <label htmlFor="users" className="text-4xl">
+        You are:{' '}
+      </label>
+      <select
+        id="users"
+        className="text-4xl"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      >
+        {Object.entries(users).map(([uid, person]) => (
+          <option key={uid} value={uid}>
+            {person.name.firstname}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
 export default function Home() {
   const [events, setEvents] = useState<[CalendarEvent, UID][]>([]);
   const [users, setUsers] = useState<PersonMap>({});
   const [currentUser, setCurrentUser] = useState<UID>(getCurrentUser());
+
+  useEffect(() => {
+    subscribeToEvents(getCurrentUser(), setEvents);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('user', currentUser);
@@ -30,122 +158,28 @@ export default function Home() {
     fetchUsers().then(setUsers);
   }, []);
 
-  function GetResponseColour(response: EventResponse) {
-    switch (response) {
-      case EventResponse.ACCEPTED:
-        return 'green';
-      case EventResponse.REJECTED:
-        return 'red';
-      case EventResponse.UNKNOWN:
-        return 'grey';
-    }
-  }
-
-  function UsersDropdown() {
-    return (
-      <div>
-        <label htmlFor="users" className="text-4xl">
-          You are:{' '}
-        </label>
-        <select
-          id="users"
-          className="text-4xl"
-          value={currentUser}
-          onChange={(e) => {
-            setCurrentUser(e.target.value);
-          }}
-        >
-          {Object.entries(users).map(([uid, person]) => (
-            <option key={uid} value={uid}>
-              {person.name.firstname}
-            </option>
-          ))}
-        </select>
-      </div>
-    );
-  }
-
-  function GetEvents(our_response: EventResponse) {
-    return (
-      events
-        // filter events based on if should be in invites, events, or declined
-        .filter(
-          ([event]) =>
-            event.statuses[getCurrentUser()].response === our_response
-        )
-        .map(([event, eventUID]) => (
-          <>
-            <p
-              key={eventUID}
-              className="leading-loose p-2 hover:bg-gray-200 rounded-md"
-            >
-              <b>{event.activity}</b> at <b>{event.location}</b> with{' '}
-              {/* <!-- get people: --> */}
-              {Object.entries(event.statuses)
-                // dont display self
-                .filter(([uid]) => uid !== getCurrentUser())
-                // only display people who accepted
-                // .filter(
-                //   ([uid, status]) => status.response === EventResponse.ACCEPTED
-                // )
-                // display peoples names in different colours
-                .map(([uid, status], i) => (
-                  <span
-                    key={uid}
-                    style={{ color: GetResponseColour(status.response) }}
-                  >
-                    <b>
-                      {status.person.name.firstname}{' '}
-                      {status.person.name.surname}{' '}
-                    </b>
-                    {/* length -2 because not writing out ourselves */}
-                    {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
-                  </span>
-                ))}
-              {/* display time in good format */}
-              at {dayjs(new Date(event.time)).format('DD/MM/YYYY, HH:mm')}
-            </p>
-            {Object.is(our_response, EventResponse.UNKNOWN) && (
-              <div>
-                <ThemeButton
-                  onClick={() =>
-                    updateEventResponse(eventUID, EventResponse.ACCEPTED)
-                  }
-                >
-                  Accept
-                </ThemeButton>
-                <ThemeButton
-                  onClick={() =>
-                    updateEventResponse(eventUID, EventResponse.REJECTED)
-                  }
-                >
-                  Decline
-                </ThemeButton>
-                <ThemeButton
-                  onClick={() => deleteEvent(eventUID)}
-                  className="bg-red-100"
-                >
-                  Delete
-                </ThemeButton>
-              </div>
-            )}
-          </>
-        ))
-    );
-  }
-
-  console.log(events);
   return (
     <div className="flex flex-col items-center scrollbar-gutter:stable both-edges">
       <div className="flex flex-col items-center w-[calc(100vw-25px)] overflow-y: overlay">
-        {/* <h1 className="text-2xl">You are: Matilda Johnson</h1> */}
-        <UsersDropdown />
+        <UsersDropdown
+          users={users}
+          value={currentUser}
+          onChange={setCurrentUser}
+        />
         <br />
         <ThemeSubheading>Invites</ThemeSubheading>
-        {GetEvents(EventResponse.UNKNOWN)}
+        <EventsWithResponse
+          user={getCurrentUser()}
+          events={events}
+          response={EventResponse.UNKNOWN}
+        />
 
         <ThemeSubheading>Events</ThemeSubheading>
-        {GetEvents(EventResponse.ACCEPTED)}
+        <EventsWithResponse
+          user={getCurrentUser()}
+          events={events}
+          response={EventResponse.ACCEPTED}
+        />
 
         <a
           className="m-1 border border-gray-500 rounded-md bg-yellow-100 p-2 m-8 text-2xl"
@@ -155,7 +189,11 @@ export default function Home() {
         </a>
 
         <ThemeSubheading className="flex-1 w-full">Declined</ThemeSubheading>
-        {GetEvents(EventResponse.REJECTED)}
+        <EventsWithResponse
+          user={getCurrentUser()}
+          events={events}
+          response={EventResponse.REJECTED}
+        />
       </div>
     </div>
   );
