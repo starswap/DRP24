@@ -6,7 +6,8 @@ import {
   query,
   updateDoc,
   getDocs,
-  where
+  where,
+  onSnapshot
 } from 'firebase/firestore';
 import { db } from '../util/firebase';
 import { CalendarEvent, EventResponse } from '../types/CalendarEvent';
@@ -32,6 +33,26 @@ export async function fetchUsers(): Promise<PersonMap> {
     users[doc.id] = { name: doc.data().name };
   });
   return users;
+}
+
+export async function subscribeToEvents(
+  uid: UID,
+  callback: (es: [CalendarEvent, UID][]) => void
+) {
+  const q = query(
+    EVENTS_COLLECITON,
+    where('participants', 'array-contains', uid)
+  );
+  onSnapshot(q, (querySnapshot) => {
+    const events: [CalendarEvent, UID][] = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return [
+        { ...data, time: new Date(data.time.seconds * 1000) } as CalendarEvent,
+        doc.id
+      ];
+    });
+    callback(events);
+  });
 }
 
 export async function fetchEvents(uid: UID): Promise<[CalendarEvent, UID][]> {
