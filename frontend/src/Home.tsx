@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { ThemeSubheading } from './theme/ThemeSubheading';
 import {
-  CURRENT_USER,
   fetchEvents,
   deleteEvent,
   fetchUsers,
+  getCurrentUser,
   updateEventResponse
 } from './util/data';
 import { CalendarEvent, EventResponse } from './types/CalendarEvent';
@@ -16,9 +16,17 @@ import { PersonMap } from './types/Person';
 export default function Home() {
   const [events, setEvents] = useState<[CalendarEvent, UID][]>([]);
   const [users, setUsers] = useState<PersonMap>({});
+  const [currentUser, setCurrentUser] = useState<UID>(getCurrentUser());
 
   useEffect(() => {
-    fetchEvents(CURRENT_USER).then(setEvents);
+    localStorage.setItem('user', currentUser);
+  }, [currentUser]);
+
+  useEffect(() => {
+    fetchEvents(currentUser).then(setEvents);
+  }, [currentUser]);
+
+  useEffect(() => {
     fetchUsers().then(setUsers);
   }, []);
 
@@ -39,9 +47,18 @@ export default function Home() {
         <label htmlFor="users" className="text-4xl">
           You are:{' '}
         </label>
-        <select id="users" className="text-4xl">
+        <select
+          id="users"
+          className="text-4xl"
+          value={currentUser}
+          onChange={(e) => {
+            setCurrentUser(e.target.value);
+          }}
+        >
           {Object.entries(users).map(([uid, person]) => (
-            <option key={uid}>{person.name.firstname}</option>
+            <option key={uid} value={uid}>
+              {person.name.firstname}
+            </option>
           ))}
         </select>
       </div>
@@ -53,7 +70,8 @@ export default function Home() {
       events
         // filter events based on if should be in invites, events, or declined
         .filter(
-          ([event]) => event.statuses[CURRENT_USER].response === our_response
+          ([event]) =>
+            event.statuses[getCurrentUser()].response === our_response
         )
         .map(([event, eventUID]) => (
           <>
@@ -65,7 +83,7 @@ export default function Home() {
               {/* <!-- get people: --> */}
               {Object.entries(event.statuses)
                 // dont display self
-                .filter(([uid]) => uid !== CURRENT_USER)
+                .filter(([uid]) => uid !== getCurrentUser())
                 // only display people who accepted
                 // .filter(
                 //   ([uid, status]) => status.response === EventResponse.ACCEPTED

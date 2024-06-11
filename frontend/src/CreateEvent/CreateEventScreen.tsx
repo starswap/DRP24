@@ -10,11 +10,11 @@ import { What } from './What';
 import { Who } from './Who';
 import { Where } from './Where';
 import { When } from './When';
-import { createEvent, CURRENT_USER } from '../util/data';
+import { createEvent, getCurrentUser } from '../util/data';
 
 const EMPTY_EVENT: () => CalendarEvent = () => ({
   activity: '',
-  creator: CURRENT_USER,
+  creator: getCurrentUser(),
   participants: [],
   time: new Date(new Date().getTime() - 1000),
   location: '',
