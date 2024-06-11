@@ -1,6 +1,15 @@
-import { addDoc, collection, query, getDocs, where } from 'firebase/firestore';
+import {
+  doc,
+  deleteDoc,
+  addDoc,
+  collection,
+  query,
+  updateDoc,
+  getDocs,
+  where
+} from 'firebase/firestore';
 import { db } from '../util/firebase';
-import { CalendarEvent } from '../types/CalendarEvent';
+import { CalendarEvent, EventResponse } from '../types/CalendarEvent';
 import { PersonMap } from '../types/Person';
 import { UID } from '../types/UID';
 
@@ -32,4 +41,17 @@ export async function fetchEvents(uid: UID): Promise<[CalendarEvent, UID][]> {
       doc.id
     ];
   }); // TODO: Check that this is in fact of the correct type maybe
+}
+
+export async function updateEventResponse(
+  uid: UID,
+  newResponse: EventResponse
+) {
+  await updateDoc(doc(db, 'events', uid), {
+    [`statuses.${CURRENT_USER}.response`]: newResponse
+  });
+}
+
+export async function deleteEvent(uid: UID) {
+  await deleteDoc(doc(db, 'events', uid));
 }
