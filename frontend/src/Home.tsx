@@ -13,6 +13,7 @@ import { UID } from './types/UID';
 import dayjs from 'dayjs';
 import { ThemeButton } from './theme/ThemeButton';
 import { PersonMap } from './types/Person';
+import toast, { Toaster } from 'react-hot-toast';
 
 type EventsWithResponseProps = {
   events: [CalendarEvent, UID][];
@@ -56,6 +57,18 @@ function DeleteButton({ eventUID }: { eventUID: UID }) {
       </ThemeButton>
     </>
   );
+}
+
+function Reschedule() {
+  toast((t) => (
+    <span>
+      <b>Reschedule</b> for next week?{' '}
+      <div>
+        <ThemeButton onClick={() => toast.dismiss(t.id)}>Yes</ThemeButton>
+        <ThemeButton onClick={() => toast.dismiss(t.id)}>No</ThemeButton>
+      </div>
+    </span>
+  ));
 }
 
 function EventsWithResponse({
@@ -105,6 +118,11 @@ function EventsWithResponse({
               <DeleteButton eventUID={eventUID} />
             </div>
           )}
+          <div>
+            <ThemeButton onClick={Reschedule} className="bg-blue-100">
+              Reschedule
+            </ThemeButton>
+          </div>
         </>
       ))}
     </>
@@ -164,6 +182,9 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center scrollbar-gutter:stable both-edges">
+      <div>
+        <Toaster />
+      </div>
       <div className="flex flex-col items-center w-[calc(100vw-25px)] overflow-y: overlay">
         <UsersDropdown
           users={users}
