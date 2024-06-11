@@ -13,10 +13,6 @@ import dayjs from 'dayjs';
 import { ThemeButton } from './theme/ThemeButton';
 import { PersonMap } from './types/Person';
 
-// import Dropdown from 'react-bootstrap/Dropdown';
-// import DropdownButton from 'react-bootstrap/DropdownButton';
-// import 'bootstrap/dist/css/bootstrap.css';
-
 export default function Home() {
   const [events, setEvents] = useState<[CalendarEvent, UID][]>([]);
   const [users, setUsers] = useState<PersonMap>({});
@@ -37,15 +33,6 @@ export default function Home() {
     }
   }
 
-  // function UsersDropdown() {
-  //   return (
-  //     <DropdownButton id="dropdown-basic-button" title="Dropdown button">
-  //       <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-  //       <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-  //       <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-  //     </DropdownButton>
-  //   );
-  // }
   function UsersDropdown() {
     return (
       <div>
@@ -54,10 +41,6 @@ export default function Home() {
           {Object.entries(users).map(([uid, person]) => (
             <option key={uid}>{person.name.firstname}</option>
           ))}
-          {/* <option value="volvo">Volvo</option>
-          <option value="saab">Saab</option>
-          <option value="opel">Opel</option>
-          <option value="audi">Audi</option> */}
         </select>
       </div>
     );
