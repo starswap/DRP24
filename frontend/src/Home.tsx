@@ -18,7 +18,6 @@ import toast, { Toaster } from 'react-hot-toast';
 type EventsWithResponseProps = {
   events: [CalendarEvent, UID][];
   response: EventResponse;
-  user: UID;
 };
 
 function responseToColour(response: EventResponse) {
@@ -62,8 +61,8 @@ function DeleteButton({ eventUID }: { eventUID: UID }) {
 function Reschedule(event: CalendarEvent, eventUID: UID) {
   toast((t) => (
     <span>
-      <b>Reschedule</b> <DisplayEvent event={event} eventUID={eventUID} /> for
-      next week?{' '}
+      Reschedule <DisplayEvent event={event} eventUID={eventUID} /> for next
+      week?{' '}
       <div>
         <ThemeButton onClick={() => toast.dismiss(t.id)}>Yes</ThemeButton>
         <ThemeButton onClick={() => toast.dismiss(t.id)}>No</ThemeButton>
@@ -104,13 +103,9 @@ function DisplayEvent({
   );
 }
 
-function EventsWithResponse({
-  events,
-  response,
-  user
-}: EventsWithResponseProps) {
+function EventsWithResponse({ events, response }: EventsWithResponseProps) {
   const chosenEvents = events.filter(
-    ([event]) => event.statuses[user].response === response
+    ([event]) => event.statuses[getCurrentUser()].response === response
   );
 
   return (
@@ -206,18 +201,10 @@ export default function Home() {
         />
         <br />
         <ThemeSubheading>Invites</ThemeSubheading>
-        <EventsWithResponse
-          user={getCurrentUser()}
-          events={events}
-          response={EventResponse.UNKNOWN}
-        />
+        <EventsWithResponse events={events} response={EventResponse.UNKNOWN} />
 
         <ThemeSubheading>Events</ThemeSubheading>
-        <EventsWithResponse
-          user={getCurrentUser()}
-          events={events}
-          response={EventResponse.ACCEPTED}
-        />
+        <EventsWithResponse events={events} response={EventResponse.ACCEPTED} />
 
         <a
           className="m-1 border border-gray-500 rounded-md bg-yellow-100 p-2 m-8 text-2xl"
@@ -227,11 +214,7 @@ export default function Home() {
         </a>
 
         <ThemeSubheading className="flex-1 w-full">Declined</ThemeSubheading>
-        <EventsWithResponse
-          user={getCurrentUser()}
-          events={events}
-          response={EventResponse.REJECTED}
-        />
+        <EventsWithResponse events={events} response={EventResponse.REJECTED} />
       </div>
     </div>
   );
