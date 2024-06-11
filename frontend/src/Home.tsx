@@ -6,7 +6,8 @@ import {
   deleteEvent,
   getCurrentUser,
   fetchUsers,
-  fetchEvents
+  fetchEvents,
+  createEvent
 } from './util/data';
 import { CalendarEvent, EventResponse } from './types/CalendarEvent';
 import { UID } from './types/UID';
@@ -69,7 +70,14 @@ function Reschedule(event: CalendarEvent, eventUID: UID) {
       Reschedule your recent event for next week:{' '}
       <DisplayEvent event={newEvent} eventUID={eventUID} />
       <div>
-        <ThemeButton onClick={() => toast.dismiss(t.id)}>Yes</ThemeButton>
+        <ThemeButton
+          onClick={() => {
+            createEvent(newEvent);
+            toast.dismiss(t.id);
+          }}
+        >
+          Yes
+        </ThemeButton>
         <ThemeButton onClick={() => toast.dismiss(t.id)}>No</ThemeButton>
         <ThemeButton onClick={() => toast.dismiss(t.id)}>
           Different time
