@@ -33,7 +33,7 @@ export function What({
         value={calevent.activity}
         onChange={(event) => saveActivity(event.target.value)}
       />
-      <AudioRecordButton saveActivity={saveActivity} />
+      <AudioRecordButton saveActivity={saveActivity} subject={'activity'} />
     </>
   );
 }
