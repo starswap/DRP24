@@ -2,7 +2,7 @@ import { CalendarEvent, EventResponse } from '../types/CalendarEvent';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
 import React, { useEffect, useState } from 'react';
 import { PersonMap } from '../types/Person';
-import { CURRENT_USER, fetchUsers } from '../util/data';
+import { getCurrentUser, fetchUsers } from '../util/data';
 import { ThemeGrid } from '../theme/ThemeGrid';
 import { ThemeHeading } from '../theme/ThemeHeading';
 import { UID } from '../types/UID';
@@ -49,8 +49,9 @@ export function Who({
   }, []);
 
   useEffect(() => {
-    if (CURRENT_USER in people) {
-      addPerson(CURRENT_USER);
+    const curr = getCurrentUser();
+    if (curr in people) { // if all users fetched
+      addPerson(curr);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [people]);
@@ -59,7 +60,7 @@ export function Who({
     <>
       <ThemeHeading>Choose friends</ThemeHeading>
       <ThemeGrid
-        options={Object.keys(people).filter((u) => u !== CURRENT_USER)}
+        options={Object.keys(people).filter((u) => u !== getCurrentUser())}
         save={saveActivity}
         selected={(uid) => uid in calevent.statuses}
         display={(uid: string) =>
