@@ -10,6 +10,9 @@ import { CalendarEvent, EventResponse } from './types/CalendarEvent';
 import { UID } from './types/UID';
 import dayjs from 'dayjs';
 import { ThemeButton } from './theme/ThemeButton';
+// import Dropdown from 'react-bootstrap/Dropdown';
+// import DropdownButton from 'react-bootstrap/DropdownButton';
+// import 'bootstrap/dist/css/bootstrap.css';
 
 export default function Home() {
   const [events, setEvents] = useState<[CalendarEvent, UID][]>([]);
@@ -27,6 +30,30 @@ export default function Home() {
       case EventResponse.UNKNOWN:
         return 'grey';
     }
+  }
+
+  // function UsersDropdown() {
+  //   return (
+  //     <DropdownButton id="dropdown-basic-button" title="Dropdown button">
+  //       <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+  //       <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+  //       <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+  //     </DropdownButton>
+  //   );
+  // }
+  function UsersDropdown() {
+    return (
+      <div>
+        <label htmlFor="users">Change user: </label>
+        <select id="users">
+          {}
+          <option value="volvo">Volvo</option>
+          <option value="saab">Saab</option>
+          <option value="opel">Opel</option>
+          <option value="audi">Audi</option>
+        </select>
+      </div>
+    );
   }
 
   function GetEvents(our_response: EventResponse) {
@@ -102,7 +129,7 @@ export default function Home() {
     <div className="flex flex-col items-center scrollbar-gutter:stable both-edges">
       <div className="flex flex-col items-center w-[calc(100vw-25px)] overflow-y: overlay">
         <h1 className="text-2xl">You are: Matilda Johnson</h1>
-
+        <UsersDropdown />
         <ThemeSubheading>Invites</ThemeSubheading>
         {GetEvents(EventResponse.UNKNOWN)}
 
