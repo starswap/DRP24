@@ -4,21 +4,26 @@ import {
   CURRENT_USER,
   fetchEvents,
   deleteEvent,
+  fetchUsers,
   updateEventResponse
 } from './util/data';
 import { CalendarEvent, EventResponse } from './types/CalendarEvent';
 import { UID } from './types/UID';
 import dayjs from 'dayjs';
 import { ThemeButton } from './theme/ThemeButton';
+import { PersonMap } from './types/Person';
+
 // import Dropdown from 'react-bootstrap/Dropdown';
 // import DropdownButton from 'react-bootstrap/DropdownButton';
 // import 'bootstrap/dist/css/bootstrap.css';
 
 export default function Home() {
   const [events, setEvents] = useState<[CalendarEvent, UID][]>([]);
+  const [users, setUsers] = useState<PersonMap>({});
 
   useEffect(() => {
     fetchEvents(CURRENT_USER).then(setEvents);
+    fetchUsers().then(setUsers);
   }, []);
 
   function GetResponseColour(response: EventResponse) {
@@ -46,11 +51,13 @@ export default function Home() {
       <div>
         <label htmlFor="users">Change user: </label>
         <select id="users">
-          {}
-          <option value="volvo">Volvo</option>
+          {Object.entries(users).map(([uid, person]) => (
+            <option key={uid}>{person.name.firstname}</option>
+          ))}
+          {/* <option value="volvo">Volvo</option>
           <option value="saab">Saab</option>
           <option value="opel">Opel</option>
-          <option value="audi">Audi</option>
+          <option value="audi">Audi</option> */}
         </select>
       </div>
     );
