@@ -50,7 +50,8 @@ export function Who({
 
   useEffect(() => {
     const curr = getCurrentUser();
-    if (curr in people) { // if all users fetched
+    if (curr in people) {
+      // if all users fetched
       addPerson(curr);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

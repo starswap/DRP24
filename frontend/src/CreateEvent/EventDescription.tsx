@@ -1,7 +1,7 @@
 import React from 'react';
 import { CalendarEvent } from '../types/CalendarEvent';
 import dayjs from 'dayjs';
-import { CURRENT_USER } from '../util/data';
+import { getCurrentUser } from '../util/data';
 
 type EventDescriptionProps = { event: CalendarEvent };
 
@@ -15,7 +15,7 @@ export const EventDescription = ({ event }: EventDescriptionProps) => {
   const fieldArr = [
     event.activity,
     Array.from(event.participants.values())
-      .filter((e) => e !== CURRENT_USER)
+      .filter((e) => e !== getCurrentUser())
       .map((e) => event.statuses[e].person.name.firstname)
       .join(', '),
     event.time.getTime() < new Date().getTime()
