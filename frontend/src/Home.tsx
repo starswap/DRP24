@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import { ThemeSubheading } from './theme/ThemeSubheading';
-import { CURRENT_USER, fetchEvents, deleteEvent } from './util/data';
+import {
+  CURRENT_USER,
+  fetchEvents,
+  deleteEvent,
+  updateEventResponse
+} from './util/data';
 import { CalendarEvent, EventResponse } from './types/CalendarEvent';
 import { UID } from './types/UID';
 import dayjs from 'dayjs';
@@ -24,11 +29,6 @@ export default function Home() {
     }
   }
 
-  function updateResponse(response: EventResponse) {
-    // TODO: update event
-    console.log('update event');
-  }
-
   function GetEvents(our_response: EventResponse) {
     return (
       events
@@ -36,10 +36,10 @@ export default function Home() {
         .filter(
           ([event]) => event.statuses[CURRENT_USER].response === our_response
         )
-        .map(([event, event_uid]) => (
+        .map(([event, eventUID]) => (
           <>
             <p
-              key={event_uid}
+              key={eventUID}
               className="leading-loose p-2 hover:bg-gray-200 rounded-md"
             >
               <b>{event.activity}</b> at <b>{event.location}</b> with{' '}
@@ -71,17 +71,21 @@ export default function Home() {
             {Object.is(our_response, EventResponse.UNKNOWN) && (
               <div>
                 <ThemeButton
-                  onClick={() => updateResponse(EventResponse.ACCEPTED)}
+                  onClick={() =>
+                    updateEventResponse(eventUID, EventResponse.ACCEPTED)
+                  }
                 >
                   Accept
                 </ThemeButton>
                 <ThemeButton
-                  onClick={() => updateResponse(EventResponse.REJECTED)}
+                  onClick={() =>
+                    updateEventResponse(eventUID, EventResponse.REJECTED)
+                  }
                 >
                   Decline
                 </ThemeButton>
                 <ThemeButton
-                  onClick={() => deleteEvent(event_uid)}
+                  onClick={() => deleteEvent(eventUID)}
                   className="bg-red-100"
                 >
                   Delete
