@@ -15,7 +15,11 @@ import { UID } from '../types/UID';
 
 const EVENTS_COLLECITON = collection(db, 'events');
 const USERS_COLLECTION = collection(db, 'users');
-export const CURRENT_USER = 't8M8LxWOTKwBAkKHgEfo'; // TODO: Fetch from cookies for example
+export const DEFAULT_USER = 't8M8LxWOTKwBAkKHgEfo'; // TODO: Fetch from cookies for example
+
+export function getCurrentUser() {
+  return localStorage.getItem('user') ?? DEFAULT_USER;
+}
 
 export function createEvent(currentEvent: CalendarEvent) {
   addDoc(EVENTS_COLLECITON, currentEvent);
@@ -48,7 +52,7 @@ export async function updateEventResponse(
   newResponse: EventResponse
 ) {
   await updateDoc(doc(db, 'events', uid), {
-    [`statuses.${CURRENT_USER}.response`]: newResponse
+    [`statuses.${getCurrentUser()}.response`]: newResponse
   });
 }
 
