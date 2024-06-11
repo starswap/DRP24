@@ -6,18 +6,21 @@ import {
   deleteEvent,
   getCurrentUser,
   fetchUsers,
-  fetchEvents
+  fetchEvents,
+  createEvent
 } from './util/data';
 import { CalendarEvent, EventResponse } from './types/CalendarEvent';
 import { UID } from './types/UID';
 import dayjs from 'dayjs';
 import { ThemeButton } from './theme/ThemeButton';
 import { PersonMap } from './types/Person';
+import toast, { Toaster } from 'react-hot-toast';
+
+const oneWeek = 1000 * 60 * 60 * 24 * 7;
 
 type EventsWithResponseProps = {
   events: [CalendarEvent, UID][];
   response: EventResponse;
-  user: UID;
 };
 
 function responseToColour(response: EventResponse) {
@@ -58,43 +61,74 @@ function DeleteButton({ eventUID }: { eventUID: UID }) {
   );
 }
 
-function EventsWithResponse({
-  events,
-  response,
-  user
-}: EventsWithResponseProps) {
+function Reschedule(event: CalendarEvent, eventUID: UID) {
+  const newTime = new Date();
+  newTime.setTime(event.time.getTime() + oneWeek);
+  const newEvent = { ...event, time: newTime };
+  toast((t) => (
+    <span>
+      Reschedule your recent event for next week:{' '}
+      <DisplayEvent event={newEvent} eventUID={eventUID} />
+      <div>
+        <ThemeButton
+          onClick={() => {
+            createEvent(newEvent);
+            toast.dismiss(t.id);
+          }}
+        >
+          Yes
+        </ThemeButton>
+        <ThemeButton onClick={() => toast.dismiss(t.id)}>No</ThemeButton>
+        <ThemeButton onClick={() => toast.dismiss(t.id)}>
+          Different time
+        </ThemeButton>
+      </div>
+    </span>
+  ));
+}
+
+function DisplayEvent({
+  event,
+  eventUID
+}: {
+  event: CalendarEvent;
+  eventUID: UID;
+}) {
+  return (
+    <p
+      key={eventUID}
+      className="leading-loose p-2 hover:bg-gray-200 rounded-md"
+    >
+      <b>{event.activity}</b> at <b>{event.location}</b> with{' '}
+      {/* <!-- get people: --> */}
+      {Object.entries(event.statuses)
+        // don't display self
+        .filter(([uid]) => uid !== getCurrentUser())
+        // display people's names in different colours
+        .map(([uid, status], i) => (
+          <span key={uid} style={{ color: responseToColour(status.response) }}>
+            <b>
+              {status.person.name.firstname} {status.person.name.surname}{' '}
+            </b>
+            {/* length - 2 because not writing out ourselves */}
+            {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
+          </span>
+        ))}
+      at {dayjs(new Date(event.time)).format('DD/MM/YYYY, HH:mm')}
+    </p>
+  );
+}
+
+function EventsWithResponse({ events, response }: EventsWithResponseProps) {
   const chosenEvents = events.filter(
-    ([event]) => event.statuses[user].response === response
+    ([event]) => event.statuses[getCurrentUser()].response === response
   );
 
   return (
     <>
       {chosenEvents.map(([event, eventUID]) => (
         <>
-          <p
-            key={eventUID}
-            className="leading-loose p-2 hover:bg-gray-200 rounded-md"
-          >
-            <b>{event.activity}</b> at <b>{event.location}</b> with{' '}
-            {/* <!-- get people: --> */}
-            {Object.entries(event.statuses)
-              // don't display self
-              .filter(([uid]) => uid !== user)
-              // display people's names in different colours
-              .map(([uid, status], i) => (
-                <span
-                  key={uid}
-                  style={{ color: responseToColour(status.response) }}
-                >
-                  <b>
-                    {status.person.name.firstname} {status.person.name.surname}{' '}
-                  </b>
-                  {/* length - 2 because not writing out ourselves */}
-                  {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
-                </span>
-              ))}
-            at {dayjs(new Date(event.time)).format('DD/MM/YYYY, HH:mm')}
-          </p>
+          <DisplayEvent event={event} eventUID={eventUID} />
           {response === EventResponse.UNKNOWN && (
             <div>
               <AcceptDeclineButtons eventUID={eventUID} />
@@ -105,6 +139,14 @@ function EventsWithResponse({
               <DeleteButton eventUID={eventUID} />
             </div>
           )}
+          <div>
+            <ThemeButton
+              onClick={() => Reschedule(event, eventUID)}
+              className="bg-blue-100"
+            >
+              Reschedule
+            </ThemeButton>
+          </div>
         </>
       ))}
     </>
@@ -164,6 +206,9 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center scrollbar-gutter:stable both-edges">
+      <div>
+        <Toaster />
+      </div>
       <div className="flex flex-col items-center w-[calc(100vw-25px)] overflow-y: overlay">
         <UsersDropdown
           users={users}
@@ -172,18 +217,10 @@ export default function Home() {
         />
         <br />
         <ThemeSubheading>Invites</ThemeSubheading>
-        <EventsWithResponse
-          user={getCurrentUser()}
-          events={events}
-          response={EventResponse.UNKNOWN}
-        />
+        <EventsWithResponse events={events} response={EventResponse.UNKNOWN} />
 
         <ThemeSubheading>Events</ThemeSubheading>
-        <EventsWithResponse
-          user={getCurrentUser()}
-          events={events}
-          response={EventResponse.ACCEPTED}
-        />
+        <EventsWithResponse events={events} response={EventResponse.ACCEPTED} />
 
         <a
           className="m-1 border border-gray-500 rounded-md bg-yellow-100 p-2 m-8 text-2xl"
@@ -193,11 +230,7 @@ export default function Home() {
         </a>
 
         <ThemeSubheading className="flex-1 w-full">Declined</ThemeSubheading>
-        <EventsWithResponse
-          user={getCurrentUser()}
-          events={events}
-          response={EventResponse.REJECTED}
-        />
+        <EventsWithResponse events={events} response={EventResponse.REJECTED} />
       </div>
     </div>
   );
