@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ThemeSubheading } from './theme/ThemeSubheading';
-import { CURRENT_USER, fetchEvents } from './util/data';
+import { CURRENT_USER, fetchEvents, deleteEvent } from './util/data';
 import { CalendarEvent, EventResponse } from './types/CalendarEvent';
 import { UID } from './types/UID';
 import dayjs from 'dayjs';
@@ -27,11 +27,6 @@ export default function Home() {
   function updateResponse(response: EventResponse) {
     // TODO: update event
     console.log('update event');
-  }
-
-  function removeEvent() {
-    // TODO: delete event
-    console.log('delete event');
   }
 
   function GetEvents(our_response: EventResponse) {
@@ -86,7 +81,7 @@ export default function Home() {
                   Decline
                 </ThemeButton>
                 <ThemeButton
-                  onClick={() => removeEvent()}
+                  onClick={() => deleteEvent(event_uid)}
                   className="bg-red-100"
                 >
                   Delete

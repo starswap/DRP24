@@ -1,4 +1,12 @@
-import { addDoc, collection, query, getDocs, where } from 'firebase/firestore';
+import {
+  doc,
+  deleteDoc,
+  addDoc,
+  collection,
+  query,
+  getDocs,
+  where
+} from 'firebase/firestore';
 import { db } from '../util/firebase';
 import { CalendarEvent } from '../types/CalendarEvent';
 import { PersonMap } from '../types/Person';
@@ -32,4 +40,8 @@ export async function fetchEvents(uid: UID): Promise<[CalendarEvent, UID][]> {
       doc.id
     ];
   }); // TODO: Check that this is in fact of the correct type maybe
+}
+
+export async function deleteEvent(uid: UID) {
+  await deleteDoc(doc(db, 'events', uid));
 }
