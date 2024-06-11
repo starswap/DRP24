@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ThemeSubheading } from './theme/ThemeSubheading';
-import { CURRENT_USER, fetchEvents } from './util/data';
+import { CURRENT_USER, fetchEvents, deleteEvent } from './util/data';
 import { CalendarEvent, EventResponse } from './types/CalendarEvent';
 import { UID } from './types/UID';
 import dayjs from 'dayjs';
@@ -25,8 +25,8 @@ export default function Home() {
   }
 
   function updateResponse(response: EventResponse) {
-    // TODO: update response
-    console.log('update response');
+    // TODO: update event
+    console.log('update event');
   }
 
   function GetEvents(our_response: EventResponse) {
@@ -79,6 +79,12 @@ export default function Home() {
                   onClick={() => updateResponse(EventResponse.REJECTED)}
                 >
                   Decline
+                </ThemeButton>
+                <ThemeButton
+                  onClick={() => deleteEvent(event_uid)}
+                  className="bg-red-100"
+                >
+                  Delete
                 </ThemeButton>
               </div>
             )}
