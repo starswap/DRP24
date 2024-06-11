@@ -25,8 +25,13 @@ export default function Home() {
   }
 
   function updateResponse(response: EventResponse) {
-    // TODO: update response
-    console.log('update response');
+    // TODO: update event
+    console.log('update event');
+  }
+
+  function removeEvent() {
+    // TODO: delete event
+    console.log('delete event');
   }
 
   function GetEvents(our_response: EventResponse) {
@@ -79,6 +84,12 @@ export default function Home() {
                   onClick={() => updateResponse(EventResponse.REJECTED)}
                 >
                   Decline
+                </ThemeButton>
+                <ThemeButton
+                  onClick={() => removeEvent()}
+                  className="bg-red-100"
+                >
+                  Delete
                 </ThemeButton>
               </div>
             )}
