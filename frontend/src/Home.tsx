@@ -15,6 +15,8 @@ import { ThemeButton } from './theme/ThemeButton';
 import { PersonMap } from './types/Person';
 import toast, { Toaster } from 'react-hot-toast';
 
+const oneWeek = 1000 * 60 * 60 * 24 * 7;
+
 type EventsWithResponseProps = {
   events: [CalendarEvent, UID][];
   response: EventResponse;
@@ -59,13 +61,19 @@ function DeleteButton({ eventUID }: { eventUID: UID }) {
 }
 
 function Reschedule(event: CalendarEvent, eventUID: UID) {
+  const newTime = new Date();
+  newTime.setTime(event.time.getTime() + oneWeek);
+  const newEvent = { ...event, time: newTime };
   toast((t) => (
     <span>
-      Reschedule <DisplayEvent event={event} eventUID={eventUID} /> for next
-      week?{' '}
+      Reschedule your recent event for next week:{' '}
+      <DisplayEvent event={newEvent} eventUID={eventUID} />
       <div>
         <ThemeButton onClick={() => toast.dismiss(t.id)}>Yes</ThemeButton>
         <ThemeButton onClick={() => toast.dismiss(t.id)}>No</ThemeButton>
+        <ThemeButton onClick={() => toast.dismiss(t.id)}>
+          Different time
+        </ThemeButton>
       </div>
     </span>
   ));
