@@ -13,7 +13,7 @@ export function Who({
 }: MultiPageFormStateProps<CalendarEvent>) {
   const [people, setPeople] = useState<PersonMap>({});
 
-  const addPerson = (uid: UID) => {
+  const addPerson = (uid: UID, status = EventResponse.UNKNOWN) => {
     updateActivity((oldEvent) => ({
       ...oldEvent,
       participants: oldEvent.participants.includes(uid)
@@ -21,7 +21,7 @@ export function Who({
         : oldEvent.participants.concat([uid]),
       statuses: {
         ...oldEvent.statuses,
-        [uid]: { person: people[uid], response: EventResponse.UNKNOWN }
+        [uid]: { person: people[uid], response: status }
       }
     }));
   };
@@ -52,7 +52,7 @@ export function Who({
     const curr = getCurrentUser();
     if (curr in people) {
       // if all users fetched
-      addPerson(curr);
+      addPerson(curr, EventResponse.ACCEPTED);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [people]);
