@@ -36,8 +36,10 @@ export default function Home() {
   function UsersDropdown() {
     return (
       <div>
-        <label htmlFor="users">Change user: </label>
-        <select id="users">
+        <label htmlFor="users" className="text-4xl">
+          You are:{' '}
+        </label>
+        <select id="users" className="text-4xl">
           {Object.entries(users).map(([uid, person]) => (
             <option key={uid}>{person.name.firstname}</option>
           ))}
@@ -118,8 +120,9 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center scrollbar-gutter:stable both-edges">
       <div className="flex flex-col items-center w-[calc(100vw-25px)] overflow-y: overlay">
-        <h1 className="text-2xl">You are: Matilda Johnson</h1>
+        {/* <h1 className="text-2xl">You are: Matilda Johnson</h1> */}
         <UsersDropdown />
+        <br />
         <ThemeSubheading>Invites</ThemeSubheading>
         {GetEvents(EventResponse.UNKNOWN)}
 
