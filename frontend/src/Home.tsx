@@ -15,11 +15,7 @@ import dayjs from 'dayjs';
 import { ThemeButton } from './theme/ThemeButton';
 import { PersonMap } from './types/Person';
 import toast, { Toaster } from 'react-hot-toast';
-import {
-  CreateEventScreen,
-  EMPTY_EVENT
-} from './CreateEvent/CreateEventScreen';
-import { Link, Routes, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const oneWeek = 1000 * 60 * 60 * 24 * 7;
 
@@ -70,9 +66,6 @@ function Reschedule(event: CalendarEvent, eventUID: UID) {
   const newTime = new Date();
   newTime.setTime(event.time.getTime() + oneWeek);
 
-  // const newStatuses = Object.entries(event.statuses).map(([uid, status]) =>
-  //   { {uid}: { person: status.person, response: uid === getCurrentUser() : EventResponse.ACCEPTED ? EventResponse.UNKNOWN } }
-  // );
   const newStatuses = event.statuses;
   for (const uid of Object.keys(newStatuses)) {
     newStatuses[uid] = {
@@ -84,18 +77,13 @@ function Reschedule(event: CalendarEvent, eventUID: UID) {
     };
   }
 
-  // const newStatuses = event.statuses.map((status) => {
-  //   const newStatus = {};
-  //   newStatus[status.uid] = status.status;
-  //   return newStatus;
-  // });
-  // const newStatuses = event.statuses;
   const newEvent = {
     ...event,
     creator: getCurrentUser(),
     time: newTime,
     statuses: newStatuses
   };
+
   toast((t) => (
     <span>
       Reschedule your recent event for next week:{' '}
