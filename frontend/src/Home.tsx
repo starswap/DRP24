@@ -98,12 +98,6 @@ function Reschedule(event: CalendarEvent, eventUID: UID) {
           Yes
         </ThemeButton>
         <ThemeButton onClick={() => toast.dismiss(t.id)}>No</ThemeButton>
-        {/* <Routes>
-          <Route
-            path="edit_event"
-            element={<CreateEventScreen initialEvent={newEvent} />}
-          />
-        </Routes> */}
         <Link
           className={'m-1 border border-gray-500 rounded-md bg-yellow-100 p-1'}
           to="/create"
@@ -112,7 +106,6 @@ function Reschedule(event: CalendarEvent, eventUID: UID) {
         >
           Modify
         </Link>
-        {/* <Link to="/edit_event">Modify</Link> */}
       </div>
     </span>
   ));
@@ -168,6 +161,16 @@ function EventsWithResponse({ events, response }: EventsWithResponseProps) {
           {event.creator === getCurrentUser() && (
             <div>
               <DeleteButton eventUID={eventUID} />
+
+              <Link
+                className={
+                  'm-1 border border-gray-500 rounded-md bg-green-100 p-1'
+                }
+                to="/create"
+                state={{ initialEvent: event }}
+              >
+                Edit
+              </Link>
             </div>
           )}
           <div>
