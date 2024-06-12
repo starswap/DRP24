@@ -6,12 +6,19 @@ export type MultiPageFormStateProps<T> = {
   updateState: React.Dispatch<React.SetStateAction<T>>;
 };
 
+export type MultiPageFormEveryPageProps<T> = {
+  state: T;
+  updateState: React.Dispatch<React.SetStateAction<T>>;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+};
+
 export type MultiPageFormProps<T> = {
   confirm: (state: T) => void;
   cancel: () => void;
   defaultValue: T;
   pages: Array<(s: MultiPageFormStateProps<T>) => JSX.Element>;
-  displayOnEveryPage: (s: MultiPageFormStateProps<T>) => JSX.Element;
+  displayOnEveryPage: (s: MultiPageFormEveryPageProps<T>) => JSX.Element;
   sets: string[];
 };
 
@@ -59,7 +66,11 @@ export function MultiPageForm<T>({
           {pageNum === pages.length - 1 ? 'Confirm' : sets[pageNum]}
         </ThemeButton>
       </div>
-      {displayOnEveryPage(stateAndSetter)}
+      {displayOnEveryPage({
+        ...stateAndSetter,
+        page: pageNum,
+        setPage: setPageNum
+      })}
     </div>
   );
 }
