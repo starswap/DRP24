@@ -99,7 +99,12 @@ function Reschedule(event: CalendarEvent, eventUID: UID) {
             element={<CreateEventScreen initialEvent={newEvent} />}
           />
         </Routes> */}
-        <Link to="/create" state={{ initialEvent: newEvent }}>
+        <Link
+          className={'m-1 border border-gray-500 rounded-md bg-yellow-100 p-1'}
+          to="/create"
+          state={{ initialEvent: newEvent }}
+          onClick={() => toast.dismiss(t.id)}
+        >
           Modify
         </Link>
         {/* <Link to="/edit_event">Modify</Link> */}
