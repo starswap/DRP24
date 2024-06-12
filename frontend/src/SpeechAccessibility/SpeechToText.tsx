@@ -3,8 +3,9 @@ import { useReactMediaRecorder } from 'react-media-recorder';
 import axios from 'axios';
 import { ThemeButton } from '../theme/ThemeButton';
 
-// If developing locally use 'http://127.0.0.1:5000/' else 'https://drp24-43a0dc947937.herokuapp.com'
-const URL = process.env.DEPLOYMENT_URL + 'api/post_audio';
+// If developing locally use set LOCAL env var
+const URL =
+  (process.env.LOCAL ? 'http://127.0.0.1:5000/' : '/') + 'api/post_audio';
 
 // Function packages audio blob and sends it to globally defined URL
 async function uploadAudio(blobUrl: string, subject: string) {
