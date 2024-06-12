@@ -4,7 +4,10 @@ import './index.css';
 import Home from './Home';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createHashRouter } from 'react-router-dom';
-import { CreateEventScreen } from './CreateEvent/CreateEventScreen';
+import {
+  CreateEventScreen,
+  EMPTY_EVENT
+} from './CreateEvent/CreateEventScreen';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,7 +15,12 @@ const root = ReactDOM.createRoot(
 
 const router = createHashRouter([
   { path: '', element: <Home /> },
-  { path: 'create', element: <CreateEventScreen /> }
+  {
+    // path: 'create/:initialEvent',
+    path: 'create',
+    element: <CreateEventScreen />
+  }
+  // { path: 'edit_event', element: <CreateEventScreen intialEvent={} /> }
 ]);
 
 root.render(

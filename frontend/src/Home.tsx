@@ -15,6 +15,11 @@ import dayjs from 'dayjs';
 import { ThemeButton } from './theme/ThemeButton';
 import { PersonMap } from './types/Person';
 import toast, { Toaster } from 'react-hot-toast';
+import {
+  CreateEventScreen,
+  EMPTY_EVENT
+} from './CreateEvent/CreateEventScreen';
+import { Link, Routes, Route } from 'react-router-dom';
 
 const oneWeek = 1000 * 60 * 60 * 24 * 7;
 
@@ -79,9 +84,16 @@ function Reschedule(event: CalendarEvent, eventUID: UID) {
           Yes
         </ThemeButton>
         <ThemeButton onClick={() => toast.dismiss(t.id)}>No</ThemeButton>
-        <ThemeButton onClick={() => toast.dismiss(t.id)}>
-          Different time
-        </ThemeButton>
+        {/* <Routes>
+          <Route
+            path="edit_event"
+            element={<CreateEventScreen initialEvent={newEvent} />}
+          />
+        </Routes> */}
+        <Link to="/create" state={{ initialEvent: newEvent }}>
+          Modify
+        </Link>
+        {/* <Link to="/edit_event">Modify</Link> */}
       </div>
     </span>
   ));
