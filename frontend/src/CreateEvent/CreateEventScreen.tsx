@@ -24,7 +24,7 @@ export const EMPTY_EVENT: () => CalendarEvent = () => ({
 export function CreateEventScreen() {
   // const { initialEvent } = useParams();
   const location = useLocation();
-  const { initialEvent } = location.state;
+  const { initialEvent } = location.state ?? EMPTY_EVENT();
 
   const navigate = useNavigate();
 
