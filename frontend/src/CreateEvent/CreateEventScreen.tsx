@@ -10,7 +10,7 @@ import { What } from './What';
 import { Who } from './Who';
 import { Where } from './Where';
 import { When } from './When';
-import { createEvent, getCurrentUser } from '../util/data';
+import { createEvent, getCurrentUser, createEventMeta } from '../util/data';
 
 export const EMPTY_EVENT: () => CalendarEvent = () => ({
   activity: '',
@@ -18,8 +18,7 @@ export const EMPTY_EVENT: () => CalendarEvent = () => ({
   participants: [],
   time: new Date(new Date().getTime() - 1000),
   location: '',
-  statuses: {},
-  meta: { creation_time_duration: 0 }
+  statuses: {}
 });
 
 export function CreateEventScreen() {
@@ -32,11 +31,9 @@ export function CreateEventScreen() {
   const confirm = (currentEvent: CalendarEvent) => {
     const time_taken = Date.now() - startRef.current;
     console.log(`Time taken: ${time_taken}`);
-    const currentEventWithMeta = {
-      ...currentEvent,
-      meta: { creation_time_duration: time_taken }
-    };
-    createEvent(currentEventWithMeta);
+    createEvent(currentEvent).then((eventId) =>
+      createEventMeta(eventId, time_taken)
+    );
     navigate('/');
   };
 

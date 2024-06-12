@@ -8,7 +8,6 @@ export type CalendarEvent = {
   statuses: { [k: UID]: Status };
   time: Date;
   location: string;
-  meta: { creation_time_duration: number };
 };
 
 export type Status = {
