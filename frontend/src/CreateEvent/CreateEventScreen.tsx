@@ -11,6 +11,7 @@ import { Who } from './Who';
 import { Where } from './Where';
 import { When } from './When';
 import { createEvent, getCurrentUser } from '../util/data';
+import { Confirmation } from './Confirmation';
 
 export const EMPTY_EVENT: () => CalendarEvent = () => ({
   activity: '',
@@ -30,7 +31,7 @@ export function CreateEventScreen() {
 
   const confirm = (currentEvent: CalendarEvent) => {
     createEvent(currentEvent);
-    navigate('/');
+    navigate('/', { state: { confetti: true } });
   };
 
   const cancel = () => {
@@ -38,7 +39,7 @@ export function CreateEventScreen() {
     navigate('/');
   };
 
-  const pages = [What, Who, When, Where];
+  const pages = [What, Who, When, Where, Confirmation];
 
   const displayOnEveryPage = ({
     state: event,

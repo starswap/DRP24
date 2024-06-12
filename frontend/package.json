@@ -15,6 +15,7 @@
     "firebase": "^10.12.2",
     "form-data": "^4.0.0",
     "react": "^18.3.1",
+    "react-confetti-explosion": "^2.1.2",
     "react-datetime-picker": "^6.0.1",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
