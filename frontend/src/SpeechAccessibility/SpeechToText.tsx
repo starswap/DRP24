@@ -3,7 +3,7 @@ import { useReactMediaRecorder } from 'react-media-recorder';
 import axios from 'axios';
 import { ThemeButton } from '../theme/ThemeButton';
 
-// If developing locally use 'http://127.0.0.1:5000/' else 'https://drp24-43a0dc947937.herokuapp.com'
+// If developing locally use set LOCAL env var
 const URL =
   (process.env.LOCAL ? 'http://127.0.0.1:5000/' : '/') + 'api/post_audio';
 
