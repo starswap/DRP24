@@ -30,7 +30,7 @@ export function Where({
         value={calevent.location}
         onChange={(e) => handleClick(e.target.value)}
       />
-      <AudioRecordButton saveActivity={handleClick} />
+      <AudioRecordButton saveActivity={handleClick} subject={'location'} />
     </>
   );
 }
