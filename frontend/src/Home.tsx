@@ -16,7 +16,6 @@ import { ThemeButton } from './theme/ThemeButton';
 import { ThemeLink } from './theme/ThemeLink';
 import { PersonMap } from './types/Person';
 import toast, { Toaster } from 'react-hot-toast';
-import { Link } from 'react-router-dom';
 
 const oneWeek = 1000 * 60 * 60 * 24 * 7;
 
