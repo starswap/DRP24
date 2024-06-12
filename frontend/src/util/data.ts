@@ -6,7 +6,8 @@ import {
   query,
   updateDoc,
   getDocs,
-  where
+  where,
+  onSnapshot
 } from 'firebase/firestore';
 import { db } from '../util/firebase';
 import { CalendarEvent, EventResponse } from '../types/CalendarEvent';
@@ -15,7 +16,11 @@ import { UID } from '../types/UID';
 
 const EVENTS_COLLECITON = collection(db, 'events');
 const USERS_COLLECTION = collection(db, 'users');
-export const CURRENT_USER = 't8M8LxWOTKwBAkKHgEfo'; // TODO: Fetch from cookies for example
+export const DEFAULT_USER = 't8M8LxWOTKwBAkKHgEfo'; // TODO: Fetch from cookies for example
+
+export function getCurrentUser() {
+  return localStorage.getItem('user') ?? DEFAULT_USER;
+}
 
 export function createEvent(currentEvent: CalendarEvent) {
   addDoc(EVENTS_COLLECITON, currentEvent);
@@ -28,6 +33,26 @@ export async function fetchUsers(): Promise<PersonMap> {
     users[doc.id] = { name: doc.data().name };
   });
   return users;
+}
+
+export async function subscribeToEvents(
+  uid: UID,
+  callback: (es: [CalendarEvent, UID][]) => void
+) {
+  const q = query(
+    EVENTS_COLLECITON,
+    where('participants', 'array-contains', uid)
+  );
+  onSnapshot(q, (querySnapshot) => {
+    const events: [CalendarEvent, UID][] = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return [
+        { ...data, time: new Date(data.time.seconds * 1000) } as CalendarEvent,
+        doc.id
+      ];
+    });
+    callback(events);
+  });
 }
 
 export async function fetchEvents(uid: UID): Promise<[CalendarEvent, UID][]> {
@@ -48,7 +73,7 @@ export async function updateEventResponse(
   newResponse: EventResponse
 ) {
   await updateDoc(doc(db, 'events', uid), {
-    [`statuses.${CURRENT_USER}.response`]: newResponse
+    [`statuses.${getCurrentUser()}.response`]: newResponse
   });
 }
 
