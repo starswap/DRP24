@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { CalendarEvent } from '../types/CalendarEvent';
 import { EventDescription } from './EventDescription';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -10,7 +10,8 @@ import { What } from './What';
 import { Who } from './Who';
 import { Where } from './Where';
 import { When } from './When';
-import { createEvent, getCurrentUser } from '../util/data';
+import { Confirmation } from './Confirmation';
+import { createEvent, getCurrentUser, createEventMeta } from '../util/data';
 
 export const EMPTY_EVENT: () => CalendarEvent = () => ({
   activity: '',
@@ -27,10 +28,14 @@ export function CreateEventScreen() {
   const { initialEvent } = location.state ?? EMPTY_EVENT();
 
   const navigate = useNavigate();
-
+  const startRef = useRef(Date.now());
   const confirm = (currentEvent: CalendarEvent) => {
-    createEvent(currentEvent);
-    navigate('/');
+    const time_taken = Date.now() - startRef.current;
+    console.log(`Time taken: ${time_taken}`);
+    createEvent(currentEvent).then((eventId) =>
+      createEventMeta(eventId, time_taken)
+    );
+    navigate('/', { state: { confetti: true } });
   };
 
   const cancel = () => {
@@ -38,7 +43,7 @@ export function CreateEventScreen() {
     navigate('/');
   };
 
-  const pages = [What, Who, When, Where];
+  const pages = [What, Who, When, Where, Confirmation];
 
   const displayOnEveryPage = ({
     state: event,
