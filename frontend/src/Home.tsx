@@ -69,10 +69,27 @@ function DeleteButton({ eventUID }: { eventUID: UID }) {
 function Reschedule(event: CalendarEvent, eventUID: UID) {
   const newTime = new Date();
   newTime.setTime(event.time.getTime() + oneWeek);
+
   // const newStatuses = Object.entries(event.statuses).map(([uid, status]) =>
   //   { {uid}: { person: status.person, response: uid === getCurrentUser() : EventResponse.ACCEPTED ? EventResponse.UNKNOWN } }
   // );
   const newStatuses = event.statuses;
+  for (const uid of Object.keys(newStatuses)) {
+    newStatuses[uid] = {
+      ...newStatuses[uid],
+      response:
+        uid === getCurrentUser()
+          ? EventResponse.ACCEPTED
+          : EventResponse.UNKNOWN
+    };
+  }
+
+  // const newStatuses = event.statuses.map((status) => {
+  //   const newStatus = {};
+  //   newStatus[status.uid] = status.status;
+  //   return newStatus;
+  // });
+  // const newStatuses = event.statuses;
   const newEvent = {
     ...event,
     creator: getCurrentUser(),
