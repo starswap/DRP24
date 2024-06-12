@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
 import { CalendarEvent } from '../types/CalendarEvent';
 import { EventDescription } from './EventDescription';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   MultiPageForm,
-  MultiPageFormStateProps
+  MultiPageFormEveryPageProps
 } from '../MultiPageForm/MultiPageForm';
 import { What } from './What';
 import { Who } from './Who';
@@ -45,9 +45,11 @@ export function CreateEventScreen() {
   const pages = [What, Who, When, Where];
 
   const displayOnEveryPage = ({
-    state: event
-  }: MultiPageFormStateProps<CalendarEvent>) => (
-    <EventDescription event={event} />
+    state: event,
+    page: page,
+    setPage: setPage
+  }: MultiPageFormEveryPageProps<CalendarEvent>) => (
+    <EventDescription event={event} page={page} setPage={setPage} />
   );
 
   return (
