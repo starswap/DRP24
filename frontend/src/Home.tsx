@@ -13,6 +13,7 @@ import { CalendarEvent, EventResponse } from './types/CalendarEvent';
 import { UID } from './types/UID';
 import dayjs from 'dayjs';
 import { ThemeButton } from './theme/ThemeButton';
+import { ThemeLink } from './theme/ThemeLink';
 import { PersonMap } from './types/Person';
 import toast, { Toaster } from 'react-hot-toast';
 import { Link } from 'react-router-dom';
@@ -98,14 +99,13 @@ function Reschedule(event: CalendarEvent, eventUID: UID) {
           Yes
         </ThemeButton>
         <ThemeButton onClick={() => toast.dismiss(t.id)}>No</ThemeButton>
-        <Link
-          className={'m-1 border border-gray-500 rounded-md bg-yellow-100 p-1'}
+        <ThemeLink
           to="/create"
           state={{ initialEvent: newEvent }}
           onClick={() => toast.dismiss(t.id)}
         >
           Modify
-        </Link>
+        </ThemeLink>
       </div>
     </span>
   ));
@@ -162,15 +162,9 @@ function EventsWithResponse({ events, response }: EventsWithResponseProps) {
             <div>
               <DeleteButton eventUID={eventUID} />
 
-              <Link
-                className={
-                  'm-1 border border-gray-500 rounded-md bg-green-100 p-1'
-                }
-                to="/create"
-                state={{ initialEvent: event }}
-              >
+              <ThemeLink to="/create" state={{ initialEvent: event }}>
                 Edit
-              </Link>
+              </ThemeLink>
             </div>
           )}
           <div>
