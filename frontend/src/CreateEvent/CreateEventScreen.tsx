@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { CalendarEvent } from '../types/CalendarEvent';
 import { EventDescription } from './EventDescription';
 import { useNavigate } from 'react-router-dom';
@@ -24,9 +24,9 @@ const EMPTY_EVENT: () => CalendarEvent = () => ({
 
 export function CreateEventScreen() {
   const navigate = useNavigate();
-  const startTime = Date.now();
+  const startRef = useRef(Date.now());
   const confirm = (currentEvent: CalendarEvent) => {
-    const time_taken = Date.now() - startTime;
+    const time_taken = Date.now() - startRef.current;
     console.log(`Time taken: ${time_taken}`);
     const currentEventWithMeta = {
       ...currentEvent,
