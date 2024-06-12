@@ -12,7 +12,10 @@ const root = ReactDOM.createRoot(
 
 const router = createHashRouter([
   { path: '', element: <Home /> },
-  { path: 'create', element: <CreateEventScreen /> }
+  {
+    path: 'create',
+    element: <CreateEventScreen />
+  }
 ]);
 
 root.render(
