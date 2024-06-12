@@ -69,7 +69,16 @@ function DeleteButton({ eventUID }: { eventUID: UID }) {
 function Reschedule(event: CalendarEvent, eventUID: UID) {
   const newTime = new Date();
   newTime.setTime(event.time.getTime() + oneWeek);
-  const newEvent = { ...event, time: newTime };
+  // const newStatuses = Object.entries(event.statuses).map(([uid, status]) =>
+  //   { {uid}: { person: status.person, response: uid === getCurrentUser() : EventResponse.ACCEPTED ? EventResponse.UNKNOWN } }
+  // );
+  const newStatuses = event.statuses;
+  const newEvent = {
+    ...event,
+    creator: getCurrentUser(),
+    time: newTime,
+    statuses: newStatuses
+  };
   toast((t) => (
     <span>
       Reschedule your recent event for next week:{' '}
