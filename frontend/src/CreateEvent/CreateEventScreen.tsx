@@ -1,7 +1,7 @@
 import React from 'react';
 import { CalendarEvent } from '../types/CalendarEvent';
 import { EventDescription } from './EventDescription';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import {
   MultiPageForm,
   MultiPageFormStateProps
@@ -10,11 +10,11 @@ import { What } from './What';
 import { Who } from './Who';
 import { Where } from './Where';
 import { When } from './When';
-import { createEvent, CURRENT_USER } from '../util/data';
+import { createEvent, getCurrentUser } from '../util/data';
 
-const EMPTY_EVENT: () => CalendarEvent = () => ({
+export const EMPTY_EVENT: () => CalendarEvent = () => ({
   activity: '',
-  creator: CURRENT_USER,
+  creator: getCurrentUser(),
   participants: [],
   time: new Date(new Date().getTime() - 1000),
   location: '',
@@ -22,6 +22,10 @@ const EMPTY_EVENT: () => CalendarEvent = () => ({
 });
 
 export function CreateEventScreen() {
+  // const { initialEvent } = useParams();
+  const location = useLocation();
+  const { initialEvent } = location.state;
+
   const navigate = useNavigate();
 
   const confirm = (currentEvent: CalendarEvent) => {
@@ -48,7 +52,7 @@ export function CreateEventScreen() {
       cancel={cancel}
       pages={pages}
       displayOnEveryPage={displayOnEveryPage}
-      defaultValue={EMPTY_EVENT()}
+      defaultValue={initialEvent ?? EMPTY_EVENT()}
       sets={['Set Activity', 'Set People', 'Set Time', 'Set Location']}
     />
   );
