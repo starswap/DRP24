@@ -29,12 +29,14 @@ export function What({
         width={3}
         addButtons={false}
       />
-      <ThemeTextbox
-        placeholder={'Or type an activity:'}
-        value={calevent.activity}
-        onChange={(event) => saveActivity(event.target.value)}
-      />
-      <AudioRecordButton saveActivity={saveActivity} subject={'activity'} />
+      <div className="grid grid-cols-2 flex">
+        <ThemeTextbox
+          placeholder={'Or type an activity:'}
+          value={calevent.activity}
+          onChange={(event) => saveActivity(event.target.value)}
+        />
+        <AudioRecordButton saveActivity={saveActivity} subject={'activity'} />
+      </div>
     </>
   );
 }

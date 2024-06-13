@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useReactMediaRecorder } from 'react-media-recorder';
 import axios from 'axios';
 import { ThemeButton } from '../theme/ThemeButton';
-
+const AUDIO_START_TEXT = 'Press to speak answer';
 // If developing locally use set LOCAL env var
 const URL =
   (process.env.LOCAL ? 'http://127.0.0.1:5000/' : '/') + 'api/post_audio';
@@ -48,7 +48,7 @@ export function AudioRecordButton({
 }) {
   const [recording, setRecording] = useState(false);
   const [mediaBlobUrl, setMediaBlobUrl] = useState('');
-  const [buttonText, setButtonText] = useState('Talk');
+  const [buttonText, setButtonText] = useState(AUDIO_START_TEXT);
 
   const { startRecording, stopRecording } = useReactMediaRecorder({
     audio: true,
@@ -76,7 +76,7 @@ export function AudioRecordButton({
       console.log('Stopping Recording');
       stopRecording();
       setRecording(false);
-      setButtonText('Talk');
+      setButtonText(AUDIO_START_TEXT);
     } else {
       // Start
       console.log('Starting Recording');

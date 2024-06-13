@@ -41,7 +41,7 @@ export async function fetchUsers(): Promise<PersonMap> {
   return users;
 }
 
-export async function subscribeToEvents(
+export function subscribeToEvents(
   uid: UID,
   callback: (es: [CalendarEvent, UID][]) => void
 ) {
@@ -49,7 +49,7 @@ export async function subscribeToEvents(
     EVENTS_COLLECITON,
     where('participants', 'array-contains', uid)
   );
-  onSnapshot(q, (querySnapshot) => {
+  return onSnapshot(q, (querySnapshot) => {
     const events: [CalendarEvent, UID][] = querySnapshot.docs.map((doc) => {
       const data = doc.data();
       return [

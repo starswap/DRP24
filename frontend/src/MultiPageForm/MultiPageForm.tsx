@@ -64,24 +64,23 @@ export function MultiPageForm<T>({
   };
 
   return (
-    <div className="flex flex-col items-center mx-auto p-4r p-2 w-full">
+    <div className="flex flex-col items-center mx-auto p-4r p-2">
       <Page {...stateAndSetter} />
-      <div>
-        <ThemeButton onClick={handleBack} className="bg-blue-100">
+      <div className="pt-6">
+        {displayOnEveryPage({
+          ...stateAndSetter,
+          page: pageNum,
+          setPage: setPageNum
+        })}
+      </div>
+      <div className="grid-cols-2 pt-8 space-x-4">
+        <ThemeButton onClick={handleBack} className="text-2xl bg-blue-100">
           Back
         </ThemeButton>
-        <ThemeButton onClick={handleNext} className="bg-blue-100">
+        <ThemeButton onClick={handleNext} className="text-2xl bg-blue-100">
           {pageNum === pages.length - 1 ? 'Confirm' : sets[pageNum]}
         </ThemeButton>
       </div>
-      {displayOnEveryPage({
-        ...stateAndSetter,
-        page: pageNum,
-        setPage: setPageNum
-      })}
-      <ThemeButton onClick={() => setPageNum(4)} className="bg-blue-100">
-        Finish and confirm event
-      </ThemeButton>
     </div>
   );
 }
