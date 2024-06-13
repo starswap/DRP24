@@ -40,23 +40,6 @@ function responseToColour(response: EventResponse) {
   }
 }
 
-function AcceptDeclineButtons({ eventUID }: { eventUID: UID }) {
-  return (
-    <>
-      <ThemeButton
-        onClick={() => updateEventResponse(eventUID, EventResponse.ACCEPTED)}
-      >
-        Accept
-      </ThemeButton>
-      <ThemeButton
-        onClick={() => updateEventResponse(eventUID, EventResponse.REJECTED)}
-      >
-        Decline
-      </ThemeButton>
-    </>
-  );
-}
-
 function DeleteButton({ eventUID }: { eventUID: UID }) {
   return (
     <>
@@ -168,11 +151,28 @@ function EventsWithResponse({
             }}
           />
           <DisplayEvent event={event} eventUID={eventUID} />
-          {response === EventResponse.UNKNOWN && (
-            <div>
-              <AcceptDeclineButtons eventUID={eventUID} />
-            </div>
-          )}
+
+          <div>
+            {(response === EventResponse.UNKNOWN ||
+              response === EventResponse.REJECTED) && (
+              <ThemeButton
+                onClick={() =>
+                  updateEventResponse(eventUID, EventResponse.ACCEPTED)
+                }
+              >
+                Accept
+              </ThemeButton>
+            )}
+            {response === EventResponse.UNKNOWN && (
+              <ThemeButton
+                onClick={() =>
+                  updateEventResponse(eventUID, EventResponse.REJECTED)
+                }
+              >
+                Decline
+              </ThemeButton>
+            )}
+          </div>
           {event.creator === getCurrentUser() && (
             <div>
               <DeleteButton eventUID={eventUID} />
