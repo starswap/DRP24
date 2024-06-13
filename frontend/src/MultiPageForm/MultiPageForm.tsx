@@ -55,7 +55,9 @@ export function MultiPageForm<T>({
     if (pageNum === pages.length - 1) {
       confirm(state);
     } else if (pageNum === 2 && Date.now() > getMinTime(state)) {
-      toast.error('Please set a time in the future');
+      toast.error('Please set a time in the future', {
+        duration: 2500
+      });
     } else {
       setPageNum((pageNum) => pageNum + 1);
     }
@@ -77,6 +79,9 @@ export function MultiPageForm<T>({
         page: pageNum,
         setPage: setPageNum
       })}
+      <ThemeButton onClick={() => setPageNum(4)} className="bg-blue-100">
+        Finish and confirm event
+      </ThemeButton>
     </div>
   );
 }

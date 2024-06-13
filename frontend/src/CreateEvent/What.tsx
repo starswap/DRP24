@@ -27,6 +27,7 @@ export function What({
         save={saveActivity}
         selected={(v) => v === calevent.activity}
         width={3}
+        addButtons={false}
       />
       <ThemeTextbox
         placeholder={'Or type an activity:'}

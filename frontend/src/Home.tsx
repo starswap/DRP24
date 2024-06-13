@@ -40,23 +40,6 @@ function responseToColour(response: EventResponse) {
   }
 }
 
-function AcceptDeclineButtons({ eventUID }: { eventUID: UID }) {
-  return (
-    <>
-      <ThemeButton
-        onClick={() => updateEventResponse(eventUID, EventResponse.ACCEPTED)}
-      >
-        Accept
-      </ThemeButton>
-      <ThemeButton
-        onClick={() => updateEventResponse(eventUID, EventResponse.REJECTED)}
-      >
-        Decline
-      </ThemeButton>
-    </>
-  );
-}
-
 function DeleteButton({ eventUID }: { eventUID: UID }) {
   return (
     <>
@@ -89,30 +72,35 @@ export function Reschedule(event: CalendarEvent, eventUID: UID) {
     statuses: newStatuses
   };
 
-  toast((t) => (
-    <span>
-      Reschedule your recent event for next week:{' '}
-      <DisplayEvent event={newEvent} eventUID={eventUID} />
-      <div>
-        <ThemeButton
-          onClick={() => {
-            createEvent(newEvent);
-            toast.dismiss(t.id);
-          }}
-        >
-          Yes
-        </ThemeButton>
-        <ThemeButton onClick={() => toast.dismiss(t.id)}>No</ThemeButton>
-        <ThemeLink
-          to="/create"
-          state={{ initialEvent: newEvent }}
-          onClick={() => toast.dismiss(t.id)}
-        >
-          Modify
-        </ThemeLink>
-      </div>
-    </span>
-  ));
+  toast(
+    (t) => (
+      <span>
+        Reschedule your recent event for next week:{' '}
+        <DisplayEvent event={newEvent} eventUID={eventUID} />
+        <div>
+          <ThemeButton
+            onClick={() => {
+              createEvent(newEvent);
+              toast.dismiss(t.id);
+            }}
+          >
+            Yes
+          </ThemeButton>
+          <ThemeButton onClick={() => toast.dismiss(t.id)}>No</ThemeButton>
+          <ThemeLink
+            to="/create"
+            state={{ initialEvent: newEvent }}
+            onClick={() => toast.dismiss(t.id)}
+          >
+            Modify
+          </ThemeLink>
+        </div>
+      </span>
+    ),
+    {
+      duration: 100000
+    }
+  );
 }
 
 function DisplayEvent({
@@ -133,15 +121,25 @@ function DisplayEvent({
         // don't display self
         .filter(([uid]) => uid !== getCurrentUser())
         // display people's names in different colours
-        .map(([uid, status], i) => (
-          <span key={uid} style={{ color: responseToColour(status.response) }}>
-            <b>
+        .map(([uid, status], i) =>
+          status.response === EventResponse.REJECTED ? (
+            <s key={uid}>
               {status.person.name.firstname} {status.person.name.surname}{' '}
-            </b>
-            {/* length - 2 because not writing out ourselves */}
-            {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
-          </span>
-        ))}
+              {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
+            </s>
+          ) : (
+            <span
+              key={uid}
+              style={{ color: responseToColour(status.response) }}
+            >
+              <b>
+                {status.person.name.firstname} {status.person.name.surname}{' '}
+              </b>
+              {/* length - 2 because not writing out ourselves */}
+              {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
+            </span>
+          )
+        )}
       at {dayjs(new Date(event.time)).format('DD/MM/YYYY, HH:mm')}
     </p>
   );
@@ -162,17 +160,30 @@ function EventsWithResponse({
     <>
       {chosenEvents.map(([event, eventUID]) => (
         <>
-          <Toaster
-            toastOptions={{
-              duration: 100000
-            }}
-          />
+          <Toaster />
           <DisplayEvent event={event} eventUID={eventUID} />
-          {response === EventResponse.UNKNOWN && (
-            <div>
-              <AcceptDeclineButtons eventUID={eventUID} />
-            </div>
-          )}
+
+          <div>
+            {(response === EventResponse.UNKNOWN ||
+              response === EventResponse.REJECTED) && (
+              <ThemeButton
+                onClick={() =>
+                  updateEventResponse(eventUID, EventResponse.ACCEPTED)
+                }
+              >
+                Accept
+              </ThemeButton>
+            )}
+            {response === EventResponse.UNKNOWN && (
+              <ThemeButton
+                onClick={() =>
+                  updateEventResponse(eventUID, EventResponse.REJECTED)
+                }
+              >
+                Decline
+              </ThemeButton>
+            )}
+          </div>
           {event.creator === getCurrentUser() && (
             <div>
               <DeleteButton eventUID={eventUID} />
@@ -187,7 +198,7 @@ function EventsWithResponse({
               onClick={() => Reschedule(event, eventUID)}
               className="bg-blue-100"
             >
-              Reschedule
+              Repeat activity
             </ThemeButton>
           </div>
         </>
@@ -282,7 +293,14 @@ export default function Home() {
             onChange={setCurrentUser}
           />
         </div>
-        <br />
+        {/* <br /> */}
+
+        <a
+          className="m-1 border border-gray-500 rounded-md bg-yellow-100 p-2 m-8 text-2xl"
+          href="#create"
+        >
+          Create event
+        </a>
         <ThemeSubheading>Invites</ThemeSubheading>
         <EventsWithResponse
           events={events}
@@ -296,13 +314,6 @@ export default function Home() {
           response={EventResponse.ACCEPTED}
           displayOldEvents={displayOldEvents}
         />
-
-        <a
-          className="m-1 border border-gray-500 rounded-md bg-yellow-100 p-2 m-8 text-2xl"
-          href="#create"
-        >
-          Create event
-        </a>
 
         <ThemeSubheading className="flex-1 w-full">Declined</ThemeSubheading>
         <EventsWithResponse

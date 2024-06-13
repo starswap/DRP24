@@ -67,18 +67,19 @@ export function CreateEventScreen() {
 
   return (
     <>
-      <Toaster
-        toastOptions={{
-          duration: 10000
-        }}
-      />
+      <Toaster />
       <MultiPageForm<CalendarEvent>
         confirm={confirm}
         cancel={cancel}
         pages={pages}
         displayOnEveryPage={displayOnEveryPage}
         defaultValue={initialEvent ?? EMPTY_EVENT()}
-        sets={['Set Activity', 'Set People', 'Set Time', 'Set Location']}
+        sets={[
+          'Confirm Activity and Move On',
+          'Confirm People and Move On',
+          'Confirm Time and Move On',
+          'Confirm Location and Move On'
+        ]}
         getMinTime={getEventTime}
       />
     </>
