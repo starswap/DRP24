@@ -79,10 +79,10 @@ export function CreateEventScreen() {
         displayOnEveryPage={displayOnEveryPage}
         defaultValue={initialEvent ?? EMPTY_EVENT()}
         sets={[
-          'Confirm Activity',
-          'Confirm People',
-          'Confirm Time',
-          'Confirm Location'
+          'Confirm Activity and Move On',
+          'Confirm People and Move On',
+          'Confirm Time and Move On',
+          'Confirm Location and Move On'
         ]}
         getMinTime={getEventTime}
       />
