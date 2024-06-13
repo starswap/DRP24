@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Home from './Home';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createHashRouter } from 'react-router-dom';
 import { CreateEventScreen } from './CreateEvent/CreateEventScreen';
+import { ThemeLogo } from './theme/ThemeLogo';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -20,6 +21,7 @@ const router = createHashRouter([
 
 root.render(
   <React.StrictMode>
+    <ThemeLogo />
     <RouterProvider router={router} />
   </React.StrictMode>
 );
