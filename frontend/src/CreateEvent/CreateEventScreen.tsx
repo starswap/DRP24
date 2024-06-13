@@ -13,6 +13,7 @@ import { When } from './When';
 import { Confirmation } from './Confirmation';
 import { createEvent, getCurrentUser, createEventMeta } from '../util/data';
 import { Reschedule } from '../Home';
+import toast from 'react-hot-toast';
 
 export const EMPTY_EVENT: () => CalendarEvent = () => ({
   activity: '',
@@ -45,6 +46,10 @@ export function CreateEventScreen() {
     navigate('/', { state: { confetti: true } });
   };
 
+  function getEventTime(event: CalendarEvent) {
+    return event.time.getTime();
+  }
+
   const cancel = () => {
     console.log('Leaving activity page 0');
     navigate('/');
@@ -68,6 +73,7 @@ export function CreateEventScreen() {
       displayOnEveryPage={displayOnEveryPage}
       defaultValue={initialEvent ?? EMPTY_EVENT()}
       sets={['Set Activity', 'Set People', 'Set Time', 'Set Location']}
+      getMinTime={getEventTime}
     />
   );
 }

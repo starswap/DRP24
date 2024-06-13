@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createHashRouter } from 'react-router-dom';
 import { CreateEventScreen } from './CreateEvent/CreateEventScreen';
 import { ThemeLogo } from './theme/ThemeLogo';
+import { Toaster } from 'react-hot-toast';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -21,6 +22,7 @@ const router = createHashRouter([
 
 root.render(
   <React.StrictMode>
+    <Toaster />
     <ThemeLogo />
     <RouterProvider router={router} />
   </React.StrictMode>

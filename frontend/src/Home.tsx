@@ -89,30 +89,31 @@ export function Reschedule(event: CalendarEvent, eventUID: UID) {
     statuses: newStatuses
   };
 
-  toast((t) => (
-    <span>
-      Reschedule your recent event for next week:{' '}
-      <DisplayEvent event={newEvent} eventUID={eventUID} />
-      <div>
-        <ThemeButton
-          onClick={() => {
-            createEvent(newEvent);
-            toast.dismiss(t.id);
-          }}
-        >
-          Yes
-        </ThemeButton>
-        <ThemeButton onClick={() => toast.dismiss(t.id)}>No</ThemeButton>
-        <ThemeLink
-          to="/create"
-          state={{ initialEvent: newEvent }}
-          onClick={() => toast.dismiss(t.id)}
-        >
-          Modify
-        </ThemeLink>
-      </div>
-    </span>
-  ));
+  toast('Please set a time in the future');
+  // toast((t) => (
+  //   <span>
+  //     Reschedule your recent event for next week:{' '}
+  //     <DisplayEvent event={newEvent} eventUID={eventUID} />
+  //     <div>
+  //       <ThemeButton
+  //         onClick={() => {
+  //           createEvent(newEvent);
+  //           toast.dismiss(t.id);
+  //         }}
+  //       >
+  //         Yes
+  //       </ThemeButton>
+  //       <ThemeButton onClick={() => toast.dismiss(t.id)}>No</ThemeButton>
+  //       <ThemeLink
+  //         to="/create"
+  //         state={{ initialEvent: newEvent }}
+  //         onClick={() => toast.dismiss(t.id)}
+  //       >
+  //         Modify
+  //       </ThemeLink>
+  //     </div>
+  //   </span>
+  // ));
 }
 
 function DisplayEvent({
@@ -260,9 +261,6 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center scrollbar-gutter:stable both-edges">
       {confetti && <ConfettiExplosion />}
-      <div>
-        <Toaster />
-      </div>
       <div className="flex flex-col items-center w-[calc(100vw-25px)] overflow-y: overlay">
         <div>
           <br />
