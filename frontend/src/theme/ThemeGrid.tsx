@@ -22,7 +22,7 @@ export function ThemeGrid({
     <>
       <div className={'grid grid-cols-' + width}>
         {options.map((v) => (
-          <div key={v}>
+          <div key={v} className="flex">
             <ThemeButton
               key={v}
               onClick={(event) => {
