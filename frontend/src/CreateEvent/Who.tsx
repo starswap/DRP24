@@ -68,6 +68,7 @@ export function Who({
           people[uid].name.firstname + ' ' + people[uid].name.surname
         }
         width={1}
+        addButtons={true}
       />
     </>
   );

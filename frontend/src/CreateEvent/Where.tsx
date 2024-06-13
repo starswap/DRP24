@@ -23,6 +23,7 @@ export function Where({
         save={handleClick}
         selected={(e) => calevent.location === e}
         width={1}
+        addButtons={false}
       />
 
       <ThemeTextbox
