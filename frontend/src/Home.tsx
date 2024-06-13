@@ -18,12 +18,15 @@ import { PersonMap } from './types/Person';
 import toast, { Toaster } from 'react-hot-toast';
 import ConfettiExplosion from 'react-confetti-explosion';
 import { useLocation } from 'react-router-dom';
+import './Home.css';
 
 const ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
+// const displayOldEvents = false;
 
 type EventsWithResponseProps = {
   events: [CalendarEvent, UID][];
   response: EventResponse;
+  displayOldEvents: boolean;
 };
 
 function responseToColour(response: EventResponse) {
@@ -144,9 +147,15 @@ function DisplayEvent({
   );
 }
 
-function EventsWithResponse({ events, response }: EventsWithResponseProps) {
+function EventsWithResponse({
+  events,
+  response,
+  displayOldEvents
+}: EventsWithResponseProps) {
   const chosenEvents = events.filter(
-    ([event]) => event.statuses[getCurrentUser()].response === response
+    ([event]) =>
+      event.statuses[getCurrentUser()].response === response &&
+      (!displayOldEvents || event.time.getTime() > Date.now())
   );
 
   return (
@@ -216,6 +225,7 @@ export default function Home() {
   const [events, setEvents] = useState<[CalendarEvent, UID][]>([]);
   const [users, setUsers] = useState<PersonMap>({});
   const [currentUser, setCurrentUser] = useState<UID>(getCurrentUser());
+  const [displayOldEvents, setDisplayOldEvents] = useState<boolean>(true);
 
   const location = useLocation();
   const [confetti, setConfetti] = useState(
@@ -254,17 +264,36 @@ export default function Home() {
         <Toaster />
       </div>
       <div className="flex flex-col items-center w-[calc(100vw-25px)] overflow-y: overlay">
-        <UsersDropdown
-          users={users}
-          value={currentUser}
-          onChange={setCurrentUser}
-        />
+        <div>
+          <br />
+          <span>Display previous events: </span>
+          <label className="switch">
+            <input
+              type="checkbox"
+              onChange={() => setDisplayOldEvents(!displayOldEvents)}
+            />
+            <span className="slider round" />
+          </label>
+          <UsersDropdown
+            users={users}
+            value={currentUser}
+            onChange={setCurrentUser}
+          />
+        </div>
         <br />
         <ThemeSubheading>Invites</ThemeSubheading>
-        <EventsWithResponse events={events} response={EventResponse.UNKNOWN} />
+        <EventsWithResponse
+          events={events}
+          response={EventResponse.UNKNOWN}
+          displayOldEvents={displayOldEvents}
+        />
 
         <ThemeSubheading>Events</ThemeSubheading>
-        <EventsWithResponse events={events} response={EventResponse.ACCEPTED} />
+        <EventsWithResponse
+          events={events}
+          response={EventResponse.ACCEPTED}
+          displayOldEvents={displayOldEvents}
+        />
 
         <a
           className="m-1 border border-gray-500 rounded-md bg-yellow-100 p-2 m-8 text-2xl"
@@ -274,7 +303,11 @@ export default function Home() {
         </a>
 
         <ThemeSubheading className="flex-1 w-full">Declined</ThemeSubheading>
-        <EventsWithResponse events={events} response={EventResponse.REJECTED} />
+        <EventsWithResponse
+          events={events}
+          response={EventResponse.REJECTED}
+          displayOldEvents={displayOldEvents}
+        />
       </div>
     </div>
   );
