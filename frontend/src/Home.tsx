@@ -292,7 +292,14 @@ export default function Home() {
             onChange={setCurrentUser}
           />
         </div>
-        <br />
+        {/* <br /> */}
+
+        <a
+          className="m-1 border border-gray-500 rounded-md bg-yellow-100 p-2 m-8 text-2xl"
+          href="#create"
+        >
+          Create event
+        </a>
         <ThemeSubheading>Invites</ThemeSubheading>
         <EventsWithResponse
           events={events}
@@ -306,13 +313,6 @@ export default function Home() {
           response={EventResponse.ACCEPTED}
           displayOldEvents={displayOldEvents}
         />
-
-        <a
-          className="m-1 border border-gray-500 rounded-md bg-yellow-100 p-2 m-8 text-2xl"
-          href="#create"
-        >
-          Create event
-        </a>
 
         <ThemeSubheading className="flex-1 w-full">Declined</ThemeSubheading>
         <EventsWithResponse
