@@ -22,7 +22,6 @@ const router = createHashRouter([
 
 root.render(
   <React.StrictMode>
-    <Toaster />
     <ThemeLogo />
     <RouterProvider router={router} />
   </React.StrictMode>
