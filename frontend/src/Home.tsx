@@ -116,15 +116,25 @@ function DisplayEvent({
         // don't display self
         .filter(([uid]) => uid !== getCurrentUser())
         // display people's names in different colours
-        .map(([uid, status], i) => (
-          <span key={uid} style={{ color: responseToColour(status.response) }}>
-            <b>
+        .map(([uid, status], i) =>
+          status.response === EventResponse.REJECTED ? (
+            <s key={uid}>
               {status.person.name.firstname} {status.person.name.surname}{' '}
-            </b>
-            {/* length - 2 because not writing out ourselves */}
-            {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
-          </span>
-        ))}
+              {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
+            </s>
+          ) : (
+            <span
+              key={uid}
+              style={{ color: responseToColour(status.response) }}
+            >
+              <b>
+                {status.person.name.firstname} {status.person.name.surname}{' '}
+              </b>
+              {/* length - 2 because not writing out ourselves */}
+              {i < Object.entries(event.statuses).length - 2 ? ', ' : ' '}
+            </span>
+          )
+        )}
       at {dayjs(new Date(event.time)).format('DD/MM/YYYY, HH:mm')}
     </p>
   );
