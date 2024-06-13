@@ -19,7 +19,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import ConfettiExplosion from 'react-confetti-explosion';
 import { useLocation } from 'react-router-dom';
 
-const oneWeek = 1000 * 60 * 60 * 24 * 7;
+const ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
 
 type EventsWithResponseProps = {
   events: [CalendarEvent, UID][];
@@ -64,9 +64,9 @@ function DeleteButton({ eventUID }: { eventUID: UID }) {
   );
 }
 
-function Reschedule(event: CalendarEvent, eventUID: UID) {
+export function Reschedule(event: CalendarEvent, eventUID: UID) {
   const newTime = new Date();
-  newTime.setTime(event.time.getTime() + oneWeek);
+  newTime.setTime(event.time.getTime() + ONE_WEEK);
 
   const newStatuses = event.statuses;
   for (const uid of Object.keys(newStatuses)) {

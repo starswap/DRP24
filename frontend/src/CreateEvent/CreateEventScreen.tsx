@@ -12,6 +12,7 @@ import { Where } from './Where';
 import { When } from './When';
 import { Confirmation } from './Confirmation';
 import { createEvent, getCurrentUser, createEventMeta } from '../util/data';
+import { Reschedule } from '../Home';
 
 export const EMPTY_EVENT: () => CalendarEvent = () => ({
   activity: '',
@@ -32,9 +33,15 @@ export function CreateEventScreen() {
   const confirm = (currentEvent: CalendarEvent) => {
     const time_taken = Date.now() - startRef.current;
     console.log(`Time taken: ${time_taken}`);
-    createEvent(currentEvent).then((eventId) =>
-      createEventMeta(eventId, time_taken)
-    );
+    createEvent(currentEvent).then((eventUID) => {
+      createEventMeta(eventUID, time_taken);
+      // set notification of rescheduling for when event starts
+      const notifyTime = currentEvent.time;
+      setTimeout(
+        () => Reschedule(currentEvent, eventUID),
+        notifyTime.getTime() - Date.now()
+      );
+    });
     navigate('/', { state: { confetti: true } });
   };
 

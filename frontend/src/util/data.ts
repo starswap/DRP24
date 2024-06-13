@@ -24,9 +24,8 @@ export function getCurrentUser() {
 }
 
 /* Returns the ID of the event firebase generated */
-export async function createEvent(currentEvent: CalendarEvent) {
-  const eventRef = await addDoc(EVENTS_COLLECITON, currentEvent);
-  return eventRef.id;
+export function createEvent(currentEvent: CalendarEvent) {
+  return addDoc(EVENTS_COLLECITON, currentEvent).then((docRef) => docRef.id);
 }
 
 export function createEventMeta(eventId: string, timeTaken: number) {
