@@ -13,7 +13,7 @@ import { When } from './When';
 import { Confirmation } from './Confirmation';
 import { createEvent, getCurrentUser, createEventMeta } from '../util/data';
 import { Reschedule } from '../Home';
-import toast from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 export const EMPTY_EVENT: () => CalendarEvent = () => ({
   activity: '',
@@ -66,14 +66,21 @@ export function CreateEventScreen() {
   );
 
   return (
-    <MultiPageForm<CalendarEvent>
-      confirm={confirm}
-      cancel={cancel}
-      pages={pages}
-      displayOnEveryPage={displayOnEveryPage}
-      defaultValue={initialEvent ?? EMPTY_EVENT()}
-      sets={['Set Activity', 'Set People', 'Set Time', 'Set Location']}
-      getMinTime={getEventTime}
-    />
+    <>
+      <Toaster
+        toastOptions={{
+          duration: 10000
+        }}
+      />
+      <MultiPageForm<CalendarEvent>
+        confirm={confirm}
+        cancel={cancel}
+        pages={pages}
+        displayOnEveryPage={displayOnEveryPage}
+        defaultValue={initialEvent ?? EMPTY_EVENT()}
+        sets={['Set Activity', 'Set People', 'Set Time', 'Set Location']}
+        getMinTime={getEventTime}
+      />
+    </>
   );
 }
