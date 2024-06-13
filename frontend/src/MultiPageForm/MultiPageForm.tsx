@@ -55,7 +55,9 @@ export function MultiPageForm<T>({
     if (pageNum === pages.length - 1) {
       confirm(state);
     } else if (pageNum === 2 && Date.now() > getMinTime(state)) {
-      toast.error('Please set a time in the future');
+      toast.error('Please set a time in the future', {
+        duration: 2500
+      });
     } else {
       setPageNum((pageNum) => pageNum + 1);
     }

@@ -67,11 +67,7 @@ export function CreateEventScreen() {
 
   return (
     <>
-      <Toaster
-        toastOptions={{
-          duration: 10000
-        }}
-      />
+      <Toaster />
       <MultiPageForm<CalendarEvent>
         confirm={confirm}
         cancel={cancel}

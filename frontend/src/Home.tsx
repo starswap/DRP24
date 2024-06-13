@@ -72,30 +72,35 @@ export function Reschedule(event: CalendarEvent, eventUID: UID) {
     statuses: newStatuses
   };
 
-  toast((t) => (
-    <span>
-      Reschedule your recent event for next week:{' '}
-      <DisplayEvent event={newEvent} eventUID={eventUID} />
-      <div>
-        <ThemeButton
-          onClick={() => {
-            createEvent(newEvent);
-            toast.dismiss(t.id);
-          }}
-        >
-          Yes
-        </ThemeButton>
-        <ThemeButton onClick={() => toast.dismiss(t.id)}>No</ThemeButton>
-        <ThemeLink
-          to="/create"
-          state={{ initialEvent: newEvent }}
-          onClick={() => toast.dismiss(t.id)}
-        >
-          Modify
-        </ThemeLink>
-      </div>
-    </span>
-  ));
+  toast(
+    (t) => (
+      <span>
+        Reschedule your recent event for next week:{' '}
+        <DisplayEvent event={newEvent} eventUID={eventUID} />
+        <div>
+          <ThemeButton
+            onClick={() => {
+              createEvent(newEvent);
+              toast.dismiss(t.id);
+            }}
+          >
+            Yes
+          </ThemeButton>
+          <ThemeButton onClick={() => toast.dismiss(t.id)}>No</ThemeButton>
+          <ThemeLink
+            to="/create"
+            state={{ initialEvent: newEvent }}
+            onClick={() => toast.dismiss(t.id)}
+          >
+            Modify
+          </ThemeLink>
+        </div>
+      </span>
+    ),
+    {
+      duration: 100000
+    }
+  );
 }
 
 function DisplayEvent({
@@ -155,11 +160,7 @@ function EventsWithResponse({
     <>
       {chosenEvents.map(([event, eventUID]) => (
         <>
-          <Toaster
-            toastOptions={{
-              duration: 100000
-            }}
-          />
+          <Toaster />
           <DisplayEvent event={event} eventUID={eventUID} />
 
           <div>
