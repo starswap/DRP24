@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ThemeButton } from '../theme/ThemeButton';
+import toast, { Toaster } from 'react-hot-toast';
+import { CalendarEvent } from '../types/CalendarEvent';
 
 export type MultiPageFormStateProps<T> = {
   state: T;
@@ -20,6 +22,7 @@ export type MultiPageFormProps<T> = {
   pages: Array<(s: MultiPageFormStateProps<T>) => JSX.Element>;
   displayOnEveryPage: (s: MultiPageFormEveryPageProps<T>) => JSX.Element;
   sets: string[];
+  getMinTime: (state: T) => number;
 };
 
 export function MultiPageForm<T>({
@@ -28,21 +31,14 @@ export function MultiPageForm<T>({
   defaultValue,
   pages,
   displayOnEveryPage,
-  sets
+  sets,
+  getMinTime
 }: MultiPageFormProps<T>) {
   const [pageNum, setPageNum] = useState(0);
   const [state, setState] = useState<T>(defaultValue);
   const stateAndSetter = {
     state: state,
     updateState: setState
-  };
-
-  const handleNext = () => {
-    if (pageNum === pages.length - 1) {
-      confirm(state);
-    } else {
-      setPageNum((pageNum) => pageNum + 1);
-    }
   };
 
   const handleBack = () => {
@@ -54,6 +50,16 @@ export function MultiPageForm<T>({
   };
 
   const Page = pages[pageNum];
+
+  const handleNext = () => {
+    if (pageNum === pages.length - 1) {
+      confirm(state);
+    } else if (pageNum === 2 && Date.now() > getMinTime(state)) {
+      toast.error('Please set a time in the future');
+    } else {
+      setPageNum((pageNum) => pageNum + 1);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center mx-auto p-4r p-2 w-full">
