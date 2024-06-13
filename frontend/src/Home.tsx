@@ -187,7 +187,7 @@ function EventsWithResponse({
               onClick={() => Reschedule(event, eventUID)}
               className="bg-blue-100"
             >
-              Reschedule
+              Repeat activity
             </ThemeButton>
           </div>
         </>
