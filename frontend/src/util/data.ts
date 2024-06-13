@@ -23,7 +23,7 @@ export function getCurrentUser() {
 }
 
 export function createEvent(currentEvent: CalendarEvent) {
-  addDoc(EVENTS_COLLECITON, currentEvent);
+  return addDoc(EVENTS_COLLECITON, currentEvent).then((docRef) => docRef.id);
 }
 
 export async function fetchUsers(): Promise<PersonMap> {
