@@ -2,6 +2,7 @@ import React from 'react';
 import { CalendarEvent } from '../types/CalendarEvent';
 import dayjs from 'dayjs';
 import { getCurrentUser } from '../util/data';
+import { ThemeButton } from '../theme/ThemeButton';
 
 type EventDescriptionProps = {
   event: CalendarEvent;
@@ -16,6 +17,7 @@ export const EventDescription = ({ event, setPage }: EventDescriptionProps) => {
     'At time:',
     'At place:'
   ];
+  const PAGE_ACTIVITY_NAME = ['Activity', 'People', 'Time', 'Location'];
   const fieldArr = [
     event.activity,
     Array.from(event.participants.values())
@@ -42,6 +44,13 @@ export const EventDescription = ({ event, setPage }: EventDescriptionProps) => {
           <span className="underline">
             {fieldValue === '' ? '_'.repeat(20) : fieldValue}
           </span>
+          <ThemeButton
+            onClick={() => {
+              setPage(i);
+            }}
+          >
+            Change {PAGE_ACTIVITY_NAME[i]}
+          </ThemeButton>
         </div>
       ))}
     </div>
