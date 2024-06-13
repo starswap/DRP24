@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { ThemeSubheading } from './theme/ThemeSubheading';
 import {
   updateEventResponse,
@@ -19,6 +19,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import ConfettiExplosion from 'react-confetti-explosion';
 import { useLocation } from 'react-router-dom';
 import './Home.css';
+import { Unsubscribe } from 'firebase/firestore';
 
 const ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
 // const displayOldEvents = false;
@@ -242,7 +243,6 @@ export default function Home() {
   const [users, setUsers] = useState<PersonMap>({});
   const [currentUser, setCurrentUser] = useState<UID>(getCurrentUser());
   const [displayOldEvents, setDisplayOldEvents] = useState<boolean>(true);
-
   const location = useLocation();
   const [confetti, setConfetti] = useState(
     location.state ? location.state.confetti : false
@@ -257,16 +257,10 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    subscribeToEvents(getCurrentUser(), setEvents);
-  }, []);
+  useEffect(() => subscribeToEvents(currentUser, setEvents), [currentUser]);
 
   useEffect(() => {
     localStorage.setItem('user', currentUser);
-  }, [currentUser]);
-
-  useEffect(() => {
-    fetchEvents(currentUser).then(setEvents);
   }, [currentUser]);
 
   useEffect(() => {
