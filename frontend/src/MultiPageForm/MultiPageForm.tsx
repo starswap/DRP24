@@ -79,9 +79,6 @@ export function MultiPageForm<T>({
         page: pageNum,
         setPage: setPageNum
       })}
-      <ThemeButton onClick={() => setPageNum(4)} className="bg-blue-100">
-        Finish and confirm event
-      </ThemeButton>
     </div>
   );
 }
