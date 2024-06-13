@@ -66,7 +66,7 @@ export function CreateEventScreen() {
   );
 
   return (
-    <>
+    <div>
       <Toaster />
       <MultiPageForm<CalendarEvent>
         confirm={confirm}
@@ -82,6 +82,6 @@ export function CreateEventScreen() {
         ]}
         getMinTime={getEventTime}
       />
-    </>
+    </div>
   );
 }

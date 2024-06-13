@@ -20,7 +20,7 @@ export function ThemeGrid({
 }: ThemeGridProps) {
   return (
     <>
-      <div className={'grid grid-cols-' + width}>
+      <div className={'flex-row grid grid-cols-' + width}>
         {options.map((v) => (
           <div key={v} className="flex">
             <ThemeButton

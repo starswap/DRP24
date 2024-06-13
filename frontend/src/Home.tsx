@@ -270,7 +270,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center scrollbar-gutter:stable both-edges">
       {confetti && <ConfettiExplosion />}
-      <div className="flex flex-col items-center w-[calc(100vw-25px)] overflow-y: overlay">
+      <div className="flex flex-col items-center w-[calc(100vw-25px)] overflow-y: overlay ">
         <div>
           <br />
           <span>Display previous events: </span>
