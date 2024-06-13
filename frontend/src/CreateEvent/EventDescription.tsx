@@ -3,9 +3,13 @@ import { CalendarEvent } from '../types/CalendarEvent';
 import dayjs from 'dayjs';
 import { getCurrentUser } from '../util/data';
 
-type EventDescriptionProps = { event: CalendarEvent };
+type EventDescriptionProps = {
+  event: CalendarEvent;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+};
 
-export const EventDescription = ({ event }: EventDescriptionProps) => {
+export const EventDescription = ({ event, setPage }: EventDescriptionProps) => {
   const PAGE_ACTIVITY_DESC = [
     'You are doing:',
     'With:',
@@ -26,9 +30,14 @@ export const EventDescription = ({ event }: EventDescriptionProps) => {
   console.log(fieldArr);
 
   return (
-    <div className="border border-black border-2 rounded-[4px] m-2 p-3 w-80">
+    <div className="border border-black border-2 rounded-[4px] m-2 p-3 w-80 cursor-pointer">
       {fieldArr.map((fieldValue, i) => (
-        <div key={i}>
+        <div
+          key={i}
+          onClick={() => {
+            setPage(i);
+          }}
+        >
           {PAGE_ACTIVITY_DESC[i] + ' '}
           <span className="underline">
             {fieldValue === '' ? '_'.repeat(20) : fieldValue}

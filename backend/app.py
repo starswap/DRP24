@@ -1,9 +1,12 @@
+import os
+
 from flask import Flask, jsonify, request
 import tempfile
 from whitenoise import WhiteNoise
 from openai import OpenAI
-client = OpenAI()
+client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
 
+SLIM_TRANSCRIPTION = True
 
 app = Flask(__name__) 
 app.wsgi_app = WhiteNoise(app.wsgi_app, root="../frontend/build", index_file=True)
@@ -17,6 +20,11 @@ def audio_transcribe():
     audio = request.files['audio']
     if audio.filename == '':
         return jsonify({'error': 'Audio filename is blank'}), 400
+
+    if 'subject' not in request.form:
+        return jsonify({'error': 'No extraction type queried'}), 400
+
+    subject = request.form['subject']
 
     # Create a temporary file
     temp = tempfile.NamedTemporaryFile(delete=False, suffix='.wav')
@@ -33,7 +41,21 @@ def audio_transcribe():
         model="whisper-1", 
         file=audio_file
     )
-    return jsonify({"text": transcription.text})
+    result = transcription.text
+    # Reduce the size of the transcription
+    if SLIM_TRANSCRIPTION:
+        transcription = client.chat.completions.create(
+            model="gpt-4o",
+            response_format={"type": "json_object"},
+            messages=[
+                {"role": "user", "content": f"Extract the most concise {subject} from this piece of text and return it as json with the key {subject}: {transcription.text}"}
+            ]
+        )
+        print(transcription)
+        result = transcription.choices[0].message.content
+
+    print(result)
+    return result
 
 
 if __name__ == '__main__':

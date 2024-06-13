@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { CalendarEvent } from '../types/CalendarEvent';
 import { EventDescription } from './EventDescription';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   MultiPageForm,
-  MultiPageFormStateProps
+  MultiPageFormEveryPageProps
 } from '../MultiPageForm/MultiPageForm';
 import { What } from './What';
 import { Who } from './Who';
 import { Where } from './Where';
 import { When } from './When';
-import { createEvent, getCurrentUser } from '../util/data';
+import { Confirmation } from './Confirmation';
+import { createEvent, getCurrentUser, createEventMeta } from '../util/data';
 import { Reschedule } from '../Home';
 
 export const EMPTY_EVENT: () => CalendarEvent = () => ({
@@ -28,16 +29,20 @@ export function CreateEventScreen() {
   const { initialEvent } = location.state ?? EMPTY_EVENT();
 
   const navigate = useNavigate();
-
+  const startRef = useRef(Date.now());
   const confirm = (currentEvent: CalendarEvent) => {
+    const time_taken = Date.now() - startRef.current;
+    console.log(`Time taken: ${time_taken}`);
     createEvent(currentEvent).then((eventUID) => {
+      createEventMeta(eventUID, time_taken);
+      // set notification of rescheduling for when event starts
       const notifyTime = currentEvent.time;
       setTimeout(
         () => Reschedule(currentEvent, eventUID),
         notifyTime.getTime() - Date.now()
       );
     });
-    navigate('/');
+    navigate('/', { state: { confetti: true } });
   };
 
   const cancel = () => {
@@ -45,12 +50,14 @@ export function CreateEventScreen() {
     navigate('/');
   };
 
-  const pages = [What, Who, When, Where];
+  const pages = [What, Who, When, Where, Confirmation];
 
   const displayOnEveryPage = ({
-    state: event
-  }: MultiPageFormStateProps<CalendarEvent>) => (
-    <EventDescription event={event} />
+    state: event,
+    page: page,
+    setPage: setPage
+  }: MultiPageFormEveryPageProps<CalendarEvent>) => (
+    <EventDescription event={event} page={page} setPage={setPage} />
   );
 
   return (

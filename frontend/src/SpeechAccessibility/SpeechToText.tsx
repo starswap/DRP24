@@ -3,11 +3,12 @@ import { useReactMediaRecorder } from 'react-media-recorder';
 import axios from 'axios';
 import { ThemeButton } from '../theme/ThemeButton';
 
-// If developing locally use 'http://127.0.0.1:5000/' else 'https://drp24-43a0dc947937.herokuapp.com'
-const URL = '/api/post_audio';
+// If developing locally use set LOCAL env var
+const URL =
+  (process.env.LOCAL ? 'http://127.0.0.1:5000/' : '/') + 'api/post_audio';
 
 // Function packages audio blob and sends it to globally defined URL
-async function uploadAudio(blobUrl: string) {
+async function uploadAudio(blobUrl: string, subject: string) {
   console.log('Uploading');
 
   // Construct the form data to be sent
@@ -19,6 +20,9 @@ async function uploadAudio(blobUrl: string) {
     console.log('Error: blob url not present');
   }
 
+  // Add the subject to the form data
+  formData.append('subject', subject);
+
   // Send the form data
   try {
     const response = await axios.post(URL, formData, {
@@ -27,7 +31,7 @@ async function uploadAudio(blobUrl: string) {
       }
     });
     console.log(response.data);
-    return response.data.text;
+    return response.data[subject];
   } catch (error) {
     console.log(`Error: ${error}`);
   } finally {
@@ -36,12 +40,15 @@ async function uploadAudio(blobUrl: string) {
 }
 
 export function AudioRecordButton({
-  saveActivity
+  saveActivity,
+  subject
 }: {
   saveActivity: (activity: string) => void;
+  subject: string;
 }) {
   const [recording, setRecording] = useState(false);
   const [mediaBlobUrl, setMediaBlobUrl] = useState('');
+  const [buttonText, setButtonText] = useState('Talk');
 
   const { startRecording, stopRecording } = useReactMediaRecorder({
     audio: true,
@@ -54,7 +61,7 @@ export function AudioRecordButton({
     if (mediaBlobUrl) {
       const upload = async () => {
         console.log(`Uploading audio to server: ${mediaBlobUrl}`);
-        const response = await uploadAudio(mediaBlobUrl);
+        const response = await uploadAudio(mediaBlobUrl, subject);
         console.log(`Server Response: ${response}`);
         saveActivity(response);
       };
@@ -69,13 +76,16 @@ export function AudioRecordButton({
       console.log('Stopping Recording');
       stopRecording();
       setRecording(false);
+      setButtonText('Talk');
     } else {
       // Start
       console.log('Starting Recording');
       startRecording();
       setRecording(true);
+      setButtonText('Stop');
     }
   };
 
-  return <ThemeButton onClick={handleClick}> Record </ThemeButton>;
+  // change button text based on recording state
+  return <ThemeButton onClick={handleClick}> {buttonText} </ThemeButton>;
 }
