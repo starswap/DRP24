@@ -16,8 +16,10 @@ import { ThemeButton } from './theme/ThemeButton';
 import { ThemeLink } from './theme/ThemeLink';
 import { PersonMap } from './types/Person';
 import toast, { Toaster } from 'react-hot-toast';
+import ConfettiExplosion from 'react-confetti-explosion';
+import { useLocation } from 'react-router-dom';
 
-const oneWeek = 1000 * 60 * 60 * 24 * 7;
+const ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
 
 type EventsWithResponseProps = {
   events: [CalendarEvent, UID][];
@@ -62,9 +64,9 @@ function DeleteButton({ eventUID }: { eventUID: UID }) {
   );
 }
 
-function Reschedule(event: CalendarEvent, eventUID: UID) {
+export function Reschedule(event: CalendarEvent, eventUID: UID) {
   const newTime = new Date();
-  newTime.setTime(event.time.getTime() + oneWeek);
+  newTime.setTime(event.time.getTime() + ONE_WEEK);
 
   const newStatuses = event.statuses;
   for (const uid of Object.keys(newStatuses)) {
@@ -215,6 +217,20 @@ export default function Home() {
   const [users, setUsers] = useState<PersonMap>({});
   const [currentUser, setCurrentUser] = useState<UID>(getCurrentUser());
 
+  const location = useLocation();
+  const [confetti, setConfetti] = useState(
+    location.state ? location.state.confetti : false
+  );
+
+  useEffect(() => {
+    if (confetti) {
+      setTimeout(() => {
+        setConfetti(false);
+      }, 2000);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     subscribeToEvents(getCurrentUser(), setEvents);
   }, []);
@@ -233,6 +249,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center scrollbar-gutter:stable both-edges">
+      {confetti && <ConfettiExplosion />}
       <div>
         <Toaster />
       </div>

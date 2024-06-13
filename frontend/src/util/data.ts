@@ -16,14 +16,20 @@ import { UID } from '../types/UID';
 
 const EVENTS_COLLECITON = collection(db, 'events');
 const USERS_COLLECTION = collection(db, 'users');
+const META_COLLECTION = collection(db, 'meta');
 export const DEFAULT_USER = 't8M8LxWOTKwBAkKHgEfo'; // TODO: Fetch from cookies for example
 
 export function getCurrentUser() {
   return localStorage.getItem('user') ?? DEFAULT_USER;
 }
 
+/* Returns the ID of the event firebase generated */
 export function createEvent(currentEvent: CalendarEvent) {
-  addDoc(EVENTS_COLLECITON, currentEvent);
+  return addDoc(EVENTS_COLLECITON, currentEvent).then((docRef) => docRef.id);
+}
+
+export function createEventMeta(eventId: string, timeTaken: number) {
+  addDoc(META_COLLECTION, { eventId: eventId, timeTaken: timeTaken });
 }
 
 export async function fetchUsers(): Promise<PersonMap> {
