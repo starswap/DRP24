@@ -11,6 +11,7 @@ import { Who } from './Who';
 import { Where } from './Where';
 import { When } from './When';
 import { createEvent, getCurrentUser } from '../util/data';
+import { Reschedule } from '../Home';
 
 export const EMPTY_EVENT: () => CalendarEvent = () => ({
   activity: '',
@@ -29,7 +30,13 @@ export function CreateEventScreen() {
   const navigate = useNavigate();
 
   const confirm = (currentEvent: CalendarEvent) => {
-    createEvent(currentEvent);
+    createEvent(currentEvent).then((eventUID) => {
+      const notifyTime = currentEvent.time;
+      setTimeout(
+        () => Reschedule(currentEvent, eventUID),
+        notifyTime.getTime() - Date.now()
+      );
+    });
     navigate('/');
   };
 
