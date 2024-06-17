@@ -167,14 +167,14 @@ function EventsWithResponse({
           <div>
             {(response === EventResponse.UNKNOWN ||
               response === EventResponse.REJECTED) && (
-              <ThemeButton
-                onClick={() =>
-                  updateEventResponse(eventUID, EventResponse.ACCEPTED)
-                }
-              >
-                Accept
-              </ThemeButton>
-            )}
+                <ThemeButton
+                  onClick={() =>
+                    updateEventResponse(eventUID, EventResponse.ACCEPTED)
+                  }
+                >
+                  Accept
+                </ThemeButton>
+              )}
             {response === EventResponse.UNKNOWN && (
               <ThemeButton
                 onClick={() =>
@@ -294,6 +294,13 @@ export default function Home() {
           href="#create"
         >
           Create event
+        </a>
+
+        <a
+          className="m-1 border border-gray-500 rounded-md bg-yellow-100 p-2 m-8 text-2xl"
+          href="#create-conversation"
+        >
+          Create event with conversation
         </a>
         <ThemeSubheading>Invites</ThemeSubheading>
         <EventsWithResponse

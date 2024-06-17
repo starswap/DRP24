@@ -1,3 +1,4 @@
+import datetime
 import os
 
 from flask import Flask, jsonify, request
@@ -6,7 +7,7 @@ from whitenoise import WhiteNoise
 from openai import OpenAI
 client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
 
-SLIM_TRANSCRIPTION = True
+SLIM_TRANSCRIPTION = True 
 
 app = Flask(__name__)
 app.wsgi_app = WhiteNoise(app.wsgi_app, root="../frontend/build", index_file=True)
@@ -47,19 +48,20 @@ def conversation_transcribe():
             {{
                 "activity": the activity,
                 "people": list of people [],
-                "time": the time in the form hour/day,
+                "time": the time in the form 'YYYY-MM-DD HH-MM',
                 "place": the place
             }}
         If it is unclear what to write fill in the gaps with 'NA'.
+
         Do this on this text: {transcription}
-        
+        The current time is {datetime.now().strftime('%Y-%m-%d %H:%M')}
         For example, given the piece of text:
-          I want to go to pub with bertha and gertrude tomorrow at 1
+        I want to go to pub with bertha and gertrude tomorrow at 1
         The result would be:
             {{
                 "activity": "go to pub"
                 "people": ["Bertha", "Gertrude"]
-                "time": 1/Tomorrow,
+                "time": 2024-06-18 13:00,
                 "place": "pub"
             }}
     """
