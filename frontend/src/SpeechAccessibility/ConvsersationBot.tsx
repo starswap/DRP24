@@ -16,10 +16,9 @@ import { PersonMap } from '../types/Person';
 const AUDIO_START_TEXT = 'Press to speak answer';
 
 // If developing locally use set LOCAL env var
-// const URL =
-//   (process.env.LOCAL ? 'http://127.0.0.1:5000/' : '/');
-
-const URL = 'http://192.168.0.26:5000/' + 'api/post_conversation';
+const URL =
+  (process.env.LOCAL ? 'http://192.168.0.26:5000/' : '/') +
+  'api/post_conversation';
 
 // Function packages audio blob and sends it to globally defined URL
 async function uploadAudio(blobUrl: string) {
