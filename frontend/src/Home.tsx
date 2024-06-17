@@ -51,6 +51,39 @@ function DeleteButton({ eventUID }: { eventUID: UID }) {
   );
 }
 
+function RescheduleNo(newEvent: CalendarEvent) {
+  toast(
+    (t) => (
+      <span>
+        {
+          "Are you sure you wouldn't like to change the activity, another activity could be fun:"
+        }
+        <div className="pb-3 pt-2">
+          <ThemeButton
+            onClick={() => {
+              toast.dismiss(t.id);
+            }}
+          >
+            {"Don't Reschedule"}
+          </ThemeButton>
+        </div>
+        <div>
+          <ThemeLink
+            to="/create"
+            state={{ initialEvent: newEvent }}
+            onClick={() => toast.dismiss(t.id)}
+          >
+            Change the activity
+          </ThemeLink>
+        </div>
+      </span>
+    ),
+    {
+      duration: 100000
+    }
+  );
+}
+
 export function Reschedule(event: CalendarEvent, eventUID: UID) {
   const newTime = new Date();
   newTime.setTime(event.time.getTime() + ONE_WEEK);
@@ -87,13 +120,20 @@ export function Reschedule(event: CalendarEvent, eventUID: UID) {
           >
             Yes
           </ThemeButton>
-          <ThemeButton onClick={() => toast.dismiss(t.id)}>No</ThemeButton>
+          <ThemeButton
+            onClick={() => {
+              RescheduleNo(newEvent);
+              toast.dismiss(t.id);
+            }}
+          >
+            No
+          </ThemeButton>
           <ThemeLink
             to="/create"
             state={{ initialEvent: newEvent }}
             onClick={() => toast.dismiss(t.id)}
           >
-            Modify
+            Change something
           </ThemeLink>
         </div>
       </span>
