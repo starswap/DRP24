@@ -1,9 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ConversationRecordButton } from './ConvsersationBot';
-import { createEvent, getCurrentUser, createEventMeta } from '../util/data';
+import { getCurrentUser } from '../util/data';
 import { CalendarEvent } from '../types/CalendarEvent';
-import { EventDescription } from '../CreateEvent/EventDescription';
-import { Who } from '../CreateEvent/Who';
 
 export const EMPTY_EVENT: () => CalendarEvent = () => ({
   activity: '',

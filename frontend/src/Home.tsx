@@ -167,14 +167,14 @@ function EventsWithResponse({
           <div>
             {(response === EventResponse.UNKNOWN ||
               response === EventResponse.REJECTED) && (
-                <ThemeButton
-                  onClick={() =>
-                    updateEventResponse(eventUID, EventResponse.ACCEPTED)
-                  }
-                >
-                  Accept
-                </ThemeButton>
-              )}
+              <ThemeButton
+                onClick={() =>
+                  updateEventResponse(eventUID, EventResponse.ACCEPTED)
+                }
+              >
+                Accept
+              </ThemeButton>
+            )}
             {response === EventResponse.UNKNOWN && (
               <ThemeButton
                 onClick={() =>

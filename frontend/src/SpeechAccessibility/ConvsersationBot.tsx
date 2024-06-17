@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useReactMediaRecorder } from 'react-media-recorder-2';
-import axios, { Axios, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { ThemeButton } from '../theme/ThemeButton';
 import { CalendarEvent, EventResponse } from '../types/CalendarEvent';
 import { MultiPageFormStateProps } from '../MultiPageForm/MultiPageForm';
@@ -12,7 +12,6 @@ import {
 } from '../util/data';
 import { Reschedule } from '../Home';
 import { useNavigate } from 'react-router-dom';
-import { EMPTY_EVENT } from './CreateConversationScreen';
 import { PersonMap } from '../types/Person';
 const AUDIO_START_TEXT = 'Press to speak answer';
 
