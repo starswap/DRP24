@@ -48,7 +48,7 @@ def conversation_transcribe():
             {{
                 "activity": the activity,
                 "people": list of people [],
-                "time": the time in the form 'YYYY-MM-DD HH-MM',
+                "time": the time in the form 'YYYY-MM-DDTHH:mm',
                 "place": the place
             }}
         If it is unclear what to write fill in the gaps with 'NA'.
@@ -61,7 +61,7 @@ def conversation_transcribe():
             {{
                 "activity": "go to pub"
                 "people": ["Bertha", "Gertrude"]
-                "time": 2024-06-18 13:00,
+                "time": 2024-06-18T13:00,
                 "place": "pub"
             }}
     """
