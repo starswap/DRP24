@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
-import { useReactMediaRecorder } from 'react-media-recorder';
+import { useReactMediaRecorder } from 'react-media-recorder-2';
 import axios from 'axios';
 import { ThemeButton } from '../theme/ThemeButton';
 const AUDIO_START_TEXT = 'Press to speak answer';
 // If developing locally use set LOCAL env var
-const URL =
-  (process.env.LOCAL ? 'http://127.0.0.1:5000/' : '/') + 'api/post_audio';
+// const URL =
+//   (process.env.LOCAL ? 'http://127.0.0.1:5000/' : '/') + 'api/post_audio';
+
+const URL = 'http://127.0.0.1:5000/' + 'api/post_audio';
 
 // Function packages audio blob and sends it to globally defined URL
 async function uploadAudio(blobUrl: string, subject: string) {
   console.log('Uploading');
-
+  console.log(URL);
   // Construct the form data to be sent
   const formData = new FormData();
   if (blobUrl !== null) {

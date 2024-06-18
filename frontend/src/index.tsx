@@ -5,6 +5,7 @@ import Home from './Home';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createHashRouter } from 'react-router-dom';
 import { CreateEventScreen } from './CreateEvent/CreateEventScreen';
+import { CreateConversationScreen } from './SpeechAccessibility/CreateConversationScreen';
 import { ThemeLogo } from './theme/ThemeLogo';
 import { Toaster } from 'react-hot-toast';
 
@@ -17,6 +18,10 @@ const router = createHashRouter([
   {
     path: 'create',
     element: <CreateEventScreen />
+  },
+  {
+    path: 'create-conversation',
+    element: <CreateConversationScreen />
   }
 ]);
 
